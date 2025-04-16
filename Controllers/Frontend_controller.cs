@@ -1,3 +1,5 @@
+using Employee_education_platform.Models;
+using Employee_education_platform.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Employee_education_platform.Controllers;
@@ -9,30 +11,48 @@ namespace Employee_education_platform.Controllers;
 [Route("api/frontend")]
 public class Frontend_controller : ControllerBase
 {
-    /// <summary>
-    /// Метод для получения списка курсов!
-    /// </summary>
+    private readonly SurrealDbService _db;
+
+    public Frontend_controller(SurrealDbService db)
+    {
+        _db = db;
+    }
+
     [HttpGet("courses")]
-    public IActionResult Get_courses()
+    public async Task<IActionResult> Get_courses()
     {
-        throw new NotImplementedException();
+        var courses = await _db.SelectAll<Course_dto>("Course");
+        return Ok(courses);
     }
 
-    /// <summary>
-    /// Метод для получения информации по конкретному курсу, мб даже включу модули и статьи.
-    /// </summary>
     [HttpGet("courses/{course_id}")]
-    public IActionResult Get_course_details(string course_id)
+    public async Task<IActionResult> Get_course_details(string course_id)
     {
-        throw new NotImplementedException();
+        string fullCourseId = $"course:{course_id}";
+        var course = await _db.SelectById<Course_dto>("Course", fullCourseId);
+        var modules = await _db.RunQuery<Module_dto>($"SELECT * FROM Module WHERE course_id = '{course_id}'");
+        var result = new { course, modules };
+        return Ok(result);
     }
 
-    /// <summary>
-    /// Метод для получения профиля пользователя. Сюда же пойдет и прогресс прохождения курсов, данные персонажа и достижения.
-    /// </summary>
     [HttpGet("users/{user_id}/profile")]
-    public IActionResult Get_user_profile(string user_id)
+    public async Task<IActionResult> Get_user_profile(string user_id)
     {
-        throw new NotImplementedException();
+        var user = await _db.SelectById<User_dto>("User", user_id);
+        if (user == null) return NotFound("Пользователь не найден");
+
+        var character = await _db.RunQuery<Character_dto>($"SELECT * FROM Character WHERE user_id = '{user_id}'");
+        var courseProgress = await _db.RunQuery<CourseProgress_dto>($"SELECT * FROM CourseProgress WHERE user_id = '{user_id}'");
+        var userAchievements = await _db.RunQuery<UserAchievement_dto>($"SELECT * FROM UserAchievement WHERE user_id = '{user_id}'");
+
+        var result = new
+        {
+            user,
+            character,
+            course_progress = courseProgress,
+            achievements = userAchievements
+        };
+
+        return Ok(result);
     }
 }
