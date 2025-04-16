@@ -1,0 +1,8 @@
+[submodule "eep_frontend_site"]
+	path = eep_frontend_site
+	url = https://github.com/GregulasM/Employee_education_platform
+	branch = eep_frontend_site
+[submodule "eep_frontend_admin"]
+	path = eep_frontend_admin
+	url = https://github.com/GregulasM/Employee_education_platform
+	branch = eep_frontend_admin
