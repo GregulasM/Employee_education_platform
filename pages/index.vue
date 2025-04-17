@@ -1,8 +1,8 @@
 <template>
-  <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300">
+  <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300 ">
 
     <!--  Левая секция-->
-    <div class="w-1/3">
+    <div class="w-1/4 mb-8">
       <div class=" drop-shadow-2xl">
         <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
           <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
@@ -19,7 +19,7 @@
           </div>
 
         </div>
-        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 ">
+        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
           <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
             <h2>Текущий курс: {курс_название}</h2>
           </div>
@@ -32,34 +32,55 @@
           </div>
 
         </div>
-
-        <div class="block course-block draggable" id="course-block">
-          <h2>Текущий курс</h2>
-          <p>Название курса: Введение в веб-разработку</p>
-          <p>Степень прохождения: 60%</p>
-          <progress value="60" max="100"></progress>
-        </div>
-        <div class="block news-block draggable" id="news-block">
-          <h2>Новости</h2>
-          <ul>
-            <li>Новость 1: Новый курс по JS</li>
-            <li>Новость 2: Обновление рейтинга</li>
-            <li>Новость 3: Вебинар в пятницу</li>
-          </ul>
+        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+          <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+            <h2>Новости</h2>
+          </div>
+          <div class="flex-col p-4 font-semibold text-shadow-lg">
+            <Accordion type="single" collapsible>
+              <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value" >
+                <AccordionTrigger class="font-semibold text-shadow-lg text-md">{{ item.title }} </AccordionTrigger>
+                <AccordionContent class="ml-8">
+                  {{ item.content }}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!--  Профиль и контент -->
     <div class="w-1/2">
-      <div class="center-section">
-        <div class="profile-rectangle draggable" id="profile-block">
-          <img src="https://avatars.mds.yandex.net/i?id=daffd78d9e0355271866a9b11579ae4d_l-5233530-images-thumbs&n=13" alt="Аватар" class="avatar">
-          <div class="profile-info">
+      <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+        <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+          <h2>Профиль</h2>
+        </div>
+        <div class="flex p-4">
+          <div class="mr-4 inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 h-1/5 w-1/5 p-2">
+            <Avatar class="w-auto h-auto inset-shadow-sm shadow-md inset-shadow-red-300/60">
+              <AvatarImage src="https://avatars.mds.yandex.net/i?id=daffd78d9e0355271866a9b11579ae4d_l-5233530-images-thumbs&n=13" alt="Аватар" />
+              <AvatarFallback>RU</AvatarFallback>
+            </Avatar>
+            <p class="text-center text-sm">Фото</p>
+          </div>
+          <div class="inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 p-4">
             <p>Рейтинг: 4.5 <span class="stars">★★★★☆</span></p>
             <p>Текущее прохождение: 60%</p>
             <button>Профиль</button>
             <button>Выход</button>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="center-section">
+        <div class="profile-rectangle draggable" id="profile-block">
+
+          <div class="profile-info">
+
           </div>
         </div>
         <div class="popup-area" id="popup-area"></div>
@@ -67,7 +88,7 @@
     </div>
 
     <!--  Правая секция-->
-    <div class="w-1/3">
+    <div class="w-1/4">
       <div class="right-section">
         <div class="block courses-block draggable" id="courses-block">
           <h2>Мои курсы</h2>
@@ -106,9 +127,15 @@
 </template>
 
 <!--<style src="assets/css/main.css"></style>-->
-<script>
-import Progress from "../components/ui/progress/Progress.vue";
-export default {
-  components: {Progress}
-}
+
+<script setup lang="ts">
+  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+
+  const defaultValue = 'item-1'
+
+  const accordionItems = [
+  { value: 'item-1', title: 'Новость 1: Новый курс по JS', content: 'Добавили раздел по JavaScript. Подробнее в разделе <NuxtLink to="/" class="text-orange-500 underline italic font-">обновление 09.05</NuxtLink>' },
+  { value: 'item-2', title: 'Новость 2: Обновление рейтинга', content: 'Добавили раздел по JavaScript. <br> Подробнее в разделе <NuxtLink to="/" class="text-orange-500 underline italic font-">обновление 09.05</NuxtLink>' },
+  { value: 'item-3', title: 'Новость 3: Вебинар в пятницу', content: 'Yes! You can use the transition prop to configure the animation.' },
+  ]
 </script>
