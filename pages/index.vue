@@ -326,8 +326,6 @@
   </div>
 </template>
 
-<!--<style src="assets/css/main.css"></style>-->
-
 <script setup lang="ts">
   import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
   import { Rocket } from 'lucide-vue-next'
