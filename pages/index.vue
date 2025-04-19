@@ -276,10 +276,9 @@
           </div>
           <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
             <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
-              <h2>Новости</h2>
+              <h2>Мой персонаж</h2>
             </div>
             <div class="flex-col p-4 font-semibold text-shadow-lg">
-              <h2>Мой персонаж</h2>
               <img class="inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 size-max p-2 " src="https://steamuserimages-a.akamaihd.net/ugc/1691653893917179883/91673BB8FC3051DCF7F8AEC808FA18D40D40FB4A/?imw=512&imh=590&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" alt="Персонаж">
               <p>Уровень: 5</p>
               <p>Опыт: 250/500</p>
@@ -378,7 +377,7 @@
 
   const accordionItemsLinks= [
     { value: 'itemL-1', title: 'База знаний JS', content: 'Ссылка 1 \n Ссылка 2\nСсылка 3 \nСсылка 4 \nСсылка 5 \nСсылка 6' },
-    { value: 'itemL-2', title: 'Новость 2: Обновление рейтинга', content: 'Добавили раздел по JavaScript. <br> Подробнее в разделе <NuxtLink to="/" class="text-orange-500 underline italic font-">обновление 09.05</NuxtLink>' },
-    { value: 'itemL-3', title: 'Новость 3: Вебинар в пятницу', content: 'Yes! You can use the transition prop to configure the animation.' },
+    { value: 'itemL-2', title: 'База знаний ASP .NET Core', content: 'Ссылка 1 \n Ссылка 2\nСсылка 3 \nСсылка 4 \nСсылка 5 \nСсылка 6'  },
+    { value: 'itemL-3', title: 'Коллекция курсов по C#', content: 'Ссылка 1 \n Ссылка 2\nСсылка 3 \nСсылка 4 \nСсылка 5 \nСсылка 6'  },
   ]
 </script>
