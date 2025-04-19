@@ -37,18 +37,76 @@
             <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
               <h2>Новости</h2>
             </div>
-            <div class="flex-col p-4 font-semibold text-shadow-lg">
-              <Accordion type="single" collapsible>
-                <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value" >
-                  <AccordionTrigger class="font-semibold text-shadow-lg text-md">{{ item.title }} </AccordionTrigger>
-                  <AccordionContent class="ml-8">
-                    {{ item.content }}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-              <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
-              </div>
-            </div>
+
+              <ul class="flex-col p-2 font-semibold text-shadow-lg list rounded-box shadow-md">
+
+                <li class="pb-2 text-xs opacity-60 tracking-wide">Что произошло на этой неделе:</li>
+
+                <li class="list-row shadow-md shadow-orange-200">
+                  <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/1@94.webp"/></div>
+                  <div>
+                    <div>Новый курс по JS</div>
+                    <div class="text-xs uppercase font-semibold opacity-60">Обновление</div>
+                  </div>
+                  <p class="list-col-wrap text-xs">
+                    Мы добавили полный курс по JavaScript! Подробности в полной новости :)
+                  </p>
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <button class="btn btn-square btn-ghost hover:bg-red-500/50 hover:border-none border-none">
+                      <svg class="size-[2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#888888" d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5c-1.65 0-3.35.3-4.75 1.05c-.1.05-.15.05-.25.05c-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1c1.11-.35 2.33-.5 3.5-.5c1.95 0 4.05.4 5.5 1.5c1.45-1.1 3.55-1.5 5.5-1.5c1.17 0 2.39.15 3.5.5c.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5c-.1 0-.15 0-.25-.05c-1.4-.75-3.1-1.05-4.75-1.05c-1.7 0-4.15.65-5.5 1.5m-1-14c-1.36-.6-3.16-1-4.5-1c-1.2 0-2.4.15-3.5.5v11.5c1.1-.35 2.3-.5 3.5-.5c1.34 0 3.14.4 4.5 1zM13 19c1.36-.6 3.16-1 4.5-1c1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5c-1.34 0-3.14.4-4.5 1zm1-2.65c.96-.35 2.12-.52 3.5-.52c1.04 0 1.88.08 2.5.24v-1.5a13.9 13.9 0 0 0-6 .19zm0-2.66c.96-.35 2.12-.53 3.5-.53c1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23c-1.28 0-2.45.15-3.5.45zM14 11c.96-.33 2.12-.5 3.5-.5c.91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23c-1.32 0-2.5.15-3.5.46z"/></svg>
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent class="text-sm opacity-90">
+                      Откроется страница с новостью
+                    </HoverCardContent>
+                  </HoverCard>
+                </li>
+
+                <li class="list-row shadow-md shadow-orange-200">
+                  <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/4@94.webp"/></div>
+                  <div>
+                    <div>Обновление страницы</div>
+                    <div class="text-xs uppercase font-semibold opacity-60">Обновление</div>
+                  </div>
+                  <p class="list-col-wrap text-xs">
+                   В текущей версии сайта изменили главный экран и добавили скроллы! Подробности на странице обновления
+                  </p>
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <button class="btn btn-square btn-ghost hover:bg-red-500/50 hover:border-none border-none">
+                        <svg class="size-[2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#888888" d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5c-1.65 0-3.35.3-4.75 1.05c-.1.05-.15.05-.25.05c-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1c1.11-.35 2.33-.5 3.5-.5c1.95 0 4.05.4 5.5 1.5c1.45-1.1 3.55-1.5 5.5-1.5c1.17 0 2.39.15 3.5.5c.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5c-.1 0-.15 0-.25-.05c-1.4-.75-3.1-1.05-4.75-1.05c-1.7 0-4.15.65-5.5 1.5m-1-14c-1.36-.6-3.16-1-4.5-1c-1.2 0-2.4.15-3.5.5v11.5c1.1-.35 2.3-.5 3.5-.5c1.34 0 3.14.4 4.5 1zM13 19c1.36-.6 3.16-1 4.5-1c1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5c-1.34 0-3.14.4-4.5 1zm1-2.65c.96-.35 2.12-.52 3.5-.52c1.04 0 1.88.08 2.5.24v-1.5a13.9 13.9 0 0 0-6 .19zm0-2.66c.96-.35 2.12-.53 3.5-.53c1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23c-1.28 0-2.45.15-3.5.45zM14 11c.96-.33 2.12-.5 3.5-.5c.91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23c-1.32 0-2.5.15-3.5.46z"/></svg>
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent class="text-sm opacity-90">
+                      Откроется страница с новостью
+                    </HoverCardContent>
+                  </HoverCard>
+                </li>
+
+                <li class="list-row shadow-md shadow-orange-200">
+                  <div><img class="size-10 rounded-box" src="https://img.daisyui.com/images/profile/demo/3@94.webp"/></div>
+                  <div>
+                    <div>Размеры и компоненты</div>
+                    <div class="text-xs uppercase font-semibold opacity-60">Изменение</div>
+                  </div>
+                  <p class="list-col-wrap text-xs">
+                    Размерность аватарок и некоторых компонентов поменяли: смотрите в полной!
+                  </p>
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <button class="btn btn-square btn-ghost hover:bg-red-500/50 hover:border-none border-none">
+                        <svg class="size-[2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#888888" d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5c-1.65 0-3.35.3-4.75 1.05c-.1.05-.15.05-.25.05c-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1c1.11-.35 2.33-.5 3.5-.5c1.95 0 4.05.4 5.5 1.5c1.45-1.1 3.55-1.5 5.5-1.5c1.17 0 2.39.15 3.5.5c.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5c-.1 0-.15 0-.25-.05c-1.4-.75-3.1-1.05-4.75-1.05c-1.7 0-4.15.65-5.5 1.5m-1-14c-1.36-.6-3.16-1-4.5-1c-1.2 0-2.4.15-3.5.5v11.5c1.1-.35 2.3-.5 3.5-.5c1.34 0 3.14.4 4.5 1zM13 19c1.36-.6 3.16-1 4.5-1c1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5c-1.34 0-3.14.4-4.5 1zm1-2.65c.96-.35 2.12-.52 3.5-.52c1.04 0 1.88.08 2.5.24v-1.5a13.9 13.9 0 0 0-6 .19zm0-2.66c.96-.35 2.12-.53 3.5-.53c1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23c-1.28 0-2.45.15-3.5.45zM14 11c.96-.33 2.12-.5 3.5-.5c.91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23c-1.32 0-2.5.15-3.5.46z"/></svg>
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent class="text-sm opacity-90">
+                      Откроется страница с новостью
+                    </HoverCardContent>
+                  </HoverCard>
+                </li>
+
+              </ul>
+
           </div>
         </ScrollArea>
       </div>
@@ -72,10 +130,10 @@
 <!--          Кнопки перемещения-->
           <div class="w-full h-full flex flex-col justify-between">
             <div class="self-center">
-              <Menubar class=" mr-4 ml-4 text-sm text-white text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">
+              <Menubar class=" mr-4 ml-4 text-sm text-white text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50 ">
               <MenubarMenu>
                 <MenubarTrigger class="cursor-pointer"> Курсы</MenubarTrigger>
-                <MenubarContent >
+                <MenubarContent class="border-red-500/50">
                   <NuxtLink to="/da" >
                     <MenubarItem class="cursor-pointer">Мои курсы
                       <MenubarShortcut>💼</MenubarShortcut>
@@ -91,7 +149,7 @@
               </MenubarMenu>
               <MenubarMenu>
                 <MenubarTrigger class="cursor-pointer">Главная</MenubarTrigger>
-                <MenubarContent>
+                <MenubarContent class="border-red-500/50">
                   <MenubarItem class="cursor-pointer">
                     Профиль <MenubarShortcut>👤</MenubarShortcut>
                   </MenubarItem>
@@ -105,11 +163,12 @@
               </MenubarMenu>
               <MenubarMenu>
                 <MenubarTrigger class="cursor-pointer">Информация</MenubarTrigger>
-                <MenubarContent>
+                <MenubarContent class="border-red-500/50">
                   <MenubarItem class="cursor-pointer">Новости <MenubarShortcut>📢</MenubarShortcut></MenubarItem>
                   <MenubarSeparator />
                   <MenubarItem class="cursor-pointer">Расписание <MenubarShortcut>🗓</MenubarShortcut></MenubarItem>
                   <MenubarSeparator />
+                  <MenubarItem class="cursor-pointer">О сайте <MenubarShortcut>❔</MenubarShortcut></MenubarItem>
                 </MenubarContent>
               </MenubarMenu>
             </Menubar>
@@ -198,23 +257,20 @@
               <h2>Полезные ссылки</h2>
             </div>
             <div class="flex-col p-4 font-semibold text-shadow-lg">
-              <ScrollArea class="h-72 w-48 rounded-md border">
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Tailwind CSS</a></div>
-                <div><a href="#">ASP.NET Core</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Tailwind CSS</a></div>
-                <div><a href="#">ASP.NET Core</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
-                <div><a href="#">Документация JS</a></div>
+              <ScrollArea class="h-72 w-full rounded-md">
+                <div class="flex-col mr-4 font-semibold text-shadow-lg whitespace-pre-line">
+                  <Accordion type="multiple" collapsible>
+                    <AccordionItem v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="border-red-500/50">
+                      <AccordionTrigger class="font-semibold text-shadow-lg text-md ">{{ item.title }} </AccordionTrigger>
+                      <AccordionContent class="ml-8 ">
+                        {{ item.content }}
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                  <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+                  </div>
+                </div>
+
 
               </ScrollArea>
             </div>
@@ -268,6 +324,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -309,6 +366,11 @@
     AlertDialogTrigger,
   } from '@/components/ui/alert-dialog'
 
+  import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+  } from '@/components/ui/hover-card'
 
   const defaultValue = 'item-1'
 
@@ -316,5 +378,11 @@
   { value: 'item-1', title: 'Новость 1: Новый курс по JS', content: 'Добавили раздел по JavaScript. Подробнее в разделе <NuxtLink to="/" class="text-orange-500 underline italic font-">обновление 09.05</NuxtLink>' },
   { value: 'item-2', title: 'Новость 2: Обновление рейтинга', content: 'Добавили раздел по JavaScript. <br> Подробнее в разделе <NuxtLink to="/" class="text-orange-500 underline italic font-">обновление 09.05</NuxtLink>' },
   { value: 'item-3', title: 'Новость 3: Вебинар в пятницу', content: 'Yes! You can use the transition prop to configure the animation.' },
+  ]
+
+  const accordionItemsLinks= [
+    { value: 'itemL-1', title: 'База знаний JS', content: 'Ссылка 1 \n Ссылка 2\nСсылка 3 \nСсылка 4 \nСсылка 5 \nСсылка 6' },
+    { value: 'itemL-2', title: 'Новость 2: Обновление рейтинга', content: 'Добавили раздел по JavaScript. <br> Подробнее в разделе <NuxtLink to="/" class="text-orange-500 underline italic font-">обновление 09.05</NuxtLink>' },
+    { value: 'itemL-3', title: 'Новость 3: Вебинар в пятницу', content: 'Yes! You can use the transition prop to configure the animation.' },
   ]
 </script>
