@@ -1,5 +1,5 @@
 <template>
- <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300 fixed inset-0"> <!-- Убрать, если нужен скролл!-->
+ <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300 fixed inset-0 text-black"> <!-- Убрать, если нужен скролл!-->
 
     <!--  Левая секция-->
     <div class="w-1/4 mb-8">
@@ -9,7 +9,7 @@
             <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
               <h2>Добро пожаловать, {имя_пользователь}!</h2>
             </div>
-            <div class="flex-col p-4 font-semibold text-shadow-lg">
+            <div class="flex-col p-4 font-semibold text-shadow-lg text-black">
               <p class="">Добро пожаловать!</p>
               <p class="">Желаем вам хорошего дня!</p>
               <div class="inset-shadow-sm rounded-lg mt-2 shadow-md inset-shadow-red-300/60 w-full overflow-hidden origin-top-left sm:scale-75 md:scale-90 lg:scale-100">
@@ -24,7 +24,7 @@
             <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
               <h2>Текущий курс: {курс_название}</h2>
             </div>
-            <div class="flex-col p-4 font-semibold text-shadow-lg">
+            <div class="flex-col p-4 font-semibold text-shadow-lg text-black">
               <p class="mb-2">Пройдено модулей: {модуль_количество}</p>
               <p class="">Процент прохождения: {прохождение_процент}</p>
               <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
@@ -38,7 +38,7 @@
               <h2>Новости</h2>
             </div>
 
-              <ul class="flex-col p-2 font-semibold text-shadow-lg list rounded-box shadow-md">
+              <ul class="flex-col p-2 font-semibold text-shadow-lg list rounded-box shadow-md text-black">
 
                 <li class="pb-2 text-xs opacity-60 tracking-wide">Что произошло на этой неделе:</li>
 
@@ -190,7 +190,7 @@
 
             </div>
             <AlertDialog>
-              <AlertDialogTrigger class="mt-4 p-1 text-center self-center w-1/2 rounded-lg text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">
+              <AlertDialogTrigger class="mt-4 p-1 text-center self-center w-1/2 rounded-lg text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50 ">
                 Помощь!
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -238,57 +238,123 @@
     <div class="w-1/4">
       <div class="drop-shadow-2xl">
         <ScrollArea class="h-screen rounded-md p-2">
-          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
-            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
-              <h2>Мои курсы</h2>
-            </div>
-            <div class="flex-col p-4 font-semibold text-shadow-lg">
-              <div class="m-2">
-                <li>Введение в веб-разработку</li>
-                <li>Основы JavaScript</li>
-                <li>Tailwind CSS</li>
-              </div>
-            </div>
-
-          </div>
-          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
-            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
-              <h2>Полезные ссылки</h2>
-            </div>
-            <div class="flex-col p-4 font-semibold text-shadow-lg">
-              <ScrollArea class="h-72 w-full rounded-md">
-                <div class="flex-col mr-4 font-semibold text-shadow-lg whitespace-pre-line">
-                  <Accordion type="multiple" collapsible>
-                    <AccordionItem v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="border-red-500/50">
-                      <AccordionTrigger class="font-semibold text-shadow-lg text-md ">{{ item.title }} </AccordionTrigger>
-                      <AccordionContent class="ml-8 ">
-                        {{ item.content }}
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                  <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+          <draggable v-model="blocks" item-key="id" tag="div" handle=".drag-handle">
+            <template #item="{ element }">
+              <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+                <div class="relative">
+                <div v-show="element.type === 'block1'" class="block">
+                  <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg flex justify-between items-center">
+                    <h2>Мои курсы</h2>
+                    <button class="justify-between drag-handle p-2 rounded-full hover:bg-red-500/50 cursor-move select-none" title="Перетащить">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#888888" d="M17.707 8.293a.999.999 0 1 0-1.414 1.414L17.586 11H13V6.414l1.293 1.293a.997.997 0 0 0 1.414 0a1 1 0 0 0 0-1.414L12 2.586L8.293 6.293a.999.999 0 1 0 1.414 1.414L11 6.414V11H6.414l1.293-1.293a.999.999 0 1 0-1.414-1.414L2.586 12l3.707 3.707a.997.997 0 0 0 1.414 0a1 1 0 0 0 0-1.414L6.414 13H11v4.586l-1.293-1.293a.999.999 0 1 0-1.414 1.414L12 21.414l3.707-3.707a.999.999 0 1 0-1.414-1.414L13 17.586V13h4.586l-1.293 1.293a.999.999 0 1 0 1.414 1.414L21.414 12z"/></svg>
+                    </button>
+                  </div>
+                  <div class="flex-col p-4 font-semibold text-shadow-lg">
+                    <div class="m-2">
+                      <li>Введение в веб-разработку</li>
+                      <li>Основы JavaScript</li>
+                      <li>Tailwind CSS</li>
+                    </div>
                   </div>
                 </div>
+                <div v-show="element.type === 'block2'" class="block">
+                  <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg flex justify-between items-center">
+                    <h2>Полезные ссылки</h2>
+                    <button class="justify-between drag-handle p-2 rounded-full hover:bg-red-500/50 cursor-move select-none" title="Перетащить">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#888888" d="M17.707 8.293a.999.999 0 1 0-1.414 1.414L17.586 11H13V6.414l1.293 1.293a.997.997 0 0 0 1.414 0a1 1 0 0 0 0-1.414L12 2.586L8.293 6.293a.999.999 0 1 0 1.414 1.414L11 6.414V11H6.414l1.293-1.293a.999.999 0 1 0-1.414-1.414L2.586 12l3.707 3.707a.997.997 0 0 0 1.414 0a1 1 0 0 0 0-1.414L6.414 13H11v4.586l-1.293-1.293a.999.999 0 1 0-1.414 1.414L12 21.414l3.707-3.707a.999.999 0 1 0-1.414-1.414L13 17.586V13h4.586l-1.293 1.293a.999.999 0 1 0 1.414 1.414L21.414 12z"/></svg>
+                    </button>
+                  </div>
+                  <div class="flex-col p-4 font-semibold text-shadow-lg">
+                    <ScrollArea class="h-72 w-full rounded-md">
+                      <div class="flex-col mr-4 font-semibold text-shadow-lg whitespace-pre-line">
+                        <Accordion type="multiple" collapsible>
+                          <AccordionItem v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="border-red-500/50">
+                            <AccordionTrigger class="font-semibold text-shadow-lg text-md ">{{ item.title }} </AccordionTrigger>
+                            <AccordionContent class="ml-8 ">
+                              {{ item.content }}
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+                        <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+                        </div>
+                      </div>
 
 
-              </ScrollArea>
-            </div>
-
-          </div>
-          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
-            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
-              <h2>Мой персонаж</h2>
-            </div>
-            <div class="flex-col p-4 font-semibold text-shadow-lg">
-              <img class="inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 size-max p-2 " src="https://steamuserimages-a.akamaihd.net/ugc/1691653893917179883/91673BB8FC3051DCF7F8AEC808FA18D40D40FB4A/?imw=512&imh=590&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" alt="Персонаж">
-              <p>Уровень: 5</p>
-              <p>Опыт: 250/500</p>
-              <p>Пройдено курсов: 2</p>
-              <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+                    </ScrollArea>
+                  </div>
+                </div>
+                <div v-show="element.type === 'block3'" class="block">
+                  <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg flex justify-between items-center">
+                    <h2>Мой персонаж</h2>
+                    <button class="justify-between drag-handle p-2 rounded-full hover:bg-red-500/50 cursor-move select-none" title="Перетащить">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#888888" d="M17.707 8.293a.999.999 0 1 0-1.414 1.414L17.586 11H13V6.414l1.293 1.293a.997.997 0 0 0 1.414 0a1 1 0 0 0 0-1.414L12 2.586L8.293 6.293a.999.999 0 1 0 1.414 1.414L11 6.414V11H6.414l1.293-1.293a.999.999 0 1 0-1.414-1.414L2.586 12l3.707 3.707a.997.997 0 0 0 1.414 0a1 1 0 0 0 0-1.414L6.414 13H11v4.586l-1.293-1.293a.999.999 0 1 0-1.414 1.414L12 21.414l3.707-3.707a.999.999 0 1 0-1.414-1.414L13 17.586V13h4.586l-1.293 1.293a.999.999 0 1 0 1.414 1.414L21.414 12z"/></svg>
+                    </button>
+                  </div>
+                  <div class="flex-col p-4 font-semibold text-shadow-lg">
+                    <img class="inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 size-max p-2 " src="https://steamuserimages-a.akamaihd.net/ugc/1691653893917179883/91673BB8FC3051DCF7F8AEC808FA18D40D40FB4A/?imw=512&imh=590&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" alt="Персонаж">
+                    <p>Уровень: 5</p>
+                    <p>Опыт: 250/500</p>
+                    <p>Пройдено курсов: 2</p>
+                    <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+                    </div>
+                  </div>
+                </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </template>
+          </draggable>
           <div class="mt-8"/>
+<!--          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">-->
+<!--            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">-->
+<!--              <h2>Мои курсы</h2>-->
+<!--            </div>-->
+<!--            <div class="flex-col p-4 font-semibold text-shadow-lg">-->
+<!--              <div class="m-2">-->
+<!--                <li>Введение в веб-разработку</li>-->
+<!--                <li>Основы JavaScript</li>-->
+<!--                <li>Tailwind CSS</li>-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--          </div>-->
+<!--          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">-->
+<!--            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">-->
+<!--              <h2>Полезные ссылки</h2>-->
+<!--            </div>-->
+<!--            <div class="flex-col p-4 font-semibold text-shadow-lg">-->
+<!--              <ScrollArea class="h-72 w-full rounded-md">-->
+<!--                <div class="flex-col mr-4 font-semibold text-shadow-lg whitespace-pre-line">-->
+<!--                  <Accordion type="multiple" collapsible>-->
+<!--                    <AccordionItem v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="border-red-500/50">-->
+<!--                      <AccordionTrigger class="font-semibold text-shadow-lg text-md ">{{ item.title }} </AccordionTrigger>-->
+<!--                      <AccordionContent class="ml-8 ">-->
+<!--                        {{ item.content }}-->
+<!--                      </AccordionContent>-->
+<!--                    </AccordionItem>-->
+<!--                  </Accordion>-->
+<!--                  <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">-->
+<!--                  </div>-->
+<!--                </div>-->
+
+
+<!--              </ScrollArea>-->
+<!--            </div>-->
+
+<!--          </div>-->
+<!--          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">-->
+<!--            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">-->
+<!--              <h2>Мой персонаж</h2>-->
+<!--            </div>-->
+<!--            <div class="flex-col p-4 font-semibold text-shadow-lg">-->
+<!--              <img class="inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 size-max p-2 " src="https://steamuserimages-a.akamaihd.net/ugc/1691653893917179883/91673BB8FC3051DCF7F8AEC808FA18D40D40FB4A/?imw=512&imh=590&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" alt="Персонаж">-->
+<!--              <p>Уровень: 5</p>-->
+<!--              <p>Опыт: 250/500</p>-->
+<!--              <p>Пройдено курсов: 2</p>-->
+<!--              <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="mt-8"/>-->
         </ScrollArea>
         <div class="block courses-block draggable" id="courses-block">
           <h2>Мои курсы</h2>
@@ -326,6 +392,7 @@
 
   </div>
 </template>
+
 
 <script setup lang="ts">
   import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
@@ -382,4 +449,28 @@
     { value: 'itemL-2', title: 'База знаний ASP .NET Core', content: 'Ссылка 1 \n Ссылка 2\nСсылка 3 \nСсылка 4 \nСсылка 5 \nСсылка 6'  },
     { value: 'itemL-3', title: 'Коллекция курсов по C#', content: 'Ссылка 1 \n Ссылка 2\nСсылка 3 \nСсылка 4 \nСсылка 5 \nСсылка 6'  },
   ]
+
+  import { ref } from 'vue'
+  import draggable from 'vuedraggable'
+
+  const defaultBlocks = ref([
+    { id: 1, type: 'block1' },
+    { id: 2, type: 'block2' },
+    { id: 3, type: 'block3' },
+  ])
+
+  const blocks = ref(defaultBlocks)
+
+  onMounted(() => {
+    if (process.client) {
+      const storedBlocks = localStorage.getItem('blocks')
+      if (storedBlocks) {
+        blocks.value = JSON.parse(storedBlocks)
+      }
+      watch(blocks, (newBlocks) => {
+        localStorage.setItem('blocks', JSON.stringify(newBlocks))
+      }, { deep: true })
+    }
+  })
+
 </script>
