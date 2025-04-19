@@ -1,8 +1,8 @@
 <template>
-  <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300">
+  <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300 ">
 
     <!--  Левая секция-->
-    <div class="w-1/3">
+    <div class="w-1/4 mb-8">
       <div class=" drop-shadow-2xl">
         <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
           <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
@@ -11,15 +11,15 @@
           <div class="flex-col p-4 font-semibold text-shadow-lg">
             <p class="">Добро пожаловать!</p>
             <p class="">Желаем вам хорошего дня!</p>
-            <div class="inset-shadow-sm rounded-lg mt-2 shadow-md inset-shadow-red-300/60">
-              <Calendar />
+            <div class="inset-shadow-sm rounded-lg mt-2 shadow-md inset-shadow-red-300/60 w-full overflow-hidden origin-top-left sm:scale-75 md:scale-90 lg:scale-100">
+              <Calendar class="w-full max-w-none"/>
             </div>
 
             <p id="date-time"></p>
           </div>
 
         </div>
-        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 ">
+        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
           <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
             <h2>Текущий курс: {курс_название}</h2>
           </div>
@@ -32,34 +32,135 @@
           </div>
 
         </div>
-
-        <div class="block course-block draggable" id="course-block">
-          <h2>Текущий курс</h2>
-          <p>Название курса: Введение в веб-разработку</p>
-          <p>Степень прохождения: 60%</p>
-          <progress value="60" max="100"></progress>
-        </div>
-        <div class="block news-block draggable" id="news-block">
-          <h2>Новости</h2>
-          <ul>
-            <li>Новость 1: Новый курс по JS</li>
-            <li>Новость 2: Обновление рейтинга</li>
-            <li>Новость 3: Вебинар в пятницу</li>
-          </ul>
+        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+          <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+            <h2>Новости</h2>
+          </div>
+          <div class="flex-col p-4 font-semibold text-shadow-lg">
+            <Accordion type="single" collapsible>
+              <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value" >
+                <AccordionTrigger class="font-semibold text-shadow-lg text-md">{{ item.title }} </AccordionTrigger>
+                <AccordionContent class="ml-8">
+                  {{ item.content }}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!--  Профиль и контент -->
     <div class="w-1/2">
-      <div class="center-section">
-        <div class="profile-rectangle draggable" id="profile-block">
-          <img src="https://avatars.mds.yandex.net/i?id=daffd78d9e0355271866a9b11579ae4d_l-5233530-images-thumbs&n=13" alt="Аватар" class="avatar">
-          <div class="profile-info">
+      <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-auto">
+        <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+          <h2>Главная</h2>
+        </div>
+        <div class="flex p-4 justify-between ">
+<!--          Аватарка-->
+          <div class="inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 size-max p-2 ">
+            <Avatar class="w-full h-full object-cover rounded-full inset-shadow-sm shadow-md inset-shadow-red-300/60">
+              <AvatarImage src="https://avatars.mds.yandex.net/i?id=daffd78d9e0355271866a9b11579ae4d_l-5233530-images-thumbs&n=13" alt="Аватар" />
+              <AvatarFallback>RU</AvatarFallback>
+            </Avatar>
+            <p class="mt-2 text-center text-[12px]">Фото</p>
+          </div>
+<!--          Кнопки перемещения-->
+          <div class="w-full h-full flex flex-col justify-between">
+            <div class="self-center">
+              <Menubar class=" mr-4 ml-4 text-sm text-white text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">
+              <MenubarMenu>
+                <MenubarTrigger class="cursor-pointer"> Курсы</MenubarTrigger>
+                <MenubarContent >
+                  <NuxtLink to="/da" >
+                    <MenubarItem class="cursor-pointer">Мои курсы
+                      <MenubarShortcut>💼</MenubarShortcut>
+                    </MenubarItem>
+                  </NuxtLink>
+                  <MenubarSeparator />
+                  <MenubarItem class="cursor-pointer">Все курсы <MenubarShortcut>🦉</MenubarShortcut></MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem class="cursor-pointer">Полезные ссылки <MenubarShortcut>🖥</MenubarShortcut></MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem class="cursor-pointer">Тестирование <MenubarShortcut>📑</MenubarShortcut></MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+              <MenubarMenu>
+                <MenubarTrigger class="cursor-pointer">Главная</MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem class="cursor-pointer">
+                    Профиль <MenubarShortcut>👤</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem class="cursor-pointer">Настройки <MenubarShortcut>⚙️</MenubarShortcut></MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem class="cursor-pointer">Достижения <MenubarShortcut>🏆</MenubarShortcut></MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem class="cursor-pointer">Персонаж <MenubarShortcut>🎩</MenubarShortcut></MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+              <MenubarMenu>
+                <MenubarTrigger class="cursor-pointer">Информация</MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem class="cursor-pointer">Новости <MenubarShortcut>📢</MenubarShortcut></MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem class="cursor-pointer">Расписание <MenubarShortcut>🗓</MenubarShortcut></MenubarItem>
+                  <MenubarSeparator />
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
+            </div>
+            <div class="mt-8 ml-2 mr-2 text-shadow-lg/20 inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 ">
+              <Alert class="bg-red-300/60">
+                <Rocket class="h-4 w-4" />
+                <AlertTitle class="text-sm text-black font-medium">Факт дня:</AlertTitle>
+                <AlertDescription class="text-sm text-black font-light">
+                  Вы пидарас.
+                </AlertDescription>
+              </Alert>
+
+            </div>
+            <AlertDialog>
+              <AlertDialogTrigger class="mt-4 p-1 text-center self-center w-1/2 rounded-lg text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">
+                Помощь!
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Смотри!</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Сейчас вы начнете процесс обучения.
+                    Здесь перечислены базовые функции сайта и что на нем можно делать!
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter class="mt-4 p-1">
+                  <AlertDialogAction class="text-center self-center w-1/3 rounded-lg text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Дальше</AlertDialogAction>
+                  <AlertDialogCancel class="text-center self-center w-1/3 rounded-lg text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Отмена</AlertDialogCancel>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+
+          </div>
+<!--          Рейтинг и кнопки-->
+          <div class="inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 p-4">
             <p>Рейтинг: 4.5 <span class="stars">★★★★☆</span></p>
             <p>Текущее прохождение: 60%</p>
-            <button>Профиль</button>
-            <button>Выход</button>
+            <div class="flex justify-between mt-2">
+              <Button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Профиль</Button>
+              <Button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500">Выход</Button>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="center-section">
+        <div class="profile-rectangle draggable" id="profile-block">
+
+          <div class="profile-info">
+
           </div>
         </div>
         <div class="popup-area" id="popup-area"></div>
@@ -67,7 +168,7 @@
     </div>
 
     <!--  Правая секция-->
-    <div class="w-1/3">
+    <div class="w-1/4">
       <div class="right-section">
         <div class="block courses-block draggable" id="courses-block">
           <h2>Мои курсы</h2>
@@ -106,9 +207,49 @@
 </template>
 
 <!--<style src="assets/css/main.css"></style>-->
-<script>
-import Progress from "../components/ui/progress/Progress.vue";
-export default {
-  components: {Progress}
-}
+
+<script setup lang="ts">
+  import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+  import { Rocket } from 'lucide-vue-next'
+
+
+  import {
+    Menubar,
+    MenubarContent,
+    MenubarItem,
+    MenubarMenu,
+    MenubarSeparator,
+    MenubarShortcut,
+    MenubarTrigger,
+  } from '@/components/ui/menubar'
+
+  import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+  } from '@/components/ui/breadcrumb'
+
+  import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from '@/components/ui/alert-dialog'
+
+
+  const defaultValue = 'item-1'
+
+  const accordionItems = [
+  { value: 'item-1', title: 'Новость 1: Новый курс по JS', content: 'Добавили раздел по JavaScript. Подробнее в разделе <NuxtLink to="/" class="text-orange-500 underline italic font-">обновление 09.05</NuxtLink>' },
+  { value: 'item-2', title: 'Новость 2: Обновление рейтинга', content: 'Добавили раздел по JavaScript. <br> Подробнее в разделе <NuxtLink to="/" class="text-orange-500 underline italic font-">обновление 09.05</NuxtLink>' },
+  { value: 'item-3', title: 'Новость 3: Вебинар в пятницу', content: 'Yes! You can use the transition prop to configure the animation.' },
+  ]
 </script>
