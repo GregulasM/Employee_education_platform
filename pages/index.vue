@@ -3,8 +3,8 @@
 
     <!--  Левая секция-->
     <div class="w-1/4 mb-8">
-      <div class=" drop-shadow-2xl">
-        <ScrollArea class="h-screen rounded-md p-2">
+      <div class=" drop-shadow-2xl ">
+        <ScrollArea class="h-screen rounded-md p-2 ">
           <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
             <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
               <h2>Добро пожаловать, {имя_пользователь}!</h2>
@@ -106,6 +106,7 @@
                 </li>
               </ul>
           </div>
+          <div class="mt-8"/>
         </ScrollArea>
       </div>
     </div>
@@ -287,6 +288,7 @@
               </div>
             </div>
           </div>
+          <div class="mt-8"/>
         </ScrollArea>
         <div class="block courses-block draggable" id="courses-block">
           <h2>Мои курсы</h2>
