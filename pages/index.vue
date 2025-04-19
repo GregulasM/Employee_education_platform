@@ -104,9 +104,7 @@
                     </HoverCardContent>
                   </HoverCard>
                 </li>
-
               </ul>
-
           </div>
         </ScrollArea>
       </div>
