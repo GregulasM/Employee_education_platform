@@ -1,54 +1,56 @@
 <template>
-  <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300 ">
+ <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300 fixed inset-0"> <!-- Убрать, если нужен скролл!-->
 
     <!--  Левая секция-->
     <div class="w-1/4 mb-8">
       <div class=" drop-shadow-2xl">
-        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
-          <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
-            <h2>Добро пожаловать, {имя_пользователь}!</h2>
-          </div>
-          <div class="flex-col p-4 font-semibold text-shadow-lg">
-            <p class="">Добро пожаловать!</p>
-            <p class="">Желаем вам хорошего дня!</p>
-            <div class="inset-shadow-sm rounded-lg mt-2 shadow-md inset-shadow-red-300/60 w-full overflow-hidden origin-top-left sm:scale-75 md:scale-90 lg:scale-100">
-              <Calendar class="w-full max-w-none"/>
+        <ScrollArea class="h-screen rounded-md p-2">
+          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+              <h2>Добро пожаловать, {имя_пользователь}!</h2>
+            </div>
+            <div class="flex-col p-4 font-semibold text-shadow-lg">
+              <p class="">Добро пожаловать!</p>
+              <p class="">Желаем вам хорошего дня!</p>
+              <div class="inset-shadow-sm rounded-lg mt-2 shadow-md inset-shadow-red-300/60 w-full overflow-hidden origin-top-left sm:scale-75 md:scale-90 lg:scale-100">
+                <Calendar class="w-full max-w-none"/>
+              </div>
+
+              <p id="date-time"></p>
             </div>
 
-            <p id="date-time"></p>
           </div>
+          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+              <h2>Текущий курс: {курс_название}</h2>
+            </div>
+            <div class="flex-col p-4 font-semibold text-shadow-lg">
+              <p class="mb-2">Пройдено модулей: {модуль_количество}</p>
+              <p class="">Процент прохождения: {прохождение_процент}</p>
+              <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+                <Progress :model-value="60" />
+              </div>
+            </div>
 
-        </div>
-        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
-          <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
-            <h2>Текущий курс: {курс_название}</h2>
           </div>
-          <div class="flex-col p-4 font-semibold text-shadow-lg">
-            <p class="mb-2">Пройдено модулей: {модуль_количество}</p>
-            <p class="">Процент прохождения: {прохождение_процент}</p>
-            <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
-              <Progress :model-value="60" />
+          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+              <h2>Новости</h2>
+            </div>
+            <div class="flex-col p-4 font-semibold text-shadow-lg">
+              <Accordion type="single" collapsible>
+                <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value" >
+                  <AccordionTrigger class="font-semibold text-shadow-lg text-md">{{ item.title }} </AccordionTrigger>
+                  <AccordionContent class="ml-8">
+                    {{ item.content }}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+              </div>
             </div>
           </div>
-
-        </div>
-        <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
-          <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
-            <h2>Новости</h2>
-          </div>
-          <div class="flex-col p-4 font-semibold text-shadow-lg">
-            <Accordion type="single" collapsible>
-              <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value" >
-                <AccordionTrigger class="font-semibold text-shadow-lg text-md">{{ item.title }} </AccordionTrigger>
-                <AccordionContent class="ml-8">
-                  {{ item.content }}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
-            </div>
-          </div>
-        </div>
+        </ScrollArea>
       </div>
     </div>
 
@@ -169,7 +171,63 @@
 
     <!--  Правая секция-->
     <div class="w-1/4">
-      <div class="right-section">
+      <div class="drop-shadow-2xl">
+        <ScrollArea class="h-screen rounded-md p-2">
+          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+              <h2>Мои курсы</h2>
+            </div>
+            <div class="flex-col p-4 font-semibold text-shadow-lg">
+              <div class="m-2">
+                <li>Введение в веб-разработку</li>
+                <li>Основы JavaScript</li>
+                <li>Tailwind CSS</li>
+              </div>
+            </div>
+
+          </div>
+          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+              <h2>Полезные ссылки</h2>
+            </div>
+            <div class="flex-col p-4 font-semibold text-shadow-lg">
+              <ScrollArea class="h-72 w-48 rounded-md border">
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Tailwind CSS</a></div>
+                <div><a href="#">ASP.NET Core</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Tailwind CSS</a></div>
+                <div><a href="#">ASP.NET Core</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+                <div><a href="#">Документация JS</a></div>
+
+              </ScrollArea>
+            </div>
+
+          </div>
+          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
+            <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
+              <h2>Новости</h2>
+            </div>
+            <div class="flex-col p-4 font-semibold text-shadow-lg">
+              <h2>Мой персонаж</h2>
+              <img class="inset-shadow-sm rounded-lg shadow-md inset-shadow-red-300/60 size-max p-2 " src="https://steamuserimages-a.akamaihd.net/ugc/1691653893917179883/91673BB8FC3051DCF7F8AEC808FA18D40D40FB4A/?imw=512&imh=590&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" alt="Персонаж">
+              <p>Уровень: 5</p>
+              <p>Опыт: 250/500</p>
+              <p>Пройдено курсов: 2</p>
+              <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
+              </div>
+            </div>
+          </div>
+        </ScrollArea>
         <div class="block courses-block draggable" id="courses-block">
           <h2>Мои курсы</h2>
           <ul>

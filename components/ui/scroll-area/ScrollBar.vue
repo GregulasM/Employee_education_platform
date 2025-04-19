@@ -28,7 +28,7 @@ const delegatedProps = computed(() => {
   >
     <ScrollAreaThumb
       data-slot="scroll-area-thumb"
-      class="bg-border relative flex-1 rounded-full"
+      class="bg-border relative flex-1 rounded-full bg-red-500/50"
     />
   </ScrollAreaScrollbar>
 </template>
