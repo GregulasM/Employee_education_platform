@@ -20,7 +20,18 @@
                       <p class="">Добро пожаловать!</p>
                       <p class="">Желаем вам хорошего дня!</p>
                       <div class="inset-shadow-sm rounded-lg mt-2 shadow-md inset-shadow-red-300/60 w-full overflow-hidden origin-top-left sm:scale-75 md:scale-90 lg:scale-100">
-                        <Calendar class="w-full max-w-none"/>
+                        <ClientOnly>
+                          <calendar-date class="cally shadow-lg rounded-box w-full max-w-none ">
+
+                            <svg aria-label="Previous" class="fill-current size-4" slot="previous" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M15.75 19.5 8.25 12l7.5-7.5"></path></svg>
+                            <svg aria-label="Next" class="fill-current size-4" slot="next" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg>
+
+                            <calendar-month class="font-bold"></calendar-month>
+
+                          </calendar-date>
+                        </ClientOnly>
+
+<!--                        <Calendar class="w-full max-w-none"/>-->
                       </div>
 
                       <p id="date-time"></p>
@@ -535,6 +546,7 @@
     HoverCardContent,
     HoverCardTrigger,
   } from '@/components/ui/hover-card'
+
 
   const defaultValue = 'item-1'
 
