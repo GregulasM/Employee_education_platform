@@ -381,17 +381,23 @@
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="#888888" d="M17.707 8.293a.999.999 0 1 0-1.414 1.414L17.586 11H13V6.414l1.293 1.293a.997.997 0 0 0 1.414 0a1 1 0 0 0 0-1.414L12 2.586L8.293 6.293a.999.999 0 1 0 1.414 1.414L11 6.414V11H6.414l1.293-1.293a.999.999 0 1 0-1.414-1.414L2.586 12l3.707 3.707a.997.997 0 0 0 1.414 0a1 1 0 0 0 0-1.414L6.414 13H11v4.586l-1.293-1.293a.999.999 0 1 0-1.414 1.414L12 21.414l3.707-3.707a.999.999 0 1 0-1.414-1.414L13 17.586V13h4.586l-1.293 1.293a.999.999 0 1 0 1.414 1.414L21.414 12z"/></svg>
                     </button>
                   </div>
-                  <div class="flex-col p-4 font-semibold text-shadow-lg">
+                  <div class="flex-col p-2 font-semibold text-shadow-lg">
                     <ScrollArea class="h-72 w-full rounded-md">
                       <div class="flex-col mr-4 font-semibold text-shadow-lg whitespace-pre-line">
-                        <Accordion type="multiple" collapsible>
-                          <AccordionItem v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="border-red-500/50">
-                            <AccordionTrigger class="font-semibold text-shadow-lg text-md ">{{ item.title }} </AccordionTrigger>
-                            <AccordionContent class="ml-8 ">
-                              {{ item.content }}
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
+                        <div v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="collapse collapse-arrow border-b border-red-500/50 cursor-pointer ">
+                          <input type="checkbox" name="my-accordion-1"/>
+                          <div class="collapse-title font-semibold ">{{item.title}}</div>
+                          <div class="collapse-content text-sm">{{item.content}}}</div>
+                        </div>
+<!--                        <Accordion type="multiple" collapsible>-->
+<!--                          <AccordionItem v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="border-red-500/50">-->
+<!--                            <AccordionTrigger class="font-semibold text-shadow-lg text-md ">{{ item.title }} </AccordionTrigger>-->
+<!--                            <AccordionContent class="ml-8 ">-->
+<!--                              {{ item.content }}-->
+<!--                            </AccordionContent>-->
+<!--                          </AccordionItem>-->
+<!--                        </Accordion>-->
+
                         <div class="inset-shadow-sm rounded-lg mt-4 shadow-md inset-shadow-red-300/60 ">
                         </div>
                       </div>
