@@ -8,7 +8,13 @@ export default defineNuxtConfig({
   vite: {
     plugins: [
       tailwindcss(),
+
     ],
+  },
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => ['calendar-'].some(prefix => tag.startsWith(prefix)),
+    },
   },
 
   modules: [

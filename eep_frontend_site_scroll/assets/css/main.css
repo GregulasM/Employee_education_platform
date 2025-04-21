@@ -4,6 +4,37 @@
 
 @custom-variant dark (&:is(.dark *));
 
+calendar-date::part(next):hover{
+  background-color: color-mix(in oklab, var(--color-red-500) 50%, transparent);
+}
+
+calendar-date::part(previous):hover{
+  background-color: color-mix(in oklab, var(--color-red-500) 50%, transparent);
+}
+
+calendar-month::part(button):hover{
+  background-color: color-mix(in oklab, var(--color-red-500) 50%, transparent);
+}
+
+calendar-month::part(selected){
+  background-color: color-mix(in oklab, var(--color-orange-500) 50%, transparent);
+}
+
+calendar-month::part(today){
+  background-color: color-mix(in oklab, var(--color-red-500) 50%, transparent);
+}
+
+calendar-date{
+  font-size: small;
+}
+
+calendar-month::part(day){
+  font-size: small;
+}
+
+
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
