@@ -398,7 +398,7 @@
                         <div v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="collapse collapse-arrow border-b border-red-500/50 cursor-pointer ">
                           <input type="checkbox" name="my-accordion-1"/>
                           <div class="collapse-title font-semibold ">{{item.title}}</div>
-                          <div class="collapse-content text-sm">{{item.content}}}</div>
+                          <div class="collapse-content text-sm">{{item.content}}</div>
                         </div>
 <!--                        <Accordion type="multiple" collapsible>-->
 <!--                          <AccordionItem v-for="item in accordionItemsLinks" :key="item.value" :value="item.value" class="border-red-500/50">-->
