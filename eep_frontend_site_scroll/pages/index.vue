@@ -261,8 +261,9 @@
               <MenubarMenu>
                 <MenubarTrigger class="cursor-pointer "> Курсы</MenubarTrigger>
                 <MenubarContent class="border-red-500/50 ">
-                  <NuxtLink to="/da" >
-                    <MenubarItem class="cursor-pointer">Мои курсы
+                  <NuxtLink to="/shedule" draggable="false" :class="{'кнопка_тень': $route.path !== '/' && $route.path !== '/main_faq' && $route.path !== '/main_help'} ">
+
+                  <MenubarItem class="cursor-pointer">Мои курсы
                       <MenubarShortcut>💼</MenubarShortcut>
                     </MenubarItem>
                   </NuxtLink>
@@ -347,19 +348,12 @@
               <Button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500">Выход</Button>
             </div>
           </div>
+
         </div>
 
 
       </div>
-      <div class="center-section">
-        <div class="profile-rectangle draggable" id="profile-block">
-
-          <div class="profile-info">
-
-          </div>
-        </div>
-        <div class="popup-area" id="popup-area"></div>
-      </div>
+<!--      <NuxtPage />-->
     </div>
 
     <!--  Правая секция-->
