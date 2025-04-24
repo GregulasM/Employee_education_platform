@@ -1,9 +1,9 @@
 <template>
-      <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300  inset-0 text-black"> <!-- Убрать, если нужен скролл!-->
+      <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300 inset-0 text-black"> <!-- Убрать, если нужен скролл!-->
 
         <!--  Левая секция-->
-        <div class="w-1/4 mb-8">
-          <div class=" drop-shadow-2xl ">
+        <div class="w-1/4 mb-8 ">
+          <div class=" drop-shadow-2xl sticky top-0">
             <ScrollArea class="h-screen rounded-md p-2 ">
               <draggable v-model="blocks" item-key="id" tag="div" handle=".drag-handle">
                 <template #item="{ element }">
@@ -239,7 +239,7 @@
 
         <!--  Профиль и контент -->
         <div class="w-1/2">
-          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-auto">
+          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-auto z-20">
             <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg">
               <h2>Главная</h2>
             </div>
@@ -358,7 +358,7 @@
 
         <!--  Правая секция-->
         <div class="w-1/4">
-          <div class="drop-shadow-2xl">
+          <div class="drop-shadow-2xl sticky top-0">
             <ScrollArea class="h-screen rounded-md p-2">
               <draggable v-model="blocks" item-key="id" tag="div" handle=".drag-handle">
                 <template #item="{ element }">
