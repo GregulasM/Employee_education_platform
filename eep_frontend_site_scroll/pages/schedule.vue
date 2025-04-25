@@ -22,11 +22,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="slot in timeSlots" :key="slot" class="text-center border-b border-red-300/50">
+        <tr v-for="slot in timeSlots" :key="slot" class="text-center border-b border-red-300/50" >
           <td class="bg-orange-100 font-semibold ">{{ slot }}</td>
-          <td v-for="day in weekDays" :key="day.name" class="p-2 shadow-xs shadow-red-500/50"
+          <td v-for="day in weekDays" :key="day.name"  class="p-2 shadow-xs shadow-red-500/50"
               :class="day.isToday ? 'bg-red-300/60  !shadow-none' : 'bg-white '">
-            <div v-if="schedule[day.name][slot]" contenteditable
+            <div v-if="schedule[day.name][slot]" contenteditable="false"
                  class="hover:bg-red-300 bg-red-200 rounded-lg shadow p-2 cursor-text shadow-sm shadow-black ">
               <p class="font-bold ">{{ schedule[day.name][slot].subject }}</p>
               <p>{{ schedule[day.name][slot].teacher }}</p>
