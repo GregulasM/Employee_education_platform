@@ -25,8 +25,9 @@
 
                                 <svg aria-label="Previous" class="fill-current size-4" slot="previous" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M15.75 19.5 8.25 12l7.5-7.5"></path></svg>
                                 <svg aria-label="Next" class="fill-current size-4" slot="next" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path></svg>
-
-                                <calendar-month class="font-bold"></calendar-month>
+                                <NuxtLink to="/schedule" draggable="false">
+                                  <calendar-month class="font-bold"></calendar-month>
+                                </NuxtLink>
 
                               </calendar-date>
                             </ClientOnly>
@@ -261,7 +262,7 @@
                     <MenubarMenu>
                       <MenubarTrigger class="cursor-pointer "> Курсы</MenubarTrigger>
                       <MenubarContent class="border-red-500/50 ">
-                        <NuxtLink to="/shedule" draggable="false" :class="{'кнопка_тень': $route.path !== '/' && $route.path !== '/main_faq' && $route.path !== '/main_help'} ">
+                        <NuxtLink to="/" draggable="false">
 
                           <MenubarItem class="cursor-pointer">Мои курсы
                             <MenubarShortcut>💼</MenubarShortcut>
@@ -294,7 +295,9 @@
                       <MenubarContent class="border-red-500/50">
                         <MenubarItem class="cursor-pointer">Новости <MenubarShortcut>📢</MenubarShortcut></MenubarItem>
                         <MenubarSeparator />
-                        <MenubarItem class="cursor-pointer">Расписание <MenubarShortcut>🗓</MenubarShortcut></MenubarItem>
+                        <NuxtLink to="/schedule" draggable="false">
+                          <MenubarItem class="cursor-pointer">Расписание <MenubarShortcut>🗓</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                         <MenubarSeparator />
                         <MenubarItem class="cursor-pointer">О сайте <MenubarShortcut>❔</MenubarShortcut></MenubarItem>
                       </MenubarContent>
