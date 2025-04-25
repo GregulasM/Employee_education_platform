@@ -484,14 +484,14 @@
               <!--          </div>-->
               <!--          <div class="mt-8"/>-->
             </ScrollArea>
-            <div class="block settings-block draggable" id="settings-block">
-              <h2>Настройки сайта</h2>
-              <ul>
-                <button>Темы</button>
-                <button>Модули</button>
-                <button>Персонализация</button>
-              </ul>
-            </div>
+<!--            <div class="block settings-block draggable" id="settings-block">-->
+<!--              <h2>Настройки сайта</h2>-->
+<!--              <ul>-->
+<!--                <button>Темы</button>-->
+<!--                <button>Модули</button>-->
+<!--                <button>Персонализация</button>-->
+<!--              </ul>-->
+<!--            </div>-->
           </div>
         </div>
 
