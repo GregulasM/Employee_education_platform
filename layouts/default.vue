@@ -293,7 +293,9 @@
                     <MenubarMenu>
                       <MenubarTrigger class="cursor-pointer">Информация</MenubarTrigger>
                       <MenubarContent class="border-red-500/50">
-                        <MenubarItem class="cursor-pointer">Новости <MenubarShortcut>📢</MenubarShortcut></MenubarItem>
+                        <NuxtLink to="/news" draggable="false">
+                          <MenubarItem class="cursor-pointer">Новости <MenubarShortcut>📢</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                         <MenubarSeparator />
                         <NuxtLink to="/schedule" draggable="false">
                           <MenubarItem class="cursor-pointer">Расписание <MenubarShortcut>🗓</MenubarShortcut></MenubarItem>
