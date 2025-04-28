@@ -11,21 +11,24 @@
     <ScrollArea class="p-4">
 <!--    <div class="p-4 overflow-x-auto">-->
       <table class="table w-full rounded-lg overflow-hidden shadow-md">
+
         <thead>
-        <tr class="text-center bg-orange-100 font-semibold text-black">
-          <th class="grid rounded-tl-lg shadow-xs shadow-red-500/50"><p class="ml-4">День</p><p class="mr-4">Время</p></th>
-          <th v-for="day in weekDays" :key="day" class="py-2 px-4 shadow-xs shadow-red-500/50"
+        <tr class="text-center bg-orange-100 font-semibold text-black ">
+          <th class="shadow-xs shadow-red-500/50 sticky left-0 z-10 bg-orange-100 opacity-75"><p class="ml-4">День</p><p class="mr-4">Время</p></th>
+          <th v-for="day in weekDays" :key="day" class="py-2 px-4 shadow-xs shadow-red-500/50 "
               :class="{'bg-red-500/50 text-white': day.isToday}">
             {{ day.name }}
             <p v-if="day.isToday" class="text-xs ">(текущий день)</p>
           </th>
         </tr>
         </thead>
+
         <tbody>
-        <tr v-for="slot in timeSlots" :key="slot" class="text-center border-b border-red-300/50" >
-          <td class="bg-orange-100 font-semibold ">{{ slot }}</td>
-          <td v-for="day in weekDays" :key="day.name"  class="p-2 shadow-xs shadow-red-500/50"
+        <tr v-for="slot in timeSlots" :key="slot" class="text-center border-b border-red-300/50 " >
+          <td class="bg-orange-100 font-semibold sticky left-0 z-10 opacity-75 ">{{ slot }}</td>
+          <td v-for="day in weekDays" :key="day.name"  class="p-2 shadow-xs shadow-red-500/50 "
               :class="day.isToday ? 'bg-red-300/60  !shadow-none' : 'bg-white '">
+
             <div v-if="schedule[day.name][slot]" contenteditable="false"
                  class="hover:bg-red-300 bg-red-200 rounded-lg shadow p-2 cursor-text shadow-sm shadow-black ">
               <p class="font-bold ">{{ schedule[day.name][slot].subject }}</p>
@@ -35,6 +38,7 @@
           </td>
         </tr>
         </tbody>
+
       </table>
 <!--    </div>-->
       <ScrollBar orientation="horizontal" />
