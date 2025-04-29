@@ -301,7 +301,9 @@
                           <MenubarItem class="cursor-pointer">Расписание <MenubarShortcut>🗓</MenubarShortcut></MenubarItem>
                         </NuxtLink>
                         <MenubarSeparator />
-                        <MenubarItem class="cursor-pointer">О сайте <MenubarShortcut>❔</MenubarShortcut></MenubarItem>
+                        <NuxtLink to="/info" draggable="false">
+                          <MenubarItem class="cursor-pointer">О сайте <MenubarShortcut>❔</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                       </MenubarContent>
                     </MenubarMenu>
                   </Menubar>
