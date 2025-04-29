@@ -2,7 +2,7 @@
   <div>
     <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
       <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg flex justify-between items-center">
-        <h2>О нас</h2>
+        <h2>О сайте</h2>
         <button class="drag-handle p-2 rounded-full hover:bg-red-500/50 cursor-move select-none" title="Перетащить">
           <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +20,7 @@
 
       <div class="flex-col p-4 font-semibold text-shadow-lg rounded-box shadow-md text-black space-y-8">
         <section class="space-y-3">
-          <h3 class="text-lg">О платформе</h3>
+          <h3 class="text-lg">Платформа</h3>
           <p class="text-md font-medium whitespace-no-wrap">
             Наша платформа для обучения сотрудников компании — это место, где работник может изучать
             структурированные курсы, интерактивные задания и различные кейсы в уютной обстановке!
@@ -37,7 +37,7 @@
             <li
                 v-for="person in team"
                 :key="person.name"
-                class="flex items-center space-x-3 p-3 rounded-box shadow-md bg-white/70"
+                class="flex items-center space-x-3 p-3 rounded-box shadow-md shadow-red-300/60 bg-white/70"
             >
               <img
                   :src="person.avatar"
@@ -60,7 +60,7 @@
             <div
                 v-for="value in values"
                 :key="value.title"
-                class="p-4 rounded-box shadow-md bg-orange-50/70 hover:bg-red-200 transition">
+                class="p-4 rounded-box shadow-md shadow-red-300/60  bg-orange-50/70 hover:bg-red-200 transition">
               <h4 class="mb-1">{{ value.title }}</h4>
               <p class="text-sm opacity-80">{{ value.text }}</p>
             </div>
@@ -71,7 +71,7 @@
           <h3 class="text-lg">Контакты</h3>
           <div class="space-y-1 text-md ">
             <div class="flex gap-4 ">
-              <div class="card-side bg-white shadow-sm ">
+              <div class="card-side bg-white rounded-box shadow-md shadow-red-300/60">
                 <figure >
                   <img
                       src="public/mascot/TelegramMaskot.png"
@@ -85,7 +85,7 @@
                   </div>
                 </div>
               </div>
-              <div class="card-side bg-white shadow-sm">
+              <div class="card-side bg-white rounded-box shadow-md shadow-red-300/60">
                 <figure>
                   <img
                       src="public/mascot/DiscordMaskot.png"
@@ -99,7 +99,7 @@
                   </div>
                 </div>
               </div>
-              <div class="card-side bg-white shadow-sm">
+              <div class="card-side bg-white rounded-box shadow-md shadow-red-300/60">
                 <figure>
                   <img
                       src="public/mascot/GithubMaskot.png"
@@ -169,7 +169,7 @@ const values = [
   },
   {
     title: 'Комфорт',
-    text: 'Компоненты и внешний вид делался с учетом красоты, удобства и уюта.',
+    text: 'Компоненты и внешний вид делались с учетом красоты, удобства и уюта.',
   },
   {
     title: 'Развитие',
