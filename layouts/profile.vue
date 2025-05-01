@@ -16,8 +16,11 @@
             <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
             <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
               <!-- Sidebar content here -->
-              <button class="btn btn-square btn-ghost hover:bg-red-500/50 hover:border-none border-none"></button>
-              <button class="btn btn-square btn-ghost hover:bg-red-500/50 hover:border-none border-none"></button>
+
+              <button class="btn btn-block hover:bg-red-500/50 hover:border-none border-none">Профиль</button>
+              <button class="btn btn-block  hover:bg-red-500/50 hover:border-none border-none">Настройки</button>
+              <button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Все достижения</button>
+              <button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Персонаж</button>
             </ul>
           </div>
         </div>
