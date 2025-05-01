@@ -281,7 +281,7 @@
                     <MenubarMenu>
                       <MenubarTrigger class="cursor-pointer">Главная</MenubarTrigger>
                       <MenubarContent class="border-red-500/50">
-                        <NuxtLink to="/profile/" draggable="false">
+                        <NuxtLink to="/profile" draggable="false">
                            <MenubarItem class="cursor-pointer">Профиль <MenubarShortcut>👤</MenubarShortcut></MenubarItem>
                         </NuxtLink>
                         <MenubarSeparator />
@@ -289,9 +289,11 @@
                            <MenubarItem class="cursor-pointer">Настройки <MenubarShortcut>⚙️</MenubarShortcut></MenubarItem>
                         </NuxtLink>
                         <MenubarSeparator />
-                        <MenubarItem class="cursor-pointer">Достижения <MenubarShortcut>🏆</MenubarShortcut></MenubarItem>
+                        <NuxtLink to="/profile/achievements" draggable="false">
+                          <MenubarItem class="cursor-pointer">Достижения <MenubarShortcut>🏆</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                         <MenubarSeparator />
-                        <NuxtLink to="/character" draggable="false">
+                        <NuxtLink to="/profile/character" draggable="false">
                            <MenubarItem class="cursor-pointer">Персонаж <MenubarShortcut>🎩</MenubarShortcut></MenubarItem>
                         </NuxtLink>
                       </MenubarContent>
@@ -357,7 +359,10 @@
                 <p>Рейтинг: 4.5 <span class="stars">★★★★☆</span></p>
                 <p>Текущее прохождение: 60%</p>
                 <div class="flex justify-between mt-2 ">
-                  <Button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Профиль</Button>
+                  <NuxtLink to="/profile" draggable="false">
+                    <Button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Профиль</Button>
+                  </NuxtLink>
+
                   <Button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500">Выход</Button>
                 </div>
               </div>
@@ -571,6 +576,7 @@ const accordionItemsLinks= [
 
 import { ref } from 'vue'
 import draggable from 'vuedraggable'
+
 
 const defaultBlocks = ref([
   { id: 1, type: 'block1' },

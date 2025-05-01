@@ -36,5 +36,16 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: './components/ui'
+  },
+
+  hooks: {
+    'pages:extend'(pages) {
+      for (const page of pages) {
+        if (page.path.startsWith('/profile')) {
+          page.meta = page.meta || {}
+          page.meta.layout = 'profile'
+        }
+      }
+    }
   }
 })
