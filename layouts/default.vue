@@ -269,7 +269,9 @@
                           </MenubarItem>
                         </NuxtLink>
                         <MenubarSeparator />
-                        <MenubarItem class="cursor-pointer ">Все курсы <MenubarShortcut>🦉</MenubarShortcut></MenubarItem>
+                        <NuxtLink to="/my_courses" draggable="false">
+                           <MenubarItem class="cursor-pointer ">Все курсы <MenubarShortcut>🦉</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                         <MenubarSeparator />
                         <MenubarItem class="cursor-pointer">Полезные ссылки <MenubarShortcut>🖥</MenubarShortcut></MenubarItem>
                         <MenubarSeparator />
@@ -279,15 +281,19 @@
                     <MenubarMenu>
                       <MenubarTrigger class="cursor-pointer">Главная</MenubarTrigger>
                       <MenubarContent class="border-red-500/50">
-                        <MenubarItem class="cursor-pointer">
-                          Профиль <MenubarShortcut>👤</MenubarShortcut>
-                        </MenubarItem>
+                        <NuxtLink to="/profile/" draggable="false">
+                           <MenubarItem class="cursor-pointer">Профиль <MenubarShortcut>👤</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                         <MenubarSeparator />
-                        <MenubarItem class="cursor-pointer">Настройки <MenubarShortcut>⚙️</MenubarShortcut></MenubarItem>
+                        <NuxtLink to="/profile/user_settings" draggable="false">
+                           <MenubarItem class="cursor-pointer">Настройки <MenubarShortcut>⚙️</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                         <MenubarSeparator />
                         <MenubarItem class="cursor-pointer">Достижения <MenubarShortcut>🏆</MenubarShortcut></MenubarItem>
                         <MenubarSeparator />
-                        <MenubarItem class="cursor-pointer">Персонаж <MenubarShortcut>🎩</MenubarShortcut></MenubarItem>
+                        <NuxtLink to="/character" draggable="false">
+                           <MenubarItem class="cursor-pointer">Персонаж <MenubarShortcut>🎩</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                       </MenubarContent>
                     </MenubarMenu>
                     <MenubarMenu>
