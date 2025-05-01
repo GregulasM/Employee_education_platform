@@ -289,9 +289,11 @@
                            <MenubarItem class="cursor-pointer">Настройки <MenubarShortcut>⚙️</MenubarShortcut></MenubarItem>
                         </NuxtLink>
                         <MenubarSeparator />
-                        <MenubarItem class="cursor-pointer">Достижения <MenubarShortcut>🏆</MenubarShortcut></MenubarItem>
+                        <NuxtLink to="/profile/achievements" draggable="false">
+                          <MenubarItem class="cursor-pointer">Достижения <MenubarShortcut>🏆</MenubarShortcut></MenubarItem>
+                        </NuxtLink>
                         <MenubarSeparator />
-                        <NuxtLink to="/character" draggable="false">
+                        <NuxtLink to="/profile/character" draggable="false">
                            <MenubarItem class="cursor-pointer">Персонаж <MenubarShortcut>🎩</MenubarShortcut></MenubarItem>
                         </NuxtLink>
                       </MenubarContent>
