@@ -3,27 +3,29 @@
 
     <!--  Левая секция-->
     <div class="w-1/4 ">
-      <div class=" drop-shadow-2xl sticky top-0">
-        <div class="drawer lg:drawer-open">
-          <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-          <div class="drawer-content flex flex-col items-center justify-center">
-            <!-- Page content here -->
-            <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">
-              Open drawer
-            </label>
-          </div>
-          <div class="drawer-side">
-            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
-            <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-              <!-- Sidebar content here -->
-
-              <button class="btn btn-block hover:bg-red-500/50 hover:border-none border-none">Профиль</button>
-              <button class="btn btn-block  hover:bg-red-500/50 hover:border-none border-none">Настройки</button>
-              <button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Все достижения</button>
-              <button class="m-2 text-sm text-white font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 bg-red-500/50">Персонаж</button>
-            </ul>
-          </div>
+      <div class="drawer lg:drawer-open w-full">
+        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col items-center justify-center">
+          <!-- Page content here -->
+          <label for="my-drawer-2" class="btn btn-primary text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 mb-4 drawer-button lg:hidden">
+            Open drawer
+          </label>
         </div>
+        <div class="drawer-side">
+          <label for="my-drawer-2" aria-label="close sidebar" class=""></label>
+          <ul class="menu text-white min-h-full w-80 p-4">
+            <!-- Sidebar content here -->
+
+
+            <button class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 mb-4">Профиль</button>
+            <button class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 mb-4">Настройки</button>
+            <button class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 mb-4">Все достижения</button>
+            <button class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 mb-4">Персонаж</button>
+          </ul>
+        </div>
+      </div>
+      <div class=" drop-shadow-2xl sticky top-0">
+
         <ScrollArea class="h-screen rounded-md p-2 ">
           <draggable v-model="blocks" item-key="id" tag="div" handle=".drag-handle">
             <template #item="{ element }">
