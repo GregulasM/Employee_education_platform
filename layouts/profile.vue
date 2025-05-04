@@ -1,6 +1,6 @@
 <template>
   <div class="flex bg-radial-[at_25%_25%] bg-gradient-to-r from-red-50 via-orange-100 to-red-300 inset-0 text-black">
-    <div class="w-1/4">
+    <div class="w-[20%]">
       <div class="drawer lg:drawer-open w-full">
         <input id="profile-drawer" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col items-center pt-4 lg:pt-0">
@@ -16,7 +16,7 @@
 
         <div class="drawer-side">
           <label for="profile-drawer" class="drawer-overlay"></label>
-          <ul for="profile-drawer" class=" menu text-white min-h-full w-80 p-4 bg-white relative">
+          <ul for="profile-drawer" class=" menu text-white min-h-full w-60 p-4 bg-white relative">
             <div class="flex justify-between">
               <NuxtLink
                 to="/"
@@ -40,8 +40,9 @@
                 to="/profile/user_settings"
                 class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70
                    hover:border-none border-none font-semibold text-shadow-lg/20
-                   shadow-sm shadow-neutral-500 mb-4"
-            >Настройки</NuxtLink>
+                   shadow-sm shadow-neutral-500 mb-4">
+              Настройки
+            </NuxtLink>
 
             <NuxtLink
                 to="/profile/achievements"
@@ -50,29 +51,24 @@
                    shadow-sm shadow-neutral-500 mb-4"
             >Все достижения</NuxtLink>
 
-            <NuxtLink
-                to="/profile/character"
-                class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70
-                   hover:border-none border-none font-semibold text-shadow-lg/20
-                   shadow-sm shadow-neutral-500 mb-4"
-            >Персонаж</NuxtLink>
-
+            <NuxtLink to="/profile/character"
+                      class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 mb-4">
+              Персонаж
+            </NuxtLink>
           </ul>
         </div>
       </div>
     </div>
 
-    <main class="w-1/2 p-4">
+    <main class="w-[80%]">
       <slot />
     </main>
 
-    <div class="w-1/4 ">
-      <div class="drop-shadow-2xl sticky top-0">
-        <ScrollArea class="h-screen rounded-md p-2">
+    <div class="w-[20%]">
+      <div class="drop-shadow-2xl sticky top-0 ">
+        <ScrollArea class="h-screen rounded-md p-2 " >
           <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
-              <div
-                  class="text-lg text-white font-bold text-shadow-lg/20 bg-red-500/50 p-2 rounded-t-lg"
-              >
+              <div class="text-lg text-white font-bold text-shadow-lg/20 bg-red-500/50 p-2 rounded-t-lg">
                 Последние достижения
               </div>
               <ul class="p-4 space-y-2 text-sm font-semibold">
