@@ -75,7 +75,6 @@ const achItems= [
   { value: 'achL-5', icon: "https://img.daisyui.com/images/profile/demo/batperson@192.webp", title: 'Мастер JS', text: 'Достижение 1 \n ого текст' },
   { value: 'achL-6', icon: "https://img.daisyui.com/images/profile/demo/batperson@192.webp", title: 'Мастер JS', text: 'Достижение 1 \n ого текст' },
   { value: 'achL-7', icon: "https://img.daisyui.com/images/profile/demo/batperson@192.webp", title: 'Мастер JS', text: 'Достижение 1 \n ого текст' },
-  { value: 'achL-8', title: 'Мастер ASP .NET Core', content: 'Достижение 1 \n Достижение 2\nДостижение 3 \nДостижение 4 \nДостижение 5 \nДостижение 6' },
 ]
 
 </script>
