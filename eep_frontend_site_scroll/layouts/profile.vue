@@ -65,22 +65,22 @@
     </main>
 
     <div class="w-[20%]">
-      <div class="drop-shadow-2xl sticky top-0 ">
-        <ScrollArea class="h-screen rounded-md p-2 " >
-          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">
-              <div class="text-lg text-white font-bold text-shadow-lg/20 bg-red-500/50 p-2 rounded-t-lg">
-                Последние достижения
-              </div>
-              <ul class="p-4 space-y-2 text-sm font-semibold">
-                <li v-for="(ach, i) in lastAchievements" :key="i">
-                  <span class="inline-block w-2 h-2 bg-red-400 rounded-full mr-2" />
-                  {{ ach }}
-                </li>
-              </ul>
-            </div>
-          <div class="mt-8"/>
-        </ScrollArea>
-      </div>
+<!--      <div class="drop-shadow-2xl sticky top-0 ">-->
+<!--        <ScrollArea class="h-screen rounded-md p-2 " >-->
+<!--          <div class="shadow-md shadow-orange-200 mt-8 ml-8 mr-8 rounded-lg bg-orange-50 opacity-90 h-min">-->
+<!--              <div class="text-lg text-white font-bold text-shadow-lg/20 bg-red-500/50 p-2 rounded-t-lg">-->
+<!--                Последние достижения-->
+<!--              </div>-->
+<!--              <ul class="p-4 space-y-2 text-sm font-semibold">-->
+<!--                <li v-for="(ach, i) in lastAchievements" :key="i">-->
+<!--                  <span class="inline-block w-2 h-2 bg-red-400 rounded-full mr-2" />-->
+<!--                  {{ ach }}-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          <div class="mt-8"/>-->
+<!--        </ScrollArea>-->
+<!--      </div>-->
     </div>
 
   </div>
