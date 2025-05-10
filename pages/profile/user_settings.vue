@@ -29,6 +29,11 @@
       </div>
 
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
+        <label class="font-semibold shrink-0 w-32">Аватар</label>
+        <input v-on:change="form.avatar" type="file" class="file-input file-input-ghost w-full input input-bordered bg-white focus:bg-red-500/50 focus:shadow-md active:border-none focus:border-none text-black font-semibold" />
+      </div>
+
+      <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Пароль</label>
         <Input v-model="form.password" type="password" autocomplete="new-password" class="w-full input input-bordered bg-white
         inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
@@ -84,6 +89,7 @@ const form = reactive({
   email: '',
   password: '',
   confirm: '',
+  avatar: '',
   theme: 'default',
   font: 'sans',
 })
