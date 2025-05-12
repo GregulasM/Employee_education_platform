@@ -262,14 +262,13 @@
                     <MenubarMenu>
                       <MenubarTrigger class="cursor-pointer "> Курсы</MenubarTrigger>
                       <MenubarContent class="border-red-500/50 ">
-                        <NuxtLink to="/" draggable="false">
-
+                        <NuxtLink to="/my_courses" draggable="false">
                           <MenubarItem class="cursor-pointer">Мои курсы
                             <MenubarShortcut>💼</MenubarShortcut>
                           </MenubarItem>
                         </NuxtLink>
                         <MenubarSeparator />
-                        <NuxtLink to="/my_courses" draggable="false">
+                        <NuxtLink to="/courses" draggable="false">
                            <MenubarItem class="cursor-pointer ">Все курсы <MenubarShortcut>🦉</MenubarShortcut></MenubarItem>
                         </NuxtLink>
                         <MenubarSeparator />
