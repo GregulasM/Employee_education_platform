@@ -1,0 +1,15 @@
+[
+  { "type": "heading", "level": 2, "text": "Введение" },
+  { "type": "paragraph", "text": "ASP.NET Core — современный фреймворк для создания веб-приложений. В этом разделе вы научитесь устанавливать и запускать первый проект." },
+  { "type": "image", "src": "/mascot/mascot.png", "alt": "ASP.NET Core", "caption": "Логотип ASP.NET Core" },
+  { "type": "heading", "level": 3, "text": "Установка" },
+
+  { "type": "paragraph", "text": "Для начала загрузите Visual Studio Code и .NET SDK..." },
+  { "type": "slider", "images": [
+    { "src": "/mascot/mascot.png", "alt": "Шаг 1" },
+    { "src": "/mascot/mascot.png", "alt": "Шаг 2" }
+  ]},
+  { "type": "video", "src": "https://www.w3schools.com/html/mov_bbb.mp4" },
+  { "type": "audio", "src": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+  { "type": "quote", "text": "В программировании главное — не сдаваться.", "author": "Linus Torvalds" }
+]
