@@ -1,0 +1,6 @@
+@eep_backend_HostAddress = http://localhost:5148
+
+GET {{eep_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
