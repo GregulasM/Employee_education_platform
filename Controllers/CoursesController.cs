@@ -5,7 +5,7 @@ namespace Employee_education_platform.Controllers;
 
 [ApiController]
 [Route("api/admin_panel")]
-public class CoursesController : ControllerBase
+public class CoursesAdminController : ControllerBase
 {
     /// <summary>
     /// Метод для создания курса.
@@ -16,32 +16,6 @@ public class CoursesController : ControllerBase
         )]
     [HttpPost("courses")]
     public IActionResult Create_course()
-    {
-        throw new NotImplementedException();
-    }
-    
-    /// <summary>
-    /// Метод для получения всех курсов.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для получения всех курсов.", 
-        Description = "Получает все курсы, которые есть в БД."
-    )]
-    [HttpGet("courses")]
-    public IActionResult Read_All_course()
-    {
-        throw new NotImplementedException();
-    }
-    
-    /// <summary>
-    /// Метод для получения только одного курса.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для получения только одного курса.", 
-        Description = "Получает только один курс."
-    )]
-    [HttpGet("courses/{name_course}")]
-    public IActionResult Read_course()
     {
         throw new NotImplementedException();
     }
@@ -82,6 +56,36 @@ public class CoursesController : ControllerBase
     )]
     [HttpDelete("courses/{name_course}")]
     public IActionResult Delete_course()
+    {
+        throw new NotImplementedException();
+    }
+}
+
+[Route("api")]
+public class CoursesController : ControllerBase
+{
+    /// <summary>
+    /// Метод для получения всех курсов.
+    /// </summary>
+    [SwaggerOperation(
+        Summary = "Метод для получения всех курсов.", 
+        Description = "Получает все курсы, которые есть в БД."
+    )]
+    [HttpGet("courses")]
+    public IActionResult Read_All_course()
+    {
+        throw new NotImplementedException();
+    }
+    
+    /// <summary>
+    /// Метод для получения только одного курса.
+    /// </summary>
+    [SwaggerOperation(
+        Summary = "Метод для получения только одного курса.", 
+        Description = "Получает только один курс."
+    )]
+    [HttpGet("courses/{name_course}")]
+    public IActionResult Read_course()
     {
         throw new NotImplementedException();
     }
