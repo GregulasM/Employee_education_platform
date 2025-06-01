@@ -82,7 +82,7 @@ public class CharactersController : ControllerBase
     /// Метод для выгрузки только одного персонажа.
     /// </summary>
     [SwaggerOperation(
-        Summary = "Метод для выгрузки только одного персонажа", 
+        Summary = "Метод для выгрузки только одного персонажа.", 
         Description = "Выгружает только одно персонажа."
     )]
     [HttpGet("characters/{name_character}")]

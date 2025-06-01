@@ -71,7 +71,7 @@ public class ArticlesController
     /// </summary>
     [SwaggerOperation(
         Summary = "Метод для просмотра всех статей внутри модуля.", 
-        Description = "Просмотр всех статей модуля, привязанного к курсу"
+        Description = "Просмотр всех статей модуля, привязанного к курсу."
     )]
     [HttpGet("courses/{name_course}/modules/{name_module}/articles")]
     public IActionResult Read_All_article()
@@ -84,7 +84,7 @@ public class ArticlesController
     /// </summary>
     [SwaggerOperation(
         Summary = "Метод для просмотра только одной статьи внутри модуля.", 
-        Description = "Просмотр только одной статьи, привязанной к модулю"
+        Description = "Просмотр только одной статьи, привязанной к модулю."
     )]
     [HttpGet("courses/{name_course}/modules/{name_module}/articles/{name_article}")]
     public IActionResult Read_article()

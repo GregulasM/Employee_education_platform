@@ -12,7 +12,7 @@ public class ModulesAdminController : ControllerBase
     /// </summary>
     [SwaggerOperation(
         Summary = "Метод для создания модуля внутри курса.", 
-        Description = "Создает модуль, привязанный к курсу"
+        Description = "Создает модуль, привязанный к курсу."
     )]
     [HttpPost("courses/{name_course}/modules")]
     public IActionResult Create_module()
@@ -69,7 +69,7 @@ public class ModulesController : ControllerBase
     /// </summary>
     [SwaggerOperation(
         Summary = "Метод для чтения всех модулей внутри курса.", 
-        Description = "Просматривает все модули, привязанный к курсу"
+        Description = "Просматривает все модули, привязанный к курсу."
     )]
     [HttpGet("courses/{name_course}/modules")]
     public IActionResult Read_All_module()
@@ -82,7 +82,7 @@ public class ModulesController : ControllerBase
     /// </summary>
     [SwaggerOperation(
         Summary = "Метод для чтения только одного модуля внутри курса.", 
-        Description = "Просматривает только один модуль, привязанный к курсу"
+        Description = "Просматривает только один модуль, привязанный к курсу."
     )]
     [HttpGet("courses/{name_course}/modules/{name_module}")]
     public IActionResult Read_module()

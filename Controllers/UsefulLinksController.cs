@@ -83,7 +83,7 @@ public class UsefulLinksController : ControllerBase
     /// Метод для выгрузки только одной полезной ссылки из курса.
     /// </summary>
     [SwaggerOperation(
-        Summary = "Метод для выгрузки только одной полезной ссылки из курса", 
+        Summary = "Метод для выгрузки только одной полезной ссылки из курса.", 
         Description = "Выгружает только одну полезную ссылку из курса."
     )]
     [HttpGet("courses/{name_course}/usefullinks/{name_usefullink}")]

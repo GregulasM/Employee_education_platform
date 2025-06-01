@@ -71,7 +71,7 @@ public class UsersController : ControllerBase
     /// Метод для выгрузки только одного пользователя.
     /// </summary>
     [SwaggerOperation(
-        Summary = "Метод для выгрузки только одного пользователя", 
+        Summary = "Метод для выгрузки только одного пользователя.", 
         Description = "Выгружает только одного пользователя."
     )]
     [HttpGet("users/{name_user}")]

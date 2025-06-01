@@ -83,7 +83,7 @@ public class TestsController : ControllerBase
     /// Метод для выгрузки только одного теста.
     /// </summary>
     [SwaggerOperation(
-        Summary = "Метод для выгрузки только одного теста", 
+        Summary = "Метод для выгрузки только одного теста.", 
         Description = "Выгружает только один тест."
     )]
     [HttpGet("courses/{name_course}/tests/{name_test}")]
