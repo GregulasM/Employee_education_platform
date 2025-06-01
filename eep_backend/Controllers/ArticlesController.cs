@@ -6,7 +6,7 @@ namespace Employee_education_platform.Controllers;
 
 [ApiController]
 [Route("api/admin_panel")]
-public class ArticlesController
+public class ArticlesAdminController
 {
     
     /// <summary>
@@ -18,32 +18,6 @@ public class ArticlesController
     )]
     [HttpPost("courses/{name_course}/modules/{name_module}/articles")]
     public IActionResult Create_article()
-    {
-        throw new NotImplementedException();
-    }
-    
-    /// <summary>
-    /// Метод для просмотра всех статей внутри модуля.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для просмотра всех статей внутри модуля.", 
-        Description = "Просмотр всех статей модуля, привязанного к курсу"
-    )]
-    [HttpGet("courses/{name_course}/modules/{name_module}/articles")]
-    public IActionResult Read_All_article()
-    {
-        throw new NotImplementedException();
-    }
-    
-    /// <summary>
-    /// Метод для просмотра только одной статьи внутри модуля.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для просмотра только одной статьи внутри модуля.", 
-        Description = "Просмотр только одной статьи, привязанной к модулю"
-    )]
-    [HttpGet("courses/{name_course}/modules/{name_module}/articles/{name_article}")]
-    public IActionResult Read_article()
     {
         throw new NotImplementedException();
     }
@@ -83,6 +57,37 @@ public class ArticlesController
     )]
     [HttpDelete("courses/{name_course}/modules/{name_module}/articles/{name_article}")]
     public IActionResult Delete_article()
+    {
+        throw new NotImplementedException();
+    }
+}
+
+[Route("api")]
+public class ArticlesController
+{
+    
+    /// <summary>
+    /// Метод для просмотра всех статей внутри модуля.
+    /// </summary>
+    [SwaggerOperation(
+        Summary = "Метод для просмотра всех статей внутри модуля.", 
+        Description = "Просмотр всех статей модуля, привязанного к курсу."
+    )]
+    [HttpGet("courses/{name_course}/modules/{name_module}/articles")]
+    public IActionResult Read_All_article()
+    {
+        throw new NotImplementedException();
+    }
+    
+    /// <summary>
+    /// Метод для просмотра только одной статьи внутри модуля.
+    /// </summary>
+    [SwaggerOperation(
+        Summary = "Метод для просмотра только одной статьи внутри модуля.", 
+        Description = "Просмотр только одной статьи, привязанной к модулю."
+    )]
+    [HttpGet("courses/{name_course}/modules/{name_module}/articles/{name_article}")]
+    public IActionResult Read_article()
     {
         throw new NotImplementedException();
     }
