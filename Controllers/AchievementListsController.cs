@@ -14,7 +14,7 @@ public class AchievementListsAdminController : ControllerBase
         Summary = "Метод для создания листа достижений.", 
         Description = "Создает лист достижений."
     )]
-    [HttpPost("achievementlist")]
+    [HttpPost("achievementlists")]
     public IActionResult Create_list()
     {
         throw new NotImplementedException();
@@ -27,7 +27,7 @@ public class AchievementListsAdminController : ControllerBase
         Summary = "Метод для частичного изменения листа достижений.", 
         Description = "Частично меняет лист достижений."
     )]
-    [HttpPatch("achievementlist")]
+    [HttpPatch("achievementlists/{name_achievementlist}")]
     public IActionResult Edit_list()
     {
         throw new NotImplementedException();
@@ -40,7 +40,7 @@ public class AchievementListsAdminController : ControllerBase
         Summary = "Метод для полного изменения листа достижений.", 
         Description = "Полностью меняет лист достижений."
     )]
-    [HttpPut("achievementlist")]
+    [HttpPut("achievementlists/{name_achievementlist}")]
     public IActionResult Replace_list()
     {
         throw new NotImplementedException();
@@ -53,7 +53,7 @@ public class AchievementListsAdminController : ControllerBase
         Summary = "Метод для удаления листа достижений.", 
         Description = "Удаляет лист достижений."
     )]
-    [HttpDelete("achievementlist/{name_achievementlist}")]
+    [HttpDelete("achievementlists/{name_achievementlist}")]
     public IActionResult Delete_list()
     {
         throw new NotImplementedException();
@@ -72,7 +72,7 @@ public class AchievementListsController : ControllerBase
         Summary = "Метод для выгрузки всех листов достижений.", 
         Description = "Выгружает все листы достижений."
     )]
-    [HttpGet("achievementlist")]
+    [HttpGet("achievementlists")]
     public IActionResult Read_All_list()
     {
         throw new NotImplementedException();
@@ -85,7 +85,7 @@ public class AchievementListsController : ControllerBase
         Summary = "Метод для выгрузки только одного листа достижений по названию.", 
         Description = "Выгружает только один лист достижений по названию."
     )]
-    [HttpGet("achievementlist/{name_achievementlist}")]
+    [HttpGet("achievementlists/{name_achievementlist}")]
     public IActionResult Read_list()
     {
         throw new NotImplementedException();
