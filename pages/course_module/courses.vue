@@ -6,6 +6,10 @@
       </div>
       <div class="flex justify-center p-4 gap-4">
         <button
+            class="flex-1 btn btn-ghost w-1/4 h-12 text-white bg-green-500/90 hover:bg-green-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
+            v-on:click="">
+          Создать</button>
+        <button
             class="flex-1 btn btn-ghost w-1/4 h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
             v-on:click="">
           Сортировка/Фильтрация</button>
