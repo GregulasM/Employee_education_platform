@@ -9,6 +9,8 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        var configuration = builder.Configuration;
+        
 
         // Add services to the container.
         builder.Services.AddAuthorization();
@@ -34,6 +36,17 @@ public class Program
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
+        
+        var options = SurrealDbOptions
+            .Create()
+            .WithEndpoint("http://127.0.0.1:8765")
+            .WithNamespace("eep_database_v1")
+            .WithDatabase("eep_database")
+            .WithUsername("Gregulas")
+            .WithPassword("234432")
+            .Build();
+        
+        builder.Services.AddSurreal(options);
 
         var app = builder.Build();
 
@@ -48,6 +61,7 @@ public class Program
         // app.UseHttpsRedirection();
 
         app.UseAuthorization();
+        app.MapControllers();
 
         // var summaries = new[]
         // {

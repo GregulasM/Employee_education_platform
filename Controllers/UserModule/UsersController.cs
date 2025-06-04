@@ -1,4 +1,6 @@
+using eep_backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using SurrealDb.Net;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Employee_education_platform.Controllers;
@@ -7,7 +9,14 @@ namespace Employee_education_platform.Controllers;
 [Route("api/admin_panel")]
 public class UsersAdminController : ControllerBase
 {
-        
+    private string table = "user";
+    private readonly ISurrealDbClient _surrealDbClient;
+
+    public UsersAdminController(ISurrealDbClient surrealDbClient)
+    {
+        _surrealDbClient = surrealDbClient;
+    }
+    
     /// <summary>
     /// Метод для выгрузки всех пользователей.
     /// </summary>
@@ -16,9 +25,10 @@ public class UsersAdminController : ControllerBase
         Description = "Выгружает всех пользователей."
     )]
     [HttpGet("users")]
-    public IActionResult Read_All_user()
+    public async Task<IActionResult> Read_All_user()
     {
-        throw new NotImplementedException();
+        var result = await _surrealDbClient.Select<User>(table);
+        return Ok(result);
     }
     
     /// <summary>
@@ -67,6 +77,13 @@ public class UsersAdminController : ControllerBase
 [Route("api")]
 public class UsersController : ControllerBase
 {
+    private string table = "user";
+    private readonly ISurrealDbClient _surrealDbClient;
+
+    public UsersController(ISurrealDbClient surrealDbClient)
+    {
+        _surrealDbClient = surrealDbClient;
+    }
     /// <summary>
     /// Метод для выгрузки только одного пользователя.
     /// </summary>
@@ -74,10 +91,15 @@ public class UsersController : ControllerBase
         Summary = "Метод для выгрузки только одного пользователя.", 
         Description = "Выгружает только одного пользователя."
     )]
-    [HttpGet("users/{name_user}")]
-    public IActionResult Read_user()
+    [HttpGet("users/{id}")]
+    public async Task<IActionResult> Read_user(string id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var ogo = await _surrealDbClient.Select<User>((table, id), cancellationToken);
+
+        if (ogo is null)
+            return NotFound();
+
+        return Ok(ogo);
     }
     
     /// <summary>
