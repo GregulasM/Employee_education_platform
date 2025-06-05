@@ -14,13 +14,13 @@ public class User
     public string? email { get; set; }
     public string? avatar { get; set; }
     public double? rating { get; set; }
-    public string? theme { get; set; } 
-    public string? font { get; set; }
-    public string? active_course { get; set; } 
-    public List<string>? chosen_courses { get; set; }
-    public List<string>? achievements { get; set; }
-    public string? selected_character { get; set; }
-    public string? department { get; set; }
+    public RecordIdOfString? theme { get; set; } 
+    public RecordIdOfString? font { get; set; }
+    public RecordIdOfString? active_course { get; set; } 
+    public List<RecordIdOfString>? chosen_courses { get; set; }
+    public List<RecordIdOfString>? achievements { get; set; }
+    public RecordIdOfString? selected_character { get; set; }
+    public RecordIdOfString? department { get; set; }
     public DateTime? created_at { get; set; }
     public DateTime? updated_at { get; set; }
     public bool? is_active { get; set; }
