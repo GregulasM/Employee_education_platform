@@ -1,6 +1,6 @@
 using SurrealDb.Net.Models;
 
-namespace eep_backend.Models;
+namespace eep_backend.Models.UserModuleModels;
 
 public class News
 {

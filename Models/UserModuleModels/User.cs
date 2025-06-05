@@ -1,10 +1,9 @@
 using SurrealDb.Net.Models;
 
-namespace eep_backend.Models;
+namespace eep_backend.Models.UserModuleModels;
 
-public class User
+public class User  : Record
 {
-    public RecordIdOfString id { get; set; }
     public string? login { get; set; }
     public string? password { get; set; }
     public string? phone_number { get; set; }
@@ -24,4 +23,5 @@ public class User
     public DateTime? created_at { get; set; }
     public DateTime? updated_at { get; set; }
     public bool? is_active { get; set; }
+
 }
