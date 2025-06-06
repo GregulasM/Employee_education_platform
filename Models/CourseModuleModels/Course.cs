@@ -19,7 +19,8 @@ public class Course
     public int? AuthorId { get; set; }
     public User? Author { get; set; }
 
-    public List<string>? Tags { get; set; }
+    [Column(TypeName = "jsonb")]
+    public string? Tags { get; set; }
 
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }

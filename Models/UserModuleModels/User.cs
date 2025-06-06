@@ -43,6 +43,7 @@ public class User
 
     public List<Course>? ChosenCourses { get; set; }
     public List<Achievement>? Achievements { get; set; }
+    public List<UserCharacter>? UserCharacters { get; set; }
 
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }

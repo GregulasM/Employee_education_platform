@@ -23,7 +23,8 @@ public class Link
     public int? ParentId { get; set; }
     public Link? Parent { get; set; }
 
-    public List<string>? Tags { get; set; }
+    [Column(TypeName = "jsonb")]
+    public string? Tags { get; set; }
 
     public bool? IsActive { get; set; }
 }

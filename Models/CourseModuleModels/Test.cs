@@ -38,6 +38,9 @@ public class Test
     public DateTime? AvailableTo { get; set; }
 
     public bool? Randomize { get; set; }
-    public List<string>? Tags { get; set; }
+    
+    [Column(TypeName = "jsonb")]
+    public string? Tags { get; set; }
+    
     public bool? IsActive { get; set; }
 }

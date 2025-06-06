@@ -24,13 +24,13 @@ public class Article
 
     [Column(TypeName = "jsonb")]
     public string? Content { get; set; }
-    
-    public List<string>? Images { get; set; }
 
     public int? AuthorId { get; set; }
     public User? Author { get; set; }
 
-    public List<string>? Tags { get; set; }
+    [Column(TypeName = "jsonb")]
+    public string? Tags { get; set; }
+    
     public double? Rating { get; set; }
 
     public DateTime? CreatedAt { get; set; }
@@ -38,8 +38,6 @@ public class Article
 
     public int? HiddenAchievementId { get; set; }
     public Achievement? HiddenAchievement { get; set; }
-
-    public List<string>? Attachments { get; set; }
-
+    
     public bool? IsActive { get; set; }
 }

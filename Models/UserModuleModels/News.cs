@@ -26,7 +26,8 @@ public class News
     public string? Type { get; set; }
     public DateTime? Date { get; set; }
 
-    public List<string>? Tags { get; set; }
+    [Column(TypeName = "jsonb")]
+    public string? Tags { get; set; }
 
     public bool? IsPinned { get; set; }
     public DateTime? CreatedAt { get; set; }

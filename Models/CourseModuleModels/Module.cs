@@ -34,7 +34,8 @@ public class Module
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
-    public List<string>? Tags { get; set; }
+    [Column(TypeName = "jsonb")]
+    public string? Tags { get; set; }
 
     public bool? IsActive { get; set; }
 }
