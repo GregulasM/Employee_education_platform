@@ -1,23 +1,43 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using eep_backend.Models.UserModuleModels;
 
 namespace eep_backend.Models.CourseModuleModels;
 
 public class Test
 {
-    public RecordIdOfString id { get; set; }
-    public string title { get; set; }
-    public string? description { get; set; }
-    public RecordIdOfString? course { get; set; }
-    public RecordIdOfString? module { get; set; }
-    public List<object>? questions { get; set; }
-    public double? time_limit { get; set; }
-    public double? max_score { get; set; }
-    public double? passing_score { get; set; }
-    public double? attempts { get; set; }
-    public RecordIdOfString? author { get; set; }
-    public DateTime? available_from { get; set; }
-    public DateTime? available_to { get; set; }
-    public bool? randomize { get; set; }
-    public List<string>? tags { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public string? Title { get; set; }
+    public string? Description { get; set; }
+
+    public int? CourseId { get; set; }
+    public Course? Course { get; set; }
+
+    public int? ModuleId { get; set; }
+    public Module? Module { get; set; }
+
+    [Column(TypeName = "jsonb")]
+    public string? Questions { get; set; }
+
+    public double? TimeLimit { get; set; }
+    public double? MaxScore { get; set; }
+    public double? PassingScore { get; set; }
+    public int? Attempts { get; set; }
+
+    public int? AuthorId { get; set; }
+    public User? Author { get; set; }
+
+    public DateTime? AvailableFrom { get; set; }
+    public DateTime? AvailableTo { get; set; }
+
+    public bool? Randomize { get; set; }
+    public List<string>? Tags { get; set; }
+    public bool? IsActive { get; set; }
 }

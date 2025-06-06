@@ -1,9 +1,6 @@
 using eep_backend.Models.UserModuleModels;
 using Microsoft.AspNetCore.Mvc;
-using SurrealDb.Net;
-using SurrealDb.Net.Models;
 using Swashbuckle.AspNetCore.Annotations;
-using SystemTextJsonPatch;
 
 namespace Employee_education_platform.Controllers;
 

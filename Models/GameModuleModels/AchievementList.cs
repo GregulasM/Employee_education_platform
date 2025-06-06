@@ -1,15 +1,25 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eep_backend.Models.GameModuleModels;
 
 public class AchievementList
 {
-    public RecordIdOfString id { get; set; }
-    public string name { get; set; }
-    public string? description { get; set; }
-    public string? icon { get; set; }
-    public double? sort_type { get; set; }
-    public bool? is_hidden { get; set; }
-    public List<RecordIdOfString>? achievements { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+    public string? Icon { get; set; }
+    public double? SortType { get; set; }
+    public bool? IsHidden { get; set; }
+
+    public List<Achievement>? Achievements { get; set; }
+
+    public bool? IsActive { get; set; }
 }

@@ -1,12 +1,23 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eep_backend.Models.UserModuleModels;
 
 public class Department
 {
-    public RecordIdOfString id { get; set; }
-    public string name { get; set; }
-    public string? description { get; set; }
-    public RecordIdOfString? manager { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public string? Name { get; set; }
+    public string? Description { get; set; }
+
+    public int? ManagerId { get; set; }
+    public User? Manager { get; set; }
+
+    public bool? IsActive { get; set; }
 }

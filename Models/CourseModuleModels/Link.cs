@@ -1,15 +1,29 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eep_backend.Models.CourseModuleModels;
 
 public class Link
 {
-    public RecordIdOfString id { get; set; }
-    public string? title { get; set; }
-    public string? url { get; set; }
-    public string? description { get; set; }
-    public RecordIdOfString? course { get; set; }
-    public RecordIdOfString? parent { get; set; }
-    public List<string>? tags { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public string? Title { get; set; }
+    public string? Url { get; set; }
+    public string? Description { get; set; }
+
+    public int? CourseId { get; set; }
+    public Course? Course { get; set; }
+
+    public int? ParentId { get; set; }
+    public Link? Parent { get; set; }
+
+    public List<string>? Tags { get; set; }
+
+    public bool? IsActive { get; set; }
 }

@@ -1,13 +1,22 @@
-using SurrealDb.Net.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eep_backend.Models.UserModuleModels;
 
 public class Setting
 {
-    public RecordIdOfString id { get; set; } 
-    public string? type { get; set; }           
-    public string? name { get; set; } 
-    public Dictionary<string, object>? value { get; set; }
-    public string? icon { get; set; }
-    public bool? is_active { get; set; } 
+    public int Id { get; set; }
+    
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+    
+    public string? Type { get; set; }
+    public string? Name { get; set; }
+    
+    [Column(TypeName = "jsonb")]
+    public string? Value { get; set; } 
+    
+    public string? Icon { get; set; }
+    public bool? IsActive { get; set; }
 }

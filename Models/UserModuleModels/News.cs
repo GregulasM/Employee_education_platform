@@ -1,20 +1,35 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eep_backend.Models.UserModuleModels;
 
 public class News
 {
-    public RecordIdOfString id { get; set; }
-    public string title { get; set; }
-    public string? slug { get; set; }
-    public string? excerpt { get; set; }
-    public List<object>? content { get; set; }
-    public RecordIdOfString? author { get; set; }
-    public string? type { get; set; }
-    public DateTime? date { get; set; }
-    public List<string>? tags { get; set; }
-    public bool? is_pinned { get; set; }
-    public DateTime? created_at { get; set; }
-    public DateTime? updated_at { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public string? Title { get; set; }
+    public string? Slug { get; set; }
+    public string? Excerpt { get; set; }
+
+    [Column(TypeName = "jsonb")]
+    public string? Content { get; set; }
+
+    public int? AuthorId { get; set; }
+    public User? Author { get; set; }
+
+    public string? Type { get; set; }
+    public DateTime? Date { get; set; }
+
+    public List<string>? Tags { get; set; }
+
+    public bool? IsPinned { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public bool? IsActive { get; set; }
 }

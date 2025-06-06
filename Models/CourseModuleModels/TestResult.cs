@@ -1,16 +1,34 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using eep_backend.Models.UserModuleModels;
 
 namespace eep_backend.Models.CourseModuleModels;
 
 public class TestResult
 {
-    public RecordIdOfString id { get; set; }
-    public RecordIdOfString? user { get; set; }
-    public RecordIdOfString? test { get; set; }
-    public double? score { get; set; }
-    public double? max_score { get; set; }
-    public List<object>? answers { get; set; }
-    public DateTime? date { get; set; }
-    public string? status { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public int? UserId { get; set; }
+    public User? User { get; set; }
+
+    public int? TestId { get; set; }
+    public Test? Test { get; set; }
+
+    public double? Score { get; set; }
+    public double? MaxScore { get; set; }
+
+    [Column(TypeName = "jsonb")]
+    public string? Answers { get; set; }
+
+    public DateTime? Date { get; set; }
+
+    public string? Status { get; set; }
+
+    public bool? IsActive { get; set; }
 }
