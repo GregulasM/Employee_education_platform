@@ -11,12 +11,10 @@ namespace Employee_education_platform.Controllers;
 [Route("api/admin_panel")]
 public class UsersAdminController : ControllerBase
 {
-    private string table = "user";
-    private readonly ISurrealDbClient _surrealDbClient;
 
-    public UsersAdminController(ISurrealDbClient surrealDbClient)
+    public UsersAdminController()
     {
-        _surrealDbClient = surrealDbClient;
+        
     }
     
     /// <summary>
@@ -29,8 +27,7 @@ public class UsersAdminController : ControllerBase
     [HttpGet("users")]
     public async Task<IActionResult> Read_All_user(CancellationToken cancellationToken)
     {
-        var result = await _surrealDbClient.Select<User>(table, cancellationToken);
-        return Ok(result);
+        throw new NotImplementedException();
     }
     
     /// <summary>
@@ -43,8 +40,7 @@ public class UsersAdminController : ControllerBase
     [HttpPost("users")]
     public async Task<IActionResult> Create_user([FromBody] User user)
     {
-        var result = await _surrealDbClient.Create(table, user);
-        return Ok(result);
+        throw new NotImplementedException();
     }
     
     
@@ -59,36 +55,7 @@ public class UsersAdminController : ControllerBase
     [HttpPut("users/{id}")]
     public async Task<IActionResult> Replace_user(string id, [FromBody] User user, CancellationToken cancellationToken)
     {
-        // Получить текущего пользователя
-        var user_new = await _surrealDbClient.Select<User>((table, id), cancellationToken);
-
-        if (user_new == null)
-            return NotFound();
-
-        user.login = user_new.login;
-        user.password                         =         user_new.password           ;
-        user.phone_number                     =             user_new.phone_number       ;
-        user.first_name                       =             user_new.first_name         ;
-        user.second_name                      =             user_new.second_name        ;
-        user.last_name                        =             user_new.last_name          ;
-        user.email                            =         user_new.email              ;
-        user.avatar                           =         user_new.avatar             ;
-        user.rating                           =         user_new.rating             ;
-        user.theme                            =         user_new.theme              ;
-        user.font                             =     user_new.font               ;
-        user.active_course                    =                 user_new.active_course      ;
-        user.chosen_courses                   =                 user_new.chosen_courses     ;
-        user.achievements                     =             user_new.achievements       ;
-        user.selected_character               =                     user_new.selected_character ;
-        user.department                       =             user_new.department         ;
-        user.updated_at     =                                 DateTime.UtcNow   ;      
-        user.is_active                        =             user_new.is_active          ;
-        
-        user.Id = user_new.Id;
-        user.created_at = user_new.created_at;
-        
-        var result = await _surrealDbClient.Upsert( user, cancellationToken );
-        return Ok(result);
+        throw new NotImplementedException();
     }
     
     /// <summary>
@@ -101,8 +68,7 @@ public class UsersAdminController : ControllerBase
     [HttpDelete("users/{id}")]
     public async Task<IActionResult> Delete_user(string id)
     {
-        await _surrealDbClient.Delete((table, id));
-        return Ok();
+        throw new NotImplementedException();
     }
 }
 
@@ -110,12 +76,9 @@ public class UsersAdminController : ControllerBase
 [Route("api")]
 public class UsersController : ControllerBase
 {
-    private string table = "user";
-    private readonly ISurrealDbClient _surrealDbClient;
 
-    public UsersController(ISurrealDbClient surrealDbClient)
+    public UsersController()
     {
-        _surrealDbClient = surrealDbClient;
     }
     /// <summary>
     /// Метод для выгрузки только одного пользователя.
@@ -127,12 +90,7 @@ public class UsersController : ControllerBase
     [HttpGet("users/{id}")]
     public async Task<IActionResult> Read_user(string id, CancellationToken cancellationToken)
     {
-        var result = await _surrealDbClient.Select<User>((table, id), cancellationToken);
-
-        if (result is null)
-            return NotFound();
-
-        return Ok(result);
+        throw new NotImplementedException();
     }
     
     /// <summary>
@@ -145,14 +103,7 @@ public class UsersController : ControllerBase
     [HttpGet("users/user_login/{name_user}")]
     public async Task<IActionResult> Read_Name_user(string name_user, CancellationToken cancellationToken)
     {
-        var result = await _surrealDbClient.Query($@"SELECT * FROM user WHERE login = {name_user}",  cancellationToken);
-        var users = result.GetValue<List<User>>(0);
-
-        var user = users.FirstOrDefault();
-        if (user == null)
-            return NotFound();
-
-        return Ok(user);
+        throw new NotImplementedException();
     }
     
     // /// <summary>
@@ -184,24 +135,6 @@ public class UsersController : ControllerBase
     [HttpPatch("users/{id}")]
     public async Task<IActionResult> Edit_Min_user(string id, [FromBody] UserDto userDto, CancellationToken cancellationToken)
     {
-        var existing = await _surrealDbClient.Select<User>((table, id), cancellationToken);
-        if (existing == null)
-            return NotFound();
-            
-        // Создаем объект для частичного обновления
-        var updateData = new Dictionary<string, object>
-        {
-            ["updated_at"] = DateTime.UtcNow
-        };
-        
-        if (userDto.FirstName != null)
-            updateData["first_name"] = userDto.FirstName;
-        if (userDto.SecondName != null)
-            updateData["second_name"] = userDto.SecondName;
-        if (userDto.LastName != null)
-            updateData["last_name"] = userDto.LastName;
-        
-        var result = await _surrealDbClient.Merge<User>((table, id), updateData, cancellationToken);
-        return Ok(result);
+        throw new NotImplementedException();
     }
 }

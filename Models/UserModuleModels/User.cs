@@ -2,7 +2,7 @@ using SurrealDb.Net.Models;
 
 namespace eep_backend.Models.UserModuleModels;
 
-public class User  : Record
+public class User
 {
     public string? login { get; set; }
     public string? password { get; set; }
