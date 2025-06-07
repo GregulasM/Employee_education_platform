@@ -16,8 +16,7 @@ public class Department
     public string? Name { get; set; }
     public string? Description { get; set; }
 
-    public int? ManagerId { get; set; }
-    public User? Manager { get; set; }
+    public List<User>? Users { get; set; }
 
     public bool? IsActive { get; set; }
 }

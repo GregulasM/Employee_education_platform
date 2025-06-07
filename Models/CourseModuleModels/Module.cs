@@ -19,12 +19,14 @@ public class Module
 
     public int? CourseId { get; set; }
     public Course? Course { get; set; }
+    
+    public List<Test>? Tests { get; set; }
 
     public string? Description { get; set; }
     public string? Image { get; set; }
 
-    public int? AuthorId { get; set; }
-    public User? Author { get; set; }
+    // public int? AuthorId { get; set; }
+    // public User? Author { get; set; }
 
     public double? Order { get; set; }
 

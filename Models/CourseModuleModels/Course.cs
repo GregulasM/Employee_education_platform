@@ -16,8 +16,8 @@ public class Course
     public string? Description { get; set; }
     public string? Image { get; set; }
 
-    public int? AuthorId { get; set; }
-    public User? Author { get; set; }
+    // public int? AuthorId { get; set; }
+    // public User? Author { get; set; }
 
     [Column(TypeName = "jsonb")]
     public string? Tags { get; set; }

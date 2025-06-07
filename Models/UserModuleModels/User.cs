@@ -40,6 +40,9 @@ public class User
 
     public int? DepartmentId { get; set; }
     public Department? Department { get; set; }
+    
+    public int? RoleId { get; set; }
+    public UserRole? Role { get; set; }
 
     public List<Course>? ChosenCourses { get; set; }
     public List<Achievement>? Achievements { get; set; }

@@ -31,8 +31,8 @@ public class Test
     public double? PassingScore { get; set; }
     public int? Attempts { get; set; }
 
-    public int? AuthorId { get; set; }
-    public User? Author { get; set; }
+    // public int? AuthorId { get; set; }
+    // public User? Author { get; set; }
 
     public DateTime? AvailableFrom { get; set; }
     public DateTime? AvailableTo { get; set; }
