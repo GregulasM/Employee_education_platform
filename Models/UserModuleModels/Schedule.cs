@@ -18,8 +18,7 @@ public class Schedule
     public string? Subject { get; set; } 
     public string? Teacher { get; set; } 
     public string? Details { get; set; } 
-
-    // Foreign keys
+    
     public int? CourseId { get; set; }
     public Course? Course { get; set; }
 

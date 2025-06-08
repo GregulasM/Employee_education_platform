@@ -27,16 +27,17 @@ public class SiteDbContext : DbContext
     public DbSet<Setting> Settings { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
-    public SiteDbContext()
+    
+    public SiteDbContext(DbContextOptions<SiteDbContext> options)
+        : base(options)
     {
-        
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=eep_database;Username=Gregulas;Password=234432");
-        
-    }
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    // {
+    //     optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=eep_database;Username=Gregulas;Password=234432").UseSnakeCaseNamingConvention();
+    //     
+    // }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -25,9 +25,6 @@ public class Module
     public string? Description { get; set; }
     public string? Image { get; set; }
 
-    // public int? AuthorId { get; set; }
-    // public User? Author { get; set; }
-
     public double? Order { get; set; }
 
     public int? HiddenAchievementId { get; set; }

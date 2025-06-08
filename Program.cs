@@ -1,5 +1,6 @@
 using System.Reflection;
 using eep_backend;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace Employee_education_platform;
@@ -11,6 +12,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var configuration = builder.Configuration;
         
+        builder.Services.AddDbContext<SiteDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("SiteDbContext")).UseSnakeCaseNamingConvention());
 
         // Add services to the container.
         builder.Services.AddAuthorization();
@@ -36,8 +38,23 @@ public class Program
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
+        
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: "AdminPanel",
+                policy  =>
+                {
+                    policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    
+                    // "http://www.contoso.com");
+                });
+        });
 
         var app = builder.Build();
+        
+        app.UseCors("AdminPanel");
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

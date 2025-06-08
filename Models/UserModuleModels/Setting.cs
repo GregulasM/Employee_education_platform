@@ -19,4 +19,6 @@ public class Setting
     
     public string? Icon { get; set; }
     public bool? IsActive { get; set; }
+    
+    
 }

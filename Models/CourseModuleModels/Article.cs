@@ -25,9 +25,6 @@ public class Article
     [Column(TypeName = "jsonb")]
     public string? Content { get; set; }
 
-    // public int? AuthorId { get; set; }
-    // public User? Author { get; set; }
-
     [Column(TypeName = "jsonb")]
     public string? Tags { get; set; }
     
