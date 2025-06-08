@@ -164,15 +164,37 @@ public class CoursesController : ControllerBase
         var courses = await _dbContext.Courses
             .Where(c => c.IsActive ?? true)
             .Include(c => c.Department)
-            .Include(c => c.UsefulLinks.Where(l => l.IsActive ?? true))
             .Include(c => c.Tests.Where(t => t.IsActive ?? true))
+            .ThenInclude(t => t.Module)
             .ToListAsync(cancellationToken);
 
-        // Для вывода связанных модулей (count по модулям, если нужно подгружать)
-        // Можно добавить: .Include(c => c.Modules.Where(m => m.IsActive ?? true))
+        var dto = courses.Select(c => new CourseDto
+        {
+            Id = c.Id,
+            PublicId = c.PublicId.ToString(),
+            Title = c.Title,
+            Description = c.Description,
+            Image = c.Image,
+            Tags = c.Tags,
+            Position = c.Position,
+            DepartmentId = c.DepartmentId,
+            DepartmentName = c.Department?.Name,
+            Tests = c.Tests
+                .Where(t => t.IsActive ?? true)
+                .Select(t => new TestDto
+                {
+                    Id = t.Id,
+                    PublicId = t.PublicId.ToString(),
+                    Title = t.Title,
+                    Description = t.Description,
+                    ModuleId = t.ModuleId,
+                    ModuleTitle = t.Module?.Title,
+                    Questions = t.Questions
+                })
+                .ToList()
+        }).ToList();
 
-        // Вернуть как есть, либо собрать DTO
-        return Ok(courses);
+        return Ok(dto);
     }
 
     
