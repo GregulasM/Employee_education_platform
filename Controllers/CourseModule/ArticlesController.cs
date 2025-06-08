@@ -1,4 +1,7 @@
+using eep_backend;
+using eep_backend.Models.CourseModuleModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Employee_education_platform.Controllers;
@@ -6,8 +9,14 @@ namespace Employee_education_platform.Controllers;
 
 [ApiController]
 [Route("api/admin_panel")]
-public class ArticlesAdminController
+public class ArticlesAdminController : ControllerBase
 {
+    private readonly SiteDbContext _dbContext;
+
+    public ArticlesAdminController(SiteDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
     
     /// <summary>
     /// Метод для создания статьи внутри модуля.
@@ -16,67 +25,20 @@ public class ArticlesAdminController
         Summary = "Метод для создания статьи внутри модуля.", 
         Description = "Создает статью внутри модуля."
     )]
-    [HttpPost("courses/{name_course}/modules/{name_module}/articles")]
-    public IActionResult Create_article()
+    [HttpPost("modules/{moduleId}/articles")]
+    public async Task<IActionResult> Create_article(int moduleId, [FromBody] Article article, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
-    
-    /// <summary>
-    /// Метод для изменения деталей статьи по уникальному названию.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для изменения деталей статьи по уникальному названию.", 
-        Description = "Вводим название статьи и изменяем его части."
-    )]
-    [HttpPatch("courses/{name_course}/modules/{name_module}/articles/{name_article}")]
-    public IActionResult Edit_article()
-    {
-        throw new NotImplementedException();
-    }
-    
-    /// <summary>
-    /// Метод для полного изменения статьи по уникальному названию.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для полного изменения статьи по уникальному названию.", 
-        Description = "Вводим название статьи и полностью меняем его."
-    )]
-    [HttpPut("courses/{name_course}/modules/{name_module}/articles/{name_article}")]
-    public IActionResult Replace_article()
-    {
-        throw new NotImplementedException();
-    }
-    
-    /// <summary>
-    /// Метод для удаления статьи по уникальному названию.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для удаления статьи по уникальному названию.", 
-        Description = "Вводим название статьи и удаляем ее."
-    )]
-    [HttpDelete("courses/{name_course}/modules/{name_module}/articles/{name_article}")]
-    public IActionResult Delete_article()
-    {
-        throw new NotImplementedException();
-    }
-}
+        var module = await _dbContext.Modules.FirstOrDefaultAsync(m => m.Id == moduleId && (m.IsActive ?? true), cancellationToken);
+        if (module == null) return BadRequest("Модуль не найден");
 
-[Route("api")]
-public class ArticlesController
-{
-    
-    /// <summary>
-    /// Метод для просмотра всех статей внутри модуля.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для просмотра всех статей внутри модуля.", 
-        Description = "Просмотр всех статей модуля, привязанного к курсу."
-    )]
-    [HttpGet("courses/{name_course}/modules/{name_module}/articles")]
-    public IActionResult Read_All_article()
-    {
-        throw new NotImplementedException();
+        article.ModuleId = module.Id;
+        article.CreatedAt = DateTime.UtcNow;
+        article.IsActive = true;
+
+        _dbContext.Articles.Add(article);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return CreatedAtAction(nameof(Read_article), new { moduleId, articleTitle = article.Title }, article);
     }
     
     /// <summary>
@@ -86,9 +48,128 @@ public class ArticlesController
         Summary = "Метод для просмотра только одной статьи внутри модуля.", 
         Description = "Просмотр только одной статьи, привязанной к модулю."
     )]
-    [HttpGet("courses/{name_course}/modules/{name_module}/articles/{name_article}")]
-    public IActionResult Read_article()
+    [HttpGet("modules/{moduleId}/articles/{articleTitle}")]
+    public async Task<IActionResult> Read_article(int moduleId, string articleTitle, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var article = await _dbContext.Articles
+            .Where(a => a.ModuleId == moduleId && a.Title == articleTitle && (a.IsActive ?? true))
+            .Include(a => a.Module)
+            .Include(a => a.HiddenAchievement)
+            .FirstOrDefaultAsync(cancellationToken);
+        if (article == null) return NotFound();
+        return Ok(article);
     }
+    
+    
+    
+    /// <summary>
+    /// Метод для изменения деталей статьи по уникальному названию.
+    /// </summary>
+    [SwaggerOperation(
+        Summary = "Метод для изменения деталей статьи по уникальному названию.", 
+        Description = "Вводим название статьи и изменяем его части."
+    )]
+    [HttpPatch("modules/{moduleId}/articles/{articleTitle}")]
+    public async Task<IActionResult> Edit_article(int moduleId, string articleTitle, [FromBody] Article patch, CancellationToken cancellationToken)
+    {
+        var article = await _dbContext.Articles
+            .FirstOrDefaultAsync(a => a.ModuleId == moduleId && a.Title == articleTitle && (a.IsActive ?? true), cancellationToken);
+        if (article == null) return NotFound("Статья не найдена");
+
+        if (!string.IsNullOrWhiteSpace(patch.Title)) article.Title = patch.Title;
+        if (!string.IsNullOrWhiteSpace(patch.Image)) article.Image = patch.Image;
+        if (!string.IsNullOrWhiteSpace(patch.Tags)) article.Tags = patch.Tags;
+        if (!string.IsNullOrWhiteSpace(patch.Content)) article.Content = patch.Content;
+        if (patch.Rating.HasValue) article.Rating = patch.Rating;
+        if (patch.HiddenAchievementId.HasValue) article.HiddenAchievementId = patch.HiddenAchievementId;
+        if (patch.ModuleId.HasValue && patch.ModuleId.Value != article.ModuleId)
+        {
+            var newModule = await _dbContext.Modules.FirstOrDefaultAsync(m => m.Id == patch.ModuleId.Value && (m.IsActive ?? true), cancellationToken);
+            if (newModule == null) return BadRequest("Новый модуль не найден");
+            article.ModuleId = newModule.Id;
+        }
+        article.UpdatedAt = DateTime.UtcNow;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return Ok(article);
+    }
+    
+    /// <summary>
+    /// Метод для полного изменения статьи по уникальному названию.
+    /// </summary>
+    [SwaggerOperation(
+        Summary = "Метод для полного изменения статьи по уникальному названию.", 
+        Description = "Вводим название статьи и полностью меняем его."
+    )]
+    [HttpPut("modules/{moduleId}/articles/{articleTitle}")]
+    public async Task<IActionResult> Replace_article(int moduleId, string articleTitle, [FromBody] Article newArticle, CancellationToken cancellationToken)
+    {
+        var article = await _dbContext.Articles
+            .FirstOrDefaultAsync(a => a.ModuleId == moduleId && a.Title == articleTitle && (a.IsActive ?? true), cancellationToken);
+        if (article == null) return NotFound("Статья не найдена");
+
+        article.Title = newArticle.Title;
+        article.Image = newArticle.Image;
+        article.Tags = newArticle.Tags;
+        article.Content = newArticle.Content;
+        article.Rating = newArticle.Rating;
+        article.HiddenAchievementId = newArticle.HiddenAchievementId;
+        article.ModuleId = newArticle.ModuleId;
+        article.UpdatedAt = DateTime.UtcNow;
+        article.IsActive = newArticle.IsActive;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return Ok(article);
+    }
+    
+    /// <summary>
+    /// Метод для удаления статьи по уникальному названию.
+    /// </summary>
+    [SwaggerOperation(
+        Summary = "Метод для удаления статьи по уникальному названию.", 
+        Description = "Вводим название статьи и удаляем ее."
+    )]
+    [HttpDelete("modules/{moduleId}/articles/{articleTitle}")]
+    public async Task<IActionResult> Delete_article(int moduleId, string articleTitle, CancellationToken cancellationToken)
+    {
+        var article = await _dbContext.Articles
+            .FirstOrDefaultAsync(a => a.ModuleId == moduleId && a.Title == articleTitle && (a.IsActive ?? true), cancellationToken);
+        if (article == null) return NotFound("Статья не найдена");
+        if (article.IsActive == false) return BadRequest("Статья уже неактивна.");
+
+        article.IsActive = false;
+        article.UpdatedAt = DateTime.UtcNow;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return Ok("Статья успешно помечена как неактивная.");
+    }
+}
+
+[Route("api")]
+public class ArticlesController : ControllerBase
+{
+    private readonly SiteDbContext _dbContext;
+
+    public ArticlesController(SiteDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    
+    
+    /// <summary>
+    /// Метод для просмотра всех статей внутри модуля.
+    /// </summary>
+    [SwaggerOperation(
+        Summary = "Метод для просмотра всех статей внутри модуля.", 
+        Description = "Просмотр всех статей модуля, привязанного к курсу."
+    )]
+    [HttpGet("modules/{moduleId}/articles")]
+    public async Task<IActionResult> Read_All_article(int moduleId, CancellationToken cancellationToken)
+    {
+        var articles = await _dbContext.Articles
+            .Where(a => a.ModuleId == moduleId && (a.IsActive ?? true))
+            .Include(a => a.Module)
+            .Include(a => a.HiddenAchievement)
+            .ToListAsync(cancellationToken);
+        return Ok(articles);
+    }
+    
+    
 }

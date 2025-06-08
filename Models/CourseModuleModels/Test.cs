@@ -25,19 +25,6 @@ public class Test
 
     [Column(TypeName = "jsonb")]
     public string? Questions { get; set; }
-
-    public double? TimeLimit { get; set; }
-    public double? MaxScore { get; set; }
-    public double? PassingScore { get; set; }
-    public int? Attempts { get; set; }
-
-    public DateTime? AvailableFrom { get; set; }
-    public DateTime? AvailableTo { get; set; }
-
-    public bool? Randomize { get; set; }
-    
-    [Column(TypeName = "jsonb")]
-    public string? Tags { get; set; }
     
     public bool? IsActive { get; set; }
 }
