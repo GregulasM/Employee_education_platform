@@ -36,7 +36,7 @@
         <label class="md:col-span-2">
           <span>Модуль (необязательно):</span>
           <select v-model="newTest.moduleId" class="input input-bordered w-full mt-1">
-            <option value="">Без модуля</option>
+            <option :value="null">Без модуля</option>
             <option v-for="module in filteredModules" :key="module.id" :value="module.id">{{ module.title }}</option>
           </select>
         </label>

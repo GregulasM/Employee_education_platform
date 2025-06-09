@@ -96,7 +96,7 @@
                 </td>
                 <td class="whitespace-nowrap px-2 py-2">{{ course.tags ? course.tags.join(', ') : '' }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ course.position }}</td>
-                <td class="whitespace-nowrap px-2 py-2">{{ course.department?.name || course.departmentId }}</td>
+                <td class="whitespace-nowrap px-2 py-2">{{ course.departmentName || course.departmentId }}</td>
                 <td class="whitespace-nowrap px-2 py-2">
                   {{ modulesByCourse[course.id] || 0 }}
                 </td>

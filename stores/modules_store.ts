@@ -41,13 +41,22 @@ export const useModulesStore = defineStore('modules', () => {
         loading.value = true
         error.value = null
         try {
-            const res = await $fetch<Module[]>('http://localhost:5148/api/modules')
-            for (const m of res) {
-                if (typeof m.tags === 'string') {
-                    try { m.tags = JSON.parse(m.tags) } catch { m.tags = [] }
+            const res = await $fetch<any[]>('http://localhost:5148/api/modules')
+            // Преобразуем данные из API в нужный фронту формат!
+            modules.value = res.map(m => {
+                // Преобразуем tags если нужно
+                let tags = m.tags
+                if (typeof tags === 'string') {
+                    try { tags = JSON.parse(tags) } catch { tags = [] }
                 }
-            }
-            modules.value = res
+                // Преобразуем courseTitle и courseId в course-объект
+                const moduleObj: Module = {
+                    ...m,
+                    tags,
+                    course: m.courseTitle ? { id: m.courseId, title: m.courseTitle } : undefined,
+                }
+                return moduleObj
+            })
         } catch (err: any) {
             error.value = err.message ?? 'Ошибка загрузки модулей'
         }

@@ -108,7 +108,7 @@
                 <td class="whitespace-nowrap px-2 py-2">{{ module.course?.title || module.courseId }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ module.hiddenAchievement?.name || module.hiddenAchievementId }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ articlesByModule[module.id] || 0 }}</td>
-                <td class="whitespace-nowrap px-2 py-2">{{ module.tests?.length || 0 }}</td>
+                <td class="whitespace-nowrap px-2 py-2">{{ testsByModule[module.id]  || 0 }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ module.createdAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ module.updatedAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2 flex gap-2 justify-center align-centre items-center">
@@ -161,11 +161,13 @@
 import { useModulesStore } from '~/stores/modules_store'
 import { useCoursesStore } from '~/stores/courses_store'
 import { useArticlesStore } from '~/stores/articles_store'
+import { useTestsStore } from '~/stores/tests_store'
 
 const router = useRouter()
 const modulesStore = useModulesStore()
 const coursesStore = useCoursesStore()
 const articlesStore = useArticlesStore()
+const testsStore = useTestsStore()
 
 const editingId = ref<number|null>(null)
 const editModule = ref<any>({})
@@ -180,6 +182,16 @@ const articlesByModule = computed(() => {
   articlesStore.articles.forEach(article => {
     if (article.moduleId) {
       map[article.moduleId] = (map[article.moduleId] || 0) + 1
+    }
+  })
+  return map
+})
+
+const testsByModule = computed(() => {
+  const map: Record<number, number> = {}
+  testsStore.tests.forEach(test => {
+    if (test.moduleId) {
+      map[test.moduleId] = (map[test.moduleId] || 0) + 1
     }
   })
   return map
@@ -294,8 +306,19 @@ async function submitCreateModule() {
     createError.value = e?.message || 'Ошибка создания модуля'
   }
 }
-onMounted(() => {
-  modulesStore.fetchModules()
-  coursesStore.fetchCourses()
+
+watch(
+    () => modulesStore.modules.map(m => m.id),
+    async (newVal, oldVal) => {
+      await articlesStore.fetchArticles()
+    },
+    { immediate: true }
+)
+
+onMounted(async() => {
+  await modulesStore.fetchModules()
+  await coursesStore.fetchCourses()
+  await articlesStore.fetchArticles()
+  await testsStore.fetchTests()
 })
 </script>

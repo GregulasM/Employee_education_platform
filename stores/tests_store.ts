@@ -66,7 +66,6 @@ export const useTestsStore = defineStore('tests', () => {
     }
 
     async function createTest(test: Partial<Test>) {
-        // Находим название курса
         const course = courses.value.find(c => c.id === +test.courseId)
         if (!course) throw new Error('Выберите курс')
         await $fetch(`http://localhost:5148/api/admin_panel/courses/${encodeURIComponent(course.title)}/tests`, {
@@ -80,7 +79,11 @@ export const useTestsStore = defineStore('tests', () => {
     }
 
     async function updateTest(id: number, patch: Partial<Test>) {
-        // Новый вариант — PATCH по id, всегда работает
+        console.log(patch.moduleId)
+        if (patch.moduleId === "" || patch.moduleId === undefined) {
+            patch.moduleId = null
+        }
+        console.log(patch.moduleId)
         await $fetch(`http://localhost:5148/api/admin_panel/tests/${id}`, {
             method: 'PATCH',
             body: patch
