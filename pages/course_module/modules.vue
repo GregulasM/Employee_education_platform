@@ -41,7 +41,6 @@
             </option>
           </select>
         </label>
-        <input v-model.number="newModule.hiddenAchievementId" class="input input-bordered" placeholder="ID скрытого достижения" type="number" />
         <div class="flex col-span-1 md:col-span-2 gap-3 mt-4 justify-end">
           <button class="btn btn-success" type="submit">Создать</button>
           <button class="btn btn-warning" type="button" @click="closeCreateForm">Отмена</button>
@@ -85,7 +84,6 @@
               <th class="whitespace-nowrap px-2 py-3">Теги</th>
               <th class="whitespace-nowrap px-2 py-3">Порядок</th>
               <th class="whitespace-nowrap px-2 py-3">Курс</th>
-              <th class="whitespace-nowrap px-2 py-3">Скрытое достижение</th>
               <th class="whitespace-nowrap px-2 py-3">Статей</th>
               <th class="whitespace-nowrap px-2 py-3">Тесты</th>
               <th class="whitespace-nowrap px-2 py-3">Дата создания</th>
@@ -106,7 +104,6 @@
                 <td class="whitespace-nowrap px-2 py-2">{{ module.tags ? module.tags.join(', ') : '' }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ module.order }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ module.course?.title || module.courseId }}</td>
-                <td class="whitespace-nowrap px-2 py-2">{{ module.hiddenAchievement?.name || module.hiddenAchievementId }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ articlesByModule[module.id] || 0 }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ testsByModule[module.id]  || 0 }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ module.createdAt }}</td>
@@ -131,7 +128,6 @@
                     </option>
                   </select>
                 </td>
-                <td class="whitespace-nowrap px-2 py-2"><input v-model="editModule.hiddenAchievementId" type="number" class="input input-xs w-12" /></td>
                 <td class="whitespace-nowrap px-2 py-2">-</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ module.createdAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ module.updatedAt }}</td>
@@ -275,14 +271,14 @@ function resetFilters() {
 const createMode = ref(false)
 const createError = ref<string | null>(null)
 const newModule = ref({
-  title: '', description: '', image: '', tags: '', order: null, courseTitle: '', hiddenAchievementId: null
+  title: '', description: '', image: '', tags: '', order: null, courseTitle: ''
 })
 
 function closeCreateForm() {
   createMode.value = false
   createError.value = null
   Object.assign(newModule.value, {
-    title: '', description: '', image: '', tags: '', order: null, courseTitle: '', hiddenAchievementId: null
+    title: '', description: '', image: '', tags: '', order: null, courseTitle: ''
   })
 }
 

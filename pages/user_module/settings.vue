@@ -192,13 +192,13 @@ const filteredSettings = computed(() => {
 const createMode = ref(false)
 const createError = ref<string | null>(null)
 const newSetting = ref({
-  type: '', name: '', value: '', icon: '', isActive: false
+  type: '', name: '', value: '', icon: '', isActive: true
 })
 
 function closeCreateForm() {
   createMode.value = false
   createError.value = null
-  Object.assign(newSetting.value, { type: '', name: '', value: '', icon: '', isActive: false })
+  Object.assign(newSetting.value, { type: '', name: '', value: '', icon: ''})
 }
 
 async function submitCreateSetting() {

@@ -14,7 +14,16 @@ export interface Setting {
 export const useSettingsStore = defineStore('settings', () => {
     const settings: Ref<Setting[]> = ref([])
     const loading: Ref<boolean> = ref(false)
+    const themes = computed(() => settings.value.filter(s => s.type === 'theme'))
+    const fonts = computed(() => settings.value.filter(s => s.type === 'font'))
     const error: Ref<string | null> = ref(null)
+
+    async function fetchThemes() {
+        themes.value = await $fetch('http://localhost:5148/api/admin_panel/settings?type=theme')
+    }
+    async function fetchFonts() {
+        fonts.value = await $fetch('http://localhost:5148/api/admin_panel/settings?type=font')
+    }
 
     async function fetchSettings() {
         loading.value = true
@@ -48,5 +57,5 @@ export const useSettingsStore = defineStore('settings', () => {
         })
     }
 
-    return { settings, loading, error, fetchSettings, createSetting, updateSetting, deleteSetting }
+    return { settings, loading, error, themes, fonts, fetchThemes, fetchFonts, fetchSettings, createSetting, updateSetting, deleteSetting }
 })

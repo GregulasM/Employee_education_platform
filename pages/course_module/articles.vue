@@ -43,7 +43,6 @@
         <input v-model="newArticle.tags" class="input input-bordered" placeholder="Теги (json-строка)" />
         <textarea v-model="newArticle.content" class="textarea textarea-bordered col-span-1 md:col-span-2" placeholder="Контент (json-строка)"></textarea>
         <input v-model.number="newArticle.rating" class="input input-bordered" placeholder="Рейтинг" type="number"/>
-        <input v-model.number="newArticle.hiddenAchievementId" class="input input-bordered" placeholder="ID скрытого достижения" type="number"/>
         <div class="flex col-span-1 md:col-span-2 gap-3 mt-4 justify-end">
           <button class="btn btn-success" type="submit">Создать</button>
           <button class="btn btn-warning" type="button" @click="closeCreateForm">Отмена</button>
@@ -87,7 +86,6 @@
               <th class="whitespace-nowrap px-2 py-3">Картинка</th>
               <th class="whitespace-nowrap px-2 py-3">Теги</th>
               <th class="whitespace-nowrap px-2 py-3">Рейтинг</th>
-              <th class="whitespace-nowrap px-2 py-3">Скрытое достижение</th>
               <th class="whitespace-nowrap px-2 py-3">Дата создания</th>
               <th class="whitespace-nowrap px-2 py-3">Дата обновления</th>
               <th class="whitespace-nowrap px-2 py-3">Кнопки управления</th>
@@ -104,7 +102,6 @@
                 </td>
                 <td class="whitespace-nowrap px-2 py-2">{{ a.tags }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ a.rating }}</td>
-                <td class="whitespace-nowrap px-2 py-2">{{ a.hiddenAchievement?.name || a.hiddenAchievementId }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ a.createdAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ a.updatedAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2 flex gap-2 justify-center align-centre items-center place-content-center place-self-center">
@@ -123,7 +120,6 @@
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editArticle.image" class="input input-xs w-24" /></td>
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editArticle.tags" class="input input-xs w-24" /></td>
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editArticle.rating" type="number" class="input input-xs w-16" /></td>
-                <td class="whitespace-nowrap px-2 py-2"><input v-model="editArticle.hiddenAchievementId" type="number" class="input input-xs w-16" /></td>
                 <td class="whitespace-nowrap px-2 py-2">{{ a.createdAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ a.updatedAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2 flex gap-2">
@@ -165,14 +161,14 @@ const createMode = ref(false)
 const showFilters = ref(false)
 const createError = ref<string | null>(null)
 const newArticle = ref({
-  title: '', moduleId: null, image: '', content: '', tags: '', rating: null, hiddenAchievementId: null
+  title: '', moduleId: null, image: '', content: '', tags: '', rating: null
 })
 
 function closeCreateForm() {
   createMode.value = false
   createError.value = null
   Object.assign(newArticle.value, {
-    title: '', moduleId: null, image: '', content: '', tags: '', rating: null, hiddenAchievementId: null
+    title: '', moduleId: null, image: '', content: '', tags: '', rating: null
   })
 }
 

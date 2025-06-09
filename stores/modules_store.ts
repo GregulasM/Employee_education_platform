@@ -24,8 +24,6 @@ export interface Module {
     description: string | null
     image: string | null
     order: number | null
-    hiddenAchievementId: number | null
-    hiddenAchievement?: AchievementRef | null
     createdAt: string | null
     updatedAt: string | null
     tags: string[] | null

@@ -13,8 +13,6 @@ export interface Article {
     rating: number | null
     createdAt: string | null
     updatedAt: string | null
-    hiddenAchievementId: number | null
-    hiddenAchievement?: { id: number; name: string } | null
     isActive: boolean | null
 }
 

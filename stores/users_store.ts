@@ -50,6 +50,7 @@ export const useUsersStore = defineStore('users', () => {
         loading.value = false
     }
 
+
     async function createUser(user: Partial<User>) {
         await $fetch('http://localhost:5148/api/admin_panel/users', {
             method: 'POST',

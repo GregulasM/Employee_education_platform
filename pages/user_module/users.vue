@@ -28,21 +28,101 @@
     <div v-if="createMode" class="bg-gray-800/90 p-6 rounded-lg mb-6 w-full max-w-4xl mx-auto">
       <h3 class="text-lg font-bold text-white mb-4">Создать пользователя</h3>
       <form @submit.prevent="submitCreateUser" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-white">
-        <input v-model="newUser.login"        class="input input-bordered" placeholder="Логин" />
-        <input v-model="newUser.password"     class="input input-bordered" placeholder="Пароль" type="password"/>
-        <input v-model="newUser.firstName"    class="input input-bordered" placeholder="Имя" />
-        <input v-model="newUser.secondName"   class="input input-bordered" placeholder="Отчество" />
-        <input v-model="newUser.lastName"     class="input input-bordered" placeholder="Фамилия" />
-        <input v-model="newUser.email"        class="input input-bordered" placeholder="Эл. почта" type="email"/>
-        <input v-model="newUser.phoneNumber"  class="input input-bordered" placeholder="Номер телефона"/>
-        <input v-model="newUser.avatar"       class="input input-bordered" placeholder="Ссылка на аватарку"/>
-        <input v-model.number="newUser.rating"      class="input input-bordered" placeholder="Рейтинг" type="number"/>
-        <input v-model.number="newUser.themeId"     class="input input-bordered" placeholder="ID темы" type="number"/>
-        <input v-model.number="newUser.fontId"      class="input input-bordered" placeholder="ID шрифта" type="number"/>
-        <input v-model.number="newUser.activeCourseId" class="input input-bordered" placeholder="ID активного курса" type="number"/>
-        <input v-model.number="newUser.selectedCharacterId" class="input input-bordered" placeholder="ID персонажа" type="number"/>
-        <input v-model.number="newUser.departmentId" class="input input-bordered" placeholder="ID отдела" type="number"/>
-        <input v-model.number="newUser.roleId"       class="input input-bordered" placeholder="ID роли" type="number"/>
+        <label>
+          <span>Логин:</span>
+          <input v-model="newUser.login" class="input input-bordered w-full mt-1" placeholder="Логин" />
+        </label>
+        <label>
+          <span>Пароль:</span>
+          <input v-model="newUser.password" class="input input-bordered w-full mt-1" placeholder="Пароль" type="password"/>
+        </label>
+        <label>
+          <span>Имя:</span>
+          <input v-model="newUser.firstName" class="input input-bordered w-full mt-1" placeholder="Имя" />
+        </label>
+        <label>
+          <span>Отчество:</span>
+          <input v-model="newUser.secondName" class="input input-bordered w-full mt-1" placeholder="Отчество" />
+        </label>
+        <label>
+          <span>Фамилия:</span>
+          <input v-model="newUser.lastName" class="input input-bordered w-full mt-1" placeholder="Фамилия" />
+        </label>
+        <label>
+          <span>Эл. почта:</span>
+          <input v-model="newUser.email" class="input input-bordered w-full mt-1" placeholder="Эл. почта" type="email"/>
+        </label>
+        <label>
+          <span>Номер телефона:</span>
+          <input v-model="newUser.phoneNumber" class="input input-bordered w-full mt-1" placeholder="Номер телефона"/>
+        </label>
+        <label>
+          <span>Аватарка (URL):</span>
+          <input v-model="newUser.avatar" class="input input-bordered w-full mt-1" placeholder="Ссылка на аватарку"/>
+        </label>
+        <label>
+          <span>Рейтинг:</span>
+          <input v-model.number="newUser.rating" class="input input-bordered w-full mt-1" placeholder="Рейтинг" type="number"/>
+        </label>
+
+        <label>
+          <span>Тема:</span>
+          <select v-model.number="newUser.themeId" class="input input-bordered w-full mt-1">
+            <option value="" disabled selected>Выберите тему</option>
+            <option v-for="theme in settingsStore.themes" :key="theme.id" :value="theme.id">
+              {{ theme.name }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>Шрифт:</span>
+          <select v-model.number="newUser.fontId" class="input input-bordered w-full mt-1">
+            <option value="" disabled selected>Выберите шрифт</option>
+            <option v-for="font in settingsStore.fonts" :key="font.id" :value="font.id">
+              {{ font.name }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>Активный курс:</span>
+          <select v-model.number="newUser.activeCourseId" class="input input-bordered w-full mt-1">
+            <option value="" disabled selected>Выберите курс</option>
+            <option v-for="c in coursesStore.courses" :key="c.id" :value="c.id">
+              {{ c.title }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>Персонаж:</span>
+          <select v-model.number="newUser.selectedCharacterId" class="input input-bordered w-full mt-1">
+            <option value="" disabled selected>Выберите персонажа</option>
+            <option v-for="char in charactersStore.characters" :key="char.id" :value="char.id">
+              {{ char.name }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>Отдел:</span>
+          <select v-model.number="newUser.departmentId" class="input input-bordered w-full mt-1">
+            <option value="" disabled selected>Выберите отдел</option>
+            <option v-for="dep in departmentsStore.departments" :key="dep.id" :value="dep.id">
+              {{ dep.name }} (id:{{ dep.id }})
+            </option>
+          </select>
+        </label>
+
+        <label>
+          <span>Роль:</span>
+          <select v-model.number="newUser.roleId" class="input input-bordered w-full mt-1">
+            <option value="" disabled selected>Выберите роль</option>
+             <option v-for="role in userRolesStore.roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+          </select>
+        </label>
+
         <div class="flex col-span-1 md:col-span-2 gap-3 mt-4 justify-end">
           <button class="btn btn-success" type="submit">Создать</button>
           <button class="btn btn-warning" type="button" @click="closeCreateForm">Отмена</button>
@@ -140,13 +220,73 @@
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editUser.phoneNumber" class="input input-xs w-28" /></td>
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editUser.avatar" class="input input-xs w-24" /></td>
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editUser.rating" type="number" class="input input-xs w-16" /></td>
-                <td class="whitespace-nowrap px-2 py-2"><input v-model="editUser.themeId" type="number" class="input input-xs w-12" /></td>
-                <td class="whitespace-nowrap px-2 py-2"><input v-model="editUser.fontId" type="number" class="input input-xs w-12" /></td>
-                <td class="whitespace-nowrap px-2 py-2">-</td><td class="whitespace-nowrap px-2 py-2">-</td>
-                <td class="whitespace-nowrap px-2 py-2"><input v-model="editUser.departmentId" type="number" class="input input-xs w-12" /></td>
-                <td class="whitespace-nowrap px-2 py-2"><input v-model="editUser.roleId" type="number" class="input input-xs w-12" /></td>
-                <td class="whitespace-nowrap px-2 py-2">-</td>
-                <td class="whitespace-nowrap px-2 py-2"><input v-model="editUser.selectedCharacterId" type="number" class="input input-xs w-12" /></td>
+                <!-- Theme -->
+                <td class="whitespace-nowrap px-2 py-2">
+                  <select v-model.number="editUser.themeId" class="input input-xs w-28">
+                    <option value="">Нет</option>
+                    <option
+                        v-for="theme in settingsStore.themes"
+                        :key="theme.id"
+                        :value="theme.id"
+                    >
+                      {{ theme.name }}
+                    </option>
+                  </select>
+                </td>
+
+                <!-- Font -->
+                <td class="whitespace-nowrap px-2 py-2">
+                  <select v-model.number="editUser.fontId" class="input input-xs w-28">
+                    <option value="">Нет</option>
+                    <option
+                        v-for="font in settingsStore.fonts"
+                        :key="font.id"
+                        :value="font.id"
+                    >
+                      {{ font.name }}
+                    </option>
+                  </select>
+                </td>
+                <!-- Активный курс -->
+                <td class="whitespace-nowrap px-2 py-2">
+                  <select v-model.number="editUser.activeCourseId" class="input input-xs w-32">
+                    <option value="">Нет</option>
+                    <option v-for="c in coursesStore.courses" :key="c.id" :value="c.id">
+                      {{ c.title }}
+                    </option>
+                  </select>
+                </td>
+                <!-- Выбранные курсы (если надо — просто число или как-то иначе) -->
+                <td class="whitespace-nowrap px-2 py-2">—</td>
+                <!-- Отдел -->
+                <td class="whitespace-nowrap px-2 py-2">
+                  <select v-model.number="editUser.departmentId" class="input input-xs w-32">
+                    <option value="" disabled>Выберите отдел</option>
+                    <option v-for="dep in departmentsStore.departments" :key="dep.id" :value="dep.id">
+                      {{ dep.name }} (id:{{ dep.id }})
+                    </option>
+                  </select>
+                </td>
+                <!-- Роль -->
+                <td class="whitespace-nowrap px-2 py-2">
+                  <select v-model.number="editUser.roleId" class="input input-xs w-32">
+                    <option value="" disabled>Выберите роль</option>
+                    <option v-for="role in userRolesStore.roles" :key="role.id" :value="role.id">
+                      {{ role.name }}
+                    </option>
+                  </select>
+                </td>
+                <!-- Достижения -->
+                <td class="whitespace-nowrap px-2 py-2">—</td>
+                <!-- Персонаж -->
+                <td class="whitespace-nowrap px-2 py-2">
+                  <select v-model.number="editUser.selectedCharacterId" class="input input-xs w-28">
+                    <option value="">Нет</option>
+                    <option v-for="char in charactersStore.characters" :key="char.id" :value="char.id">
+                      {{ char.name }}
+                    </option>
+                  </select>
+                </td>
                 <td class="whitespace-nowrap px-2 py-2">{{ user.createdAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ user.updatedAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2 flex gap-2">
@@ -173,14 +313,28 @@
 
 <script setup lang="ts">
 import { useUsersStore } from '~/stores/users_store'
+import { useDepartmentsStore } from '~/stores/departments_store'
+import { useUserRolesStore } from '~/stores/user_roles_store'
+import { useCharactersStore } from '~/stores/characters_store'
+import { useCoursesStore } from '~/stores/courses_store'
+import { useSettingsStore } from '~/stores/settings_store'
+
+
 
 const router = useRouter()
 
 const usersStore = useUsersStore()
+const departmentsStore = useDepartmentsStore()
+const charactersStore = useCharactersStore()
+const coursesStore = useCoursesStore()
+const settingsStore = useSettingsStore()
+const userRolesStore = useUserRolesStore()
 
 const editingId = ref<number|null>(null)
 const editUser = ref<any>({})
 const confirmingDeleteId = ref<number|null>(null)
+
+console.log(usersStore.users)
 
 function go_back () {
   router.back()
@@ -278,5 +432,14 @@ async function submitCreateUser() {
   }
 }
 
-onMounted(() => usersStore.fetchUsers())
+onMounted(async () => {
+  await Promise.all([
+    usersStore.fetchUsers(),
+    departmentsStore.fetchDepartments(),
+    userRolesStore.fetchRoles(),
+    charactersStore.fetchCharacters(),
+    settingsStore.fetchSettings(),
+    coursesStore.fetchCourses(),
+  ])
+})
 </script>

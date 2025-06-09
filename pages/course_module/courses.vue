@@ -32,7 +32,15 @@
         <input v-model="newCourse.image" class="input input-bordered" placeholder="Ссылка на изображение" />
         <input v-model="newCourse.tags" class="input input-bordered" placeholder="Теги (через запятую)" />
         <input v-model.number="newCourse.position" class="input input-bordered" placeholder="Позиция (число)" type="number" />
-        <input v-model.number="newCourse.departmentId" class="input input-bordered" placeholder="ID отдела" type="number" />
+        <label>
+          <span>Отдел:</span>
+          <select v-model.number="newCourse.departmentId" class="input input-bordered w-full mt-1" required>
+            <option value="" disabled>Выберите отдел</option>
+            <option v-for="dep in departmentsStore.departments" :key="dep.id" :value="dep.id">
+              {{ dep.name }} (id:{{ dep.id }})
+            </option>
+          </select>
+        </label>
         <div class="flex col-span-1 md:col-span-2 gap-3 mt-4 justify-end">
           <button class="btn btn-success" type="submit">Создать</button>
           <button class="btn btn-warning" type="button" @click="closeCreateForm">Отмена</button>
@@ -148,11 +156,13 @@
 <script setup lang="ts">
 import { useCoursesStore } from '~/stores/courses_store'
 import { useModulesStore } from '~/stores/modules_store'
+import { useDepartmentsStore } from '~/stores/departments_store'
 
 
 const router = useRouter()
 const coursesStore = useCoursesStore()
 const modulesStore = useModulesStore()
+const departmentsStore = useDepartmentsStore()
 
 const editingId = ref<number|null>(null)
 const editCourse = ref<any>({})
@@ -279,8 +289,9 @@ async function submitCreateCourse() {
   }
 }
 
-onMounted(() => {
-  coursesStore.fetchCourses()
-  modulesStore.fetchModules()
+onMounted(async() => {
+  await coursesStore.fetchCourses()
+  await modulesStore.fetchModules()
+  await departmentsStore.fetchDepartments()
 })
 </script>
