@@ -27,9 +27,6 @@ public class Module
 
     public double? Order { get; set; }
 
-    public int? HiddenAchievementId { get; set; }
-    public Achievement? HiddenAchievement { get; set; }
-
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 

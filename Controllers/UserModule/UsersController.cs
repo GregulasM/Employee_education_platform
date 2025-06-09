@@ -1,4 +1,6 @@
 using eep_backend;
+using eep_backend.Models.CourseModuleModels;
+using eep_backend.Models.GameModuleModels;
 using eep_backend.Models.UserModuleModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,19 +29,131 @@ public class UsersAdminController : ControllerBase
     [HttpGet("users")]
     public async Task<IActionResult> Read_All_user(CancellationToken cancellationToken)
     {
-        var result = _dbContext.Users.ToList();
-        return Ok(result);
+        var users = await _dbContext.Users
+            .Include(u => u.Department)
+            .Include(u => u.Role)
+            .Include(u => u.SelectedCharacter)
+            .Include(u => u.ActiveCourse)
+            .Include(u => u.ChosenCourses)
+            .Include(u => u.Achievements)
+            .ToListAsync(cancellationToken);
+
+        var themeIds = users.Where(u => u.ThemeId.HasValue).Select(u => u.ThemeId.Value).Distinct().ToList();
+        var fontIds = users.Where(u => u.FontId.HasValue).Select(u => u.FontId.Value).Distinct().ToList();
+
+        // ВАЖНО: тут без всяких сложных фильтров, просто грузим по id все settings, а тип потом проверим в мапе
+        var allSettingIds = themeIds.Concat(fontIds).Distinct().ToList();
+
+        var settings = await _dbContext.Settings
+            .Where(s => allSettingIds.Contains(s.Id) && (s.IsActive ?? true))
+            .ToListAsync(cancellationToken);
+
+        // Карты для быстрого поиска
+        var themeMap = settings.Where(s => s.Type == "theme").ToDictionary(s => s.Id, s => s);
+        var fontMap = settings.Where(s => s.Type == "font").ToDictionary(s => s.Id, s => s);
+
+        var courseIds = users.Where(u => u.ActiveCourseId.HasValue).Select(u => u.ActiveCourseId.Value).ToList();
+        var courses = await _dbContext.Courses
+            .Where(c => courseIds.Contains(c.Id))
+            .ToListAsync(cancellationToken);
+
+        
+        var dtos = users.Select(u =>
+        {
+            SettingDto themeDto = null;
+            if (u.ThemeId.HasValue && themeMap.TryGetValue(u.ThemeId.Value, out var theme))
+            {
+                themeDto = new SettingDto
+                {
+                    Id = theme.Id,
+                    Type = theme.Type,
+                    Name = theme.Name,
+                    Icon = theme.Icon
+                };
+            }
+
+            SettingDto fontDto = null;
+            if (u.FontId.HasValue && fontMap.TryGetValue(u.FontId.Value, out var font))
+            {
+                fontDto = new SettingDto
+                {
+                    Id = font.Id,
+                    Type = font.Type,
+                    Name = font.Name,
+                    Icon = font.Icon
+                };
+            }
+
+            var course = courses.FirstOrDefault(c => c.Id == u.ActiveCourseId);
+
+            return new UserDto
+            {
+                Id = u.Id,
+                Login = u.Login,
+                PhoneNumber = u.PhoneNumber,
+                FirstName = u.FirstName,
+                SecondName = u.SecondName,
+                LastName = u.LastName,
+                Email = u.Email,
+                Avatar = u.Avatar,
+                Rating = u.Rating,
+                ThemeId = u.ThemeId,
+                Theme = themeDto,
+                FontId = u.FontId,
+                Font = fontDto,
+                ActiveCourseId = u.ActiveCourseId,
+                ActiveCourse = course == null ? null : new CourseDto
+                {
+                    Id = course.Id,
+                    Title = course.Title
+                },
+                SelectedCharacterId = u.SelectedCharacterId,
+                SelectedCharacter = u.SelectedCharacter == null ? null : new CharacterDto
+                {
+                    Id = u.SelectedCharacter.Id,
+                    Name = u.SelectedCharacter.Name
+                },
+                DepartmentId = u.DepartmentId,
+                Department = u.Department == null ? null : new DepartmentDto
+                {
+                    Id = u.Department.Id,
+                    Name = u.Department.Name
+                },
+                RoleId = u.RoleId,
+                Role = u.Role == null ? null : new UserRoleDto
+                {
+                    Id = u.Role.Id,
+                    Name = u.Role.Name
+                },
+                ChosenCourses = u.ChosenCourses?.Select(c => new CourseDto
+                {
+                    Id = c.Id,
+                    Title = c.Title
+                }).ToList(),
+                Achievements = u.Achievements?.Select(a => new AchievementDto
+                {
+                    Id = a.Id,
+                    Name = a.Name
+                }).ToList(),
+                CreatedAt = u.CreatedAt != null ? u.CreatedAt.Value.AddHours(10) : null,
+                UpdatedAt = u.UpdatedAt != null ? u.UpdatedAt.Value.AddHours(10) : null,
+                IsActive = u.IsActive
+            };
+        }).ToList();
+
+        return Ok(dtos);
     }
-    
+
     /// <summary>
     /// Метод для создания пользователя.
     /// </summary>
     [SwaggerOperation(
-        Summary = "Метод для создания пользователя.", 
+        Summary = "Метод для создания пользователя.",
         Description = "Создает пользователя."
     )]
     [HttpPost("users")]
-    public async Task<IActionResult> Create_user([FromBody] UserCreateDto userCreateDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Create_user([FromBody] UserCreateDto userCreateDto,
+        CancellationToken cancellationToken)
     {
         if (userCreateDto == null)
             return BadRequest("Пользователь не передан.");
@@ -57,6 +171,13 @@ public class UsersAdminController : ControllerBase
             LastName = userCreateDto.LastName,
             Email = userCreateDto.Email,
             Avatar = userCreateDto.Avatar,
+            Rating = userCreateDto.Rating,
+            ThemeId = userCreateDto.ThemeId,
+            FontId = userCreateDto.FontId,
+            ActiveCourseId = userCreateDto.ActiveCourseId,
+            SelectedCharacterId = userCreateDto.SelectedCharacterId,
+            DepartmentId = userCreateDto.DepartmentId,
+            RoleId = userCreateDto.RoleId,
             CreatedAt = DateTime.UtcNow,
             IsActive = true
         };
@@ -66,7 +187,7 @@ public class UsersAdminController : ControllerBase
 
         return CreatedAtAction(nameof(Read_user), new { id = user.Id }, user);
     }
-    
+
     /// <summary>
     /// Метод для выгрузки только одного пользователя.
     /// </summary>
@@ -80,13 +201,76 @@ public class UsersAdminController : ControllerBase
         if (!int.TryParse(id, out var userId))
             return BadRequest("Некорректный id пользователя.");
 
-        var user = await _dbContext.Users.FindAsync(userId, cancellationToken);
-        if (user == null)
+        var u = await _dbContext.Users
+            .Include(u => u.Department)
+            .Include(u => u.Role)
+            .Include(u => u.SelectedCharacter)
+            .Include(u => u.ActiveCourse)
+            .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+
+        if (u == null)
             return NotFound();
-        return Ok(user);
+        
+        SettingDto themeDto = null;
+        SettingDto fontDto = null;
+
+        if (u.ThemeId.HasValue)
+        {
+            var theme = await _dbContext.Settings.FirstOrDefaultAsync(s => s.Id == u.ThemeId && s.Type == "theme" && (s.IsActive ?? true), cancellationToken);
+            if (theme != null)
+                themeDto = new SettingDto
+                {
+                    Id = theme.Id,
+                    Type = theme.Type,
+                    Name = theme.Name,
+                    Icon = theme.Icon
+                };
+        }
+        if (u.FontId.HasValue)
+        {
+            var font = await _dbContext.Settings.FirstOrDefaultAsync(s => s.Id == u.FontId && s.Type == "font" && (s.IsActive ?? true), cancellationToken);
+            if (font != null)
+                fontDto = new SettingDto
+                {
+                    Id = font.Id,
+                    Type = font.Type,
+                    Name = font.Name,
+                    Icon = font.Icon
+                };
+        }
+
+        var dto = new UserDto
+        {
+            Id = u.Id,
+            Login = u.Login,
+            PhoneNumber = u.PhoneNumber,
+            FirstName = u.FirstName,
+            SecondName = u.SecondName,
+            LastName = u.LastName,
+            Email = u.Email,
+            Avatar = u.Avatar,
+            Rating = u.Rating,
+            ThemeId = u.ThemeId,
+            Theme = themeDto,
+            FontId = u.FontId,
+            Font = fontDto,
+            ActiveCourseId = u.ActiveCourseId,
+            ActiveCourse = u.ActiveCourse == null ? null : new CourseDto { Id = u.ActiveCourse.Id, Title = u.ActiveCourse.Title },
+            SelectedCharacterId = u.SelectedCharacterId,
+            SelectedCharacter = u.SelectedCharacter == null ? null : new CharacterDto { Id = u.SelectedCharacter.Id, Name = u.SelectedCharacter.Name },
+            DepartmentId = u.DepartmentId,
+            Department = u.Department == null ? null : new DepartmentDto { Id = u.Department.Id, Name = u.Department.Name },
+            RoleId = u.RoleId,
+            Role = u.Role == null ? null : new UserRoleDto { Id = u.Role.Id, Name = u.Role.Name },
+            CreatedAt = u.CreatedAt != null ? u.CreatedAt.Value.AddHours(10) : null,
+            UpdatedAt = u.UpdatedAt != null ? u.UpdatedAt.Value.AddHours(10) : null,
+            IsActive = u.IsActive
+        };
+
+        return Ok(dto);
     }
-    
-    
+        
+        
     
     /// <summary>
     /// Метод для полного изменения пользователя.
@@ -180,13 +364,33 @@ public class UsersController : ControllerBase
     [HttpGet("users/user_login/{name_user}")]
     public async Task<IActionResult> Read_Name_user(string name_user, CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.Login == name_user, cancellationToken);
-
-        if (user == null)
+        var u = await _dbContext.Users.FirstOrDefaultAsync(u => u.Login == name_user, cancellationToken);
+        if (u == null)
             return NotFound();
 
-        return Ok(user);
+        var dto = new UserDto
+        {
+            Id = u.Id,
+            Login = u.Login,
+            PhoneNumber = u.PhoneNumber,
+            FirstName = u.FirstName,
+            SecondName = u.SecondName,
+            LastName = u.LastName,
+            Email = u.Email,
+            Avatar = u.Avatar,
+            Rating = u.Rating,
+            ThemeId = u.ThemeId,
+            FontId = u.FontId,
+            ActiveCourseId = u.ActiveCourseId,
+            SelectedCharacterId = u.SelectedCharacterId,
+            DepartmentId = u.DepartmentId,
+            RoleId = u.RoleId,
+            CreatedAt = u.CreatedAt += TimeSpan.FromHours(10),
+            UpdatedAt = u.UpdatedAt += TimeSpan.FromHours(10),
+            IsActive = u.IsActive
+        };
+
+        return Ok(dto);
     }
     
     // /// <summary>

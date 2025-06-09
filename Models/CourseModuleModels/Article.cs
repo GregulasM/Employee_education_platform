@@ -32,9 +32,6 @@ public class Article
 
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-
-    public int? HiddenAchievementId { get; set; }
-    public Achievement? HiddenAchievement { get; set; }
     
     public bool? IsActive { get; set; }
 }

@@ -54,10 +54,24 @@ public class ArticlesAdminController : ControllerBase
         var article = await _dbContext.Articles
             .Where(a => a.ModuleId == moduleId && a.Title == articleTitle && (a.IsActive ?? true))
             .Include(a => a.Module)
-            .Include(a => a.HiddenAchievement)
             .FirstOrDefaultAsync(cancellationToken);
         if (article == null) return NotFound();
-        return Ok(article);
+
+        var dto = new ArticleDto
+        {
+            Id = article.Id,
+            Title = article.Title,
+            Image = article.Image,
+            Tags = article.Tags,
+            Content = article.Content,
+            Rating = article.Rating,
+            ModuleId = article.ModuleId,
+            ModuleTitle = article.Module?.Title,
+            CreatedAt = article.CreatedAt += TimeSpan.FromHours(10),
+            UpdatedAt = article.UpdatedAt += TimeSpan.FromHours(10),
+            IsActive = article.IsActive
+        };
+        return Ok(dto);
     }
     
     
@@ -81,7 +95,6 @@ public class ArticlesAdminController : ControllerBase
         if (!string.IsNullOrWhiteSpace(patch.Tags)) article.Tags = patch.Tags;
         if (!string.IsNullOrWhiteSpace(patch.Content)) article.Content = patch.Content;
         if (patch.Rating.HasValue) article.Rating = patch.Rating;
-        if (patch.HiddenAchievementId.HasValue) article.HiddenAchievementId = patch.HiddenAchievementId;
         if (patch.ModuleId.HasValue && patch.ModuleId.Value != article.ModuleId)
         {
             var newModule = await _dbContext.Modules.FirstOrDefaultAsync(m => m.Id == patch.ModuleId.Value && (m.IsActive ?? true), cancellationToken);
@@ -112,7 +125,6 @@ public class ArticlesAdminController : ControllerBase
         article.Tags = newArticle.Tags;
         article.Content = newArticle.Content;
         article.Rating = newArticle.Rating;
-        article.HiddenAchievementId = newArticle.HiddenAchievementId;
         article.ModuleId = newArticle.ModuleId;
         article.UpdatedAt = DateTime.UtcNow;
         article.IsActive = newArticle.IsActive;
@@ -166,9 +178,24 @@ public class ArticlesController : ControllerBase
         var articles = await _dbContext.Articles
             .Where(a => a.ModuleId == moduleId && (a.IsActive ?? true))
             .Include(a => a.Module)
-            .Include(a => a.HiddenAchievement)
             .ToListAsync(cancellationToken);
-        return Ok(articles);
+
+        var dtoList = articles.Select(article => new ArticleDto
+        {
+            Id = article.Id,
+            Title = article.Title,
+            Image = article.Image,
+            Tags = article.Tags,
+            Content = article.Content,
+            Rating = article.Rating,
+            ModuleId = article.ModuleId,
+            ModuleTitle = article.Module?.Title,
+            CreatedAt = article.CreatedAt += TimeSpan.FromHours(10),
+            UpdatedAt = article.UpdatedAt += TimeSpan.FromHours(10),
+            IsActive = article.IsActive
+        }).ToList();
+
+        return Ok(dtoList);
     }
     
     

@@ -11,5 +11,12 @@ public class CourseDto
     public double? Position { get; set; }
     public int? DepartmentId { get; set; }
     public string? DepartmentName { get; set; }
+    
+    public DateTime? CreatedAt { get; set; }
+    
+    public DateTime? UpdatedAt { get; set; }
+    
     public List<TestDto> Tests { get; set; } = new();
+    
+    public List<LinkDto> UsefulLinks { get; set; }
 }

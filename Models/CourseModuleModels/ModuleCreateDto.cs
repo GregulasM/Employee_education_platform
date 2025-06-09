@@ -7,5 +7,4 @@ public class ModuleCreateDto
     public string? Image { get; set; }
     public string? Tags { get; set; }
     public double? Order { get; set; }
-    public int? HiddenAchievementId { get; set; }
 }

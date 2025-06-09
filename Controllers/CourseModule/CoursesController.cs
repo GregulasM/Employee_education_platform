@@ -164,6 +164,7 @@ public class CoursesController : ControllerBase
         var courses = await _dbContext.Courses
             .Where(c => c.IsActive ?? true)
             .Include(c => c.Department)
+            .Include(c => c.UsefulLinks.Where(l => l.IsActive ?? true))
             .Include(c => c.Tests.Where(t => t.IsActive ?? true))
             .ThenInclude(t => t.Module)
             .ToListAsync(cancellationToken);
@@ -179,6 +180,14 @@ public class CoursesController : ControllerBase
             Position = c.Position,
             DepartmentId = c.DepartmentId,
             DepartmentName = c.Department?.Name,
+            CreatedAt = c.CreatedAt += TimeSpan.FromHours(10), 
+            UpdatedAt = c.UpdatedAt += TimeSpan.FromHours(10), 
+            UsefulLinks = c.UsefulLinks?.Where(l => l.IsActive ?? true).Select(l => new LinkDto
+            {
+                Id = l.Id,
+                Title = l.Title,
+                Url = l.Url
+            }).ToList() ?? new List<LinkDto>(),
             Tests = c.Tests
                 .Where(t => t.IsActive ?? true)
                 .Select(t => new TestDto

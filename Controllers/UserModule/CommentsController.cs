@@ -35,7 +35,20 @@ public class CommentsAdminController : ControllerBase
         comment.UpdatedAt = DateTime.UtcNow;
         _dbContext.Comments.Add(comment);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return CreatedAtAction(nameof(Read_comment_news), new { id_comment = comment.Id }, comment);
+        var user = await _dbContext.Users.FindAsync(comment.UserId, cancellationToken);
+
+        var dto = new CommentDto
+        {
+            Id = comment.Id,
+            NewsId = comment.NewsId,
+            UserId = comment.UserId,
+            UserName = user?.Login,
+            Text = comment.Text,
+            CreatedAt = comment.CreatedAt,
+            UpdatedAt = comment.UpdatedAt
+        };
+
+        return CreatedAtAction(nameof(Read_comment_news), new { id_comment = comment.Id }, dto);
     }
     
     /// <summary>
@@ -49,9 +62,22 @@ public class CommentsAdminController : ControllerBase
     public async Task<IActionResult> Read_comment_news(int id_comment, CancellationToken cancellationToken)
     {
         var c = await _dbContext.Comments
+            .Include(x => x.User) // Если хочешь получить UserName
             .FirstOrDefaultAsync(x => x.Id == id_comment && x.IsActive == true, cancellationToken);
         if (c == null) return NotFound("Комментарий не найден");
-        return Ok(c);
+
+        var dto = new CommentDto
+        {
+            Id = c.Id,
+            NewsId = c.NewsId,
+            UserId = c.UserId,
+            UserName = c.User?.Login,
+            Text = c.Text,
+            CreatedAt = c.CreatedAt += TimeSpan.FromHours(10),
+            UpdatedAt = c.UpdatedAt += TimeSpan.FromHours(10)
+        };
+
+        return Ok(dto);
     }
 
     /// <summary>
@@ -138,9 +164,22 @@ public class CommentsController : ControllerBase
     public async Task<IActionResult> Read_All_comment_news(CancellationToken cancellationToken)
     {
         var list = await _dbContext.Comments
+            .Include(x => x.User)
             .Where(x => x.IsActive == true)
             .ToListAsync(cancellationToken);
-        return Ok(list);
+
+        var dto = list.Select(c => new CommentDto
+        {
+            Id = c.Id,
+            NewsId = c.NewsId,
+            UserId = c.UserId,
+            UserName = c.User?.Login,
+            Text = c.Text,
+            CreatedAt = c.CreatedAt += TimeSpan.FromHours(10),
+            UpdatedAt = c.UpdatedAt += TimeSpan.FromHours(10)
+        }).ToList();
+
+        return Ok(dto);
     }
 
     

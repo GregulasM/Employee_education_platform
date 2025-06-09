@@ -37,12 +37,28 @@ public class ModulesAdminController : ControllerBase
             Order = dto.Order,
             CreatedAt = DateTime.UtcNow,
             CourseId = course.Id,
-            HiddenAchievementId = dto.HiddenAchievementId,
             IsActive = true,
         };
         _dbContext.Modules.Add(module);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return CreatedAtAction(nameof(Read_module), new { name_course, name_module = module.Title }, module);
+
+        // Выгружаем DTO
+        var moduleDto = new ModuleDto
+        {
+            Id = module.Id,
+            Title = module.Title,
+            Description = module.Description,
+            Image = module.Image,
+            Tags = module.Tags,
+            Order = module.Order,
+            CourseId = module.CourseId,
+            CourseTitle = course.Title,
+            CreatedAt = module.CreatedAt ,
+            UpdatedAt = module.UpdatedAt ,
+            IsActive = module.IsActive
+        };
+
+        return CreatedAtAction(nameof(Read_module), new { name_course, name_module = module.Title }, moduleDto);
     }
     
     /// <summary>
@@ -59,12 +75,25 @@ public class ModulesAdminController : ControllerBase
         if (course == null) return NotFound();
         var module = await _dbContext.Modules
             .Where(m => m.Title == name_module && m.CourseId == course.Id && (m.IsActive ?? true))
-            .Include(m => m.Course)
-            .Include(m => m.HiddenAchievement)
-            .Include(m => m.Tests.Where(t => t.IsActive ?? true))
             .FirstOrDefaultAsync(cancellationToken);
         if (module == null) return NotFound();
-        return Ok(module);
+
+        var moduleDto = new ModuleDto
+        {
+            Id = module.Id,
+            Title = module.Title,
+            Description = module.Description,
+            Image = module.Image,
+            Tags = module.Tags,
+            Order = module.Order,
+            CourseId = module.CourseId,
+            CourseTitle = course.Title,
+            CreatedAt = module.CreatedAt += TimeSpan.FromHours(10),
+            UpdatedAt = module.UpdatedAt += TimeSpan.FromHours(10),
+            IsActive = module.IsActive
+        };
+
+        return Ok(moduleDto);
     }
     
 
@@ -97,12 +126,27 @@ public class ModulesAdminController : ControllerBase
         if (!string.IsNullOrWhiteSpace(patchDto.Image)) module.Image = patchDto.Image;
         if (!string.IsNullOrWhiteSpace(patchDto.Tags)) module.Tags = patchDto.Tags;
         if (patchDto.Order.HasValue) module.Order = patchDto.Order;
-        if (patchDto.HiddenAchievementId.HasValue) module.HiddenAchievementId = patchDto.HiddenAchievementId;
         if (patchDto.IsActive.HasValue) module.IsActive = patchDto.IsActive;
 
-        module.UpdatedAt = DateTime.UtcNow;
+        module.UpdatedAt = DateTime.UtcNow ;
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return Ok(module);
+
+        var moduleDto = new ModuleDto
+        {
+            Id = module.Id,
+            Title = module.Title,
+            Description = module.Description,
+            Image = module.Image,
+            Tags = module.Tags,
+            Order = module.Order,
+            CourseId = module.CourseId,
+            CourseTitle = course.Title,
+            IsActive = module.IsActive,
+            CreatedAt = module.CreatedAt,
+            UpdatedAt = module.UpdatedAt
+        };
+
+        return Ok(moduleDto);
     }
 
     /// <summary>
@@ -125,11 +169,26 @@ public class ModulesAdminController : ControllerBase
         module.Image = fullModule.Image;
         module.Tags = fullModule.Tags;
         module.Order = fullModule.Order;
-        module.HiddenAchievementId = fullModule.HiddenAchievementId;
         module.IsActive = fullModule.IsActive;
-        module.UpdatedAt = DateTime.UtcNow;
+        module.UpdatedAt = DateTime.UtcNow ;
         await _dbContext.SaveChangesAsync(cancellationToken);
-        return Ok(module);
+
+        var moduleDto = new ModuleDto
+        {
+            Id = module.Id,
+            Title = module.Title,
+            Description = module.Description,
+            Image = module.Image,
+            Tags = module.Tags,
+            Order = module.Order,
+            CourseId = module.CourseId,
+            CourseTitle = course.Title,
+            IsActive = module.IsActive,
+            CreatedAt = module.CreatedAt,
+            UpdatedAt = module.UpdatedAt
+        };
+
+        return Ok(moduleDto);
     }
 
     /// <summary>
@@ -147,7 +206,7 @@ public class ModulesAdminController : ControllerBase
         var module = await _dbContext.Modules.FirstOrDefaultAsync(m => m.Title == name_module && m.CourseId == course.Id && (m.IsActive ?? true), cancellationToken);
         if (module == null) return NotFound("Модуль не найден");
         module.IsActive = false;
-        module.UpdatedAt = DateTime.UtcNow;
+        module.UpdatedAt = DateTime.UtcNow ;
         await _dbContext.SaveChangesAsync(cancellationToken);
         return Ok("Модуль успешно помечен как неактивный.");
     }
@@ -176,11 +235,25 @@ public class ModulesController : ControllerBase
         var modules = await _dbContext.Modules
             .Where(m => m.IsActive ?? true)
             .Include(m => m.Course)
-            .Include(m => m.HiddenAchievement)
-            .Include(m => m.Tests.Where(t => t.IsActive ?? true))
+            //.Include(m => m.Tests.Where(t => t.IsActive ?? true)) // НЕ включай Tests если они не нужны для выдачи, иначе цикл снова появится!
             .ToListAsync(cancellationToken);
 
-        return Ok(modules);
+        var dto = modules.Select(m => new ModuleDto
+        {
+            Id = m.Id,
+            Title = m.Title,
+            Description = m.Description,
+            Image = m.Image,
+            Tags = m.Tags,
+            Order = m.Order,
+            CourseId = m.CourseId,
+            CourseTitle = m.Course?.Title,
+            CreatedAt = m.CreatedAt += TimeSpan.FromHours(10),
+            UpdatedAt = m.UpdatedAt += TimeSpan.FromHours(10),
+            IsActive = m.IsActive
+        }).ToList();
+
+        return Ok(dto);
     }
 
     
