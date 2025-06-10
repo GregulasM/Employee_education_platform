@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using eep_backend.Models.UserModuleModels;
 
 namespace eep_backend.Models.GameModuleModels;
 
@@ -20,6 +21,8 @@ public class Achievement
 
     public int? ListId { get; set; }
     public AchievementList? List { get; set; }
+    public List<UserAchievement>? UserAchievements { get; set; }
+    
 
     public bool? IsActive { get; set; }
 }

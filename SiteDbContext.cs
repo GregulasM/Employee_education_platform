@@ -28,6 +28,9 @@ public class SiteDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     
+    public DbSet<UserAchievement> UserAchievements { get; set; }
+    
+    
     public SiteDbContext(DbContextOptions<SiteDbContext> options)
         : base(options)
     {

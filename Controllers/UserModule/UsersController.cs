@@ -30,6 +30,7 @@ public class UsersAdminController : ControllerBase
     public async Task<IActionResult> Read_All_user(CancellationToken cancellationToken)
     {
         var users = await _dbContext.Users
+            .Where(u => u.IsActive != false)
             .Include(u => u.Department)
             .Include(u => u.Role)
             .Include(u => u.SelectedCharacter)
@@ -40,15 +41,13 @@ public class UsersAdminController : ControllerBase
 
         var themeIds = users.Where(u => u.ThemeId.HasValue).Select(u => u.ThemeId.Value).Distinct().ToList();
         var fontIds = users.Where(u => u.FontId.HasValue).Select(u => u.FontId.Value).Distinct().ToList();
-
-        // ВАЖНО: тут без всяких сложных фильтров, просто грузим по id все settings, а тип потом проверим в мапе
+        
         var allSettingIds = themeIds.Concat(fontIds).Distinct().ToList();
 
         var settings = await _dbContext.Settings
             .Where(s => allSettingIds.Contains(s.Id) && (s.IsActive ?? true))
             .ToListAsync(cancellationToken);
-
-        // Карты для быстрого поиска
+        
         var themeMap = settings.Where(s => s.Type == "theme").ToDictionary(s => s.Id, s => s);
         var fontMap = settings.Where(s => s.Type == "font").ToDictionary(s => s.Id, s => s);
 

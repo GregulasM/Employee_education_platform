@@ -124,13 +124,15 @@ public class UserRolesController : ControllerBase
     [HttpDelete("user_roles/{id}")]
     public async Task<IActionResult> DeleteRole(int id, CancellationToken cancellationToken)
     {
-        var role = await _dbContext.UserRoles.FindAsync(id);
+        var role = await _dbContext.Users.FindAsync(id, cancellationToken);
         if (role == null)
             return NotFound();
 
-        _dbContext.UserRoles.Remove(role);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        if (role.IsActive == false)
+            return BadRequest("Роль уже неактивена.");
 
-        return Ok("Роль удалена.");
+        role.IsActive = false;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return Ok("Роль успешно помечена как неактивная.");
     }
 }
