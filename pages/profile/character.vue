@@ -1,3 +1,4 @@
+<!--profile/character-->
 <template>
   <div class="shadow-md shadow-orange-200 mt-8 mx-8 rounded-lg bg-orange-50 opacity-90">
 

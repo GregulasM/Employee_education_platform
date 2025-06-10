@@ -1,58 +1,71 @@
 <template>
-  <div class="shadow-md shadow-orange-200 mt-8 mx-auto max-w-3xl rounded-lg bg-orange-50 opacity-95">
+  <div class="shadow-md shadow-orange-200 mt-8 mx-auto rounded-lg bg-orange-50 opacity-95">
     <div class="flex justify-between items-center text-xl font-bold text-white bg-red-500/50 p-4 rounded-t-lg">
-      <h2>{{ moduleTitle }} / {{ articleTitle }}</h2>
-      <span class="text-xs">Маршрут: /courses/{{ course }}/{{ module }}</span>
+      <h2>{{ moduleTitle }} : {{ articleTitle }}</h2>
+      <span class="text-xs opacity-80">
+      {{ publishedDate }}
+    </span>
     </div>
     <div class="p-6 space-y-10">
-      <TableOfContents :blocks="blocks" />
-      <component
-          v-for="(block, i) in blocks"
-          :key="i"
-          :is="resolveComponent(block.type)"
-          :block="block"
-          :idx="i"
-      />
+      <TiptapViewer v-if="tiptapContent" :content="tiptapContent" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import HeadingBlock from '@/components/Article/HeadingBlock.vue'
-import ParagraphBlock from '@/components/Article/ParagraphBlock.vue'
-import ImageBlock from '@/components/Article/ImageBlock.vue'
-import SliderBlock from '@/components/Article/SliderBlock.vue'
-import VideoBlock from '@/components/Article/VideoBlock.vue'
-import AudioBlock from '@/components/Article/AudioBlock.vue'
-import QuoteBlock from '@/components/Article/QuoteBlock.vue'
-import TableOfContents from '@/components/Article/TableOfContents.vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
-const { course, module, article } = useRoute().params
+const route = useRoute()
+const { module, article } = route.params
 
-// Заглушка для названия
-const moduleTitle = 'Введение'
-const articleTitle = 'Установка и настройка'
+/* данные статьи */
+const moduleTitle  = ref('')
+const articleTitle = ref('')
 
-// Пока без API: просто импортируй json с блоками
-const blocks = ref([])
+/* контент tiptap */
+const tiptapContent = ref(null)
 
-onMounted(async () => {
-  // Можешь заменить fetch на API-запрос из SurrealDB, когда будет готово
-  const data = await $fetch('/data/article-example.json')
-  blocks.value = data
+/* дата публикации / обновления */
+const createdAt  = ref<string | null>(null)
+const updatedAt  = ref<string | null>(null)
+
+/* красиво форматируем дату */
+const publishedDate = computed(() => {
+  const src = updatedAt.value || createdAt.value
+  if (!src) return ''
+  const d = new Date(src)
+  return d.toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
 })
 
-function resolveComponent(type: string) {
-  switch (type) {
-    case 'heading': return HeadingBlock
-    case 'paragraph': return ParagraphBlock
-    case 'image': return ImageBlock
-    case 'slider': return SliderBlock
-    case 'video': return VideoBlock
-    case 'audio': return AudioBlock
-    case 'quote': return QuoteBlock
-    default: return 'div'
+onMounted(async () => {
+  try {
+    const encoded = encodeURIComponent(article as string)
+    const res: any = await $fetch(
+        `http://localhost:5148/api/admin_panel/modules/${module}/articles/${encoded}`
+    )
+
+    moduleTitle.value  = res.moduleTitle || 'Без названия'
+    articleTitle.value = res.title       || 'Статья'
+
+    createdAt.value = res.createdAt   || null
+    updatedAt.value = res.updatedAt   || null
+
+    /* контент */
+    if (typeof res.content === 'string') {
+      tiptapContent.value = JSON.parse(res.content)
+    } else {
+      tiptapContent.value = res.content
+    }
+  } catch (e) {
+    articleTitle.value = 'Статья не найдена'
+    tiptapContent.value = null
   }
-}
+})
 </script>

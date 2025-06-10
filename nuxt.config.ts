@@ -18,13 +18,13 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/test-utils',
-    '@nuxt/ui',
     '@nuxt/content',
-    'shadcn-nuxt'
+    'shadcn-nuxt',
+    '@pinia/nuxt',
+    'nuxt-tiptap-editor'
   ],
   shadcn: {
     /**
@@ -37,6 +37,13 @@ export default defineNuxtConfig({
      */
     componentDir: './components/ui'
   },
+
+  components: [
+    {
+      path: '~/components/editor',
+      pathPrefix: false,
+    },
+  ],
 
   hooks: {
     'pages:extend'(pages) {
