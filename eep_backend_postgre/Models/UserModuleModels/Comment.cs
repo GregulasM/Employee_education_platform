@@ -1,14 +1,27 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eep_backend.Models.UserModuleModels;
 
 public class Comment
 {
-    public RecordIdOfString id { get; set; }
-    public RecordIdOfString? news { get; set; }
-    public RecordIdOfString? user { get; set; }
-    public DateTime? created_at { get; set; }
-    public DateTime? updated_at { get; set; }
-    public string? text { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public int? NewsId { get; set; }
+    public News? News { get; set; }
+
+    public int? UserId { get; set; }
+    public User? User { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+
+    public string? Text { get; set; }
+    public bool? IsActive { get; set; }
 }

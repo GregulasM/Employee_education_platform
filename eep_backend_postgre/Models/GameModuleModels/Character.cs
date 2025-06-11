@@ -1,18 +1,33 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eep_backend.Models.GameModuleModels;
 
 public class Character
 {
-    public RecordIdOfString id { get; set; }
-    public string name { get; set; }
-    public string? avatar { get; set; }
-    public string? description { get; set; }
-    public object? base_stats { get; set; }
-    public object? cosmetics { get; set; }
-    public List<object>? skills { get; set; }
-    public bool? @default { get; set; }
-    public string? rarity { get; set; }
-    public string? unlock_cond { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public string? Name { get; set; }
+    public string? Avatar { get; set; }
+    public string? Description { get; set; }
+
+    [Column(TypeName = "jsonb")]
+    public string? BaseStats { get; set; } 
+
+    [Column(TypeName = "jsonb")]
+    public string? Cosmetics { get; set; } 
+
+    [Column(TypeName = "jsonb")]
+    public string? Skills { get; set; }    
+
+    public bool? Default { get; set; }
+    public string? Rarity { get; set; }
+    public string? UnlockCond { get; set; }
+    public bool? IsActive { get; set; }
 }

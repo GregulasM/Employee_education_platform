@@ -1,62 +1,85 @@
+using eep_backend;
+using eep_backend.Models.GameModuleModels;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-
-namespace Employee_education_platform.Controllers;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/admin_panel")]
 public class CharactersAdminController : ControllerBase
 {
-    /// <summary>
-    /// Метод для создания персонажа.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для создания персонажа.", 
-        Description = "Создает персонажа."
-    )]
+    private readonly SiteDbContext _dbContext;
+    public CharactersAdminController(SiteDbContext dbContext) => _dbContext = dbContext;
+
     [HttpPost("characters")]
-    public IActionResult Create_character()
+    public async Task<IActionResult> Create_character([FromBody] CharacterCreateDto dto, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(dto.Name)) return BadRequest("Имя персонажа обязательно.");
+        var character = new Character {
+            Name = dto.Name,
+            Avatar = dto.Avatar,
+            Description = dto.Description,
+            BaseStats = dto.BaseStats,
+            Cosmetics = dto.Cosmetics,
+            Skills = dto.Skills,
+            Default = dto.Default,
+            Rarity = dto.Rarity,
+            UnlockCond = dto.UnlockCond,
+            IsActive = dto.IsActive ?? true,
+            PublicId = Guid.NewGuid()
+        };
+        _dbContext.Characters.Add(character);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return Ok(character);
     }
-    
-    /// <summary>
-    /// Метод для частичного изменения персонажа.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для частичного изменения персонажа.", 
-        Description = "Частично меняет персонажа."
-    )]
-    [HttpPatch("characters/{name_character}")]
-    public IActionResult Edit_character()
+
+    [HttpPatch("characters/{id}")]
+    public async Task<IActionResult> Edit_character(int id, [FromBody] CharacterPatchDto dto, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var character = await _dbContext.Characters.FindAsync(id, cancellationToken);
+        if (character == null) return NotFound();
+
+        if (!string.IsNullOrWhiteSpace(dto.Name)) character.Name = dto.Name;
+        if (!string.IsNullOrWhiteSpace(dto.Avatar)) character.Avatar = dto.Avatar;
+        if (!string.IsNullOrWhiteSpace(dto.Description)) character.Description = dto.Description;
+        if (!string.IsNullOrWhiteSpace(dto.BaseStats)) character.BaseStats = dto.BaseStats;
+        if (!string.IsNullOrWhiteSpace(dto.Cosmetics)) character.Cosmetics = dto.Cosmetics;
+        if (!string.IsNullOrWhiteSpace(dto.Skills)) character.Skills = dto.Skills;
+        if (dto.Default.HasValue) character.Default = dto.Default;
+        if (!string.IsNullOrWhiteSpace(dto.Rarity)) character.Rarity = dto.Rarity;
+        if (!string.IsNullOrWhiteSpace(dto.UnlockCond)) character.UnlockCond = dto.UnlockCond;
+        if (dto.IsActive.HasValue) character.IsActive = dto.IsActive;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return Ok(character);
     }
-    
-    /// <summary>
-    /// Метод для полного изменения персонажа.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для полного изменения персонажа.", 
-        Description = "Полностью меняет персонажа."
-    )]
-    [HttpPut("characters/{name_character}")]
-    public IActionResult Replace_character()
+
+    [HttpPut("characters/{id}")]
+    public async Task<IActionResult> Replace_character(int id, [FromBody] Character dto, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var character = await _dbContext.Characters.FindAsync(id, cancellationToken);
+        if (character == null) return NotFound();
+
+        character.Name = dto.Name;
+        character.Avatar = dto.Avatar;
+        character.Description = dto.Description;
+        character.BaseStats = dto.BaseStats;
+        character.Cosmetics = dto.Cosmetics;
+        character.Skills = dto.Skills;
+        character.Default = dto.Default;
+        character.Rarity = dto.Rarity;
+        character.UnlockCond = dto.UnlockCond;
+        character.IsActive = dto.IsActive;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return Ok(character);
     }
-    
-    /// <summary>
-    /// Метод для удаления персонажа.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для удаления персонажа.", 
-        Description = "Удаляет персонажа."
-    )]
-    [HttpDelete("characters/{name_character}")]
-    public IActionResult Delete_character()
+
+    [HttpDelete("characters/{id}")]
+    public async Task<IActionResult> Delete_character(int id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var character = await _dbContext.Characters.FindAsync(id, cancellationToken);
+        if (character == null) return NotFound();
+        character.IsActive = false;
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return Ok("Персонаж успешно помечен как неактивный.");
     }
 }
 
@@ -64,30 +87,24 @@ public class CharactersAdminController : ControllerBase
 [Route("api")]
 public class CharactersController : ControllerBase
 {
-    
-    /// <summary>
-    /// Метод для выгрузки всех достижений из определенного списка достижений.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для выгрузки всех достижений из определенного списка достижений.", 
-        Description = "Выгружает все достижения из списка."
-    )]
+    private readonly SiteDbContext _dbContext;
+    public CharactersController(SiteDbContext dbContext) => _dbContext = dbContext;
+
     [HttpGet("characters")]
-    public IActionResult Read_All_character()
+    public async Task<IActionResult> Read_All_character(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var chars = await _dbContext.Characters
+            .Where(x => x.IsActive == true)
+            .ToListAsync(cancellationToken);
+        return Ok(chars);
     }
-    
-    /// <summary>
-    /// Метод для выгрузки только одного персонажа.
-    /// </summary>
-    [SwaggerOperation(
-        Summary = "Метод для выгрузки только одного персонажа.", 
-        Description = "Выгружает только одно персонажа."
-    )]
-    [HttpGet("characters/{name_character}")]
-    public IActionResult Read_character()
+
+    [HttpGet("characters/{id}")]
+    public async Task<IActionResult> Read_character(int id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var character = await _dbContext.Characters
+            .FirstOrDefaultAsync(x => x.Id == id && x.IsActive == true, cancellationToken);
+        if (character == null) return NotFound();
+        return Ok(character);
     }
 }

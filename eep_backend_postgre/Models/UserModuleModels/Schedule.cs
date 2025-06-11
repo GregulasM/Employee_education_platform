@@ -1,19 +1,35 @@
-using SurrealDb.Net.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using eep_backend.Models.CourseModuleModels;
+
 
 namespace eep_backend.Models.UserModuleModels;
 
 public class Schedule
 {
-    public RecordIdOfString id { get; set; }          // SurrealDB id
+    public int Id { get; set; }
+    
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
 
-    public string day_of_week { get; set; }           // 'Понедельник', 'Вторник', и т.д.
-    public string? time_slot { get; set; }             // '8:30-10:00'
-    public string? subject { get; set; }               // 'Middleware в ASP'
-    public string? teacher { get; set; }               // 'Крутой Е.И.'
-    public string? details { get; set; }               // 'Совещательная, каб. 21, 2 этаж'
-    public RecordIdOfString? course { get; set; }      // связь с курсом
-    public RecordIdOfString? module { get; set; }      // связь с модулем
-    public RecordIdOfString? department { get; set; }  // связь с отделом
-    public RecordIdOfString? user { get; set; }        // связь с пользователем (если нужно уникальное для работника)
-    public bool? is_active { get; set; }               // Активна ли запись
+    public string? DayOfWeek { get; set; }
+    public string? TimeSlot { get; set; }
+    public string? Subject { get; set; } 
+    public string? Teacher { get; set; } 
+    public string? Details { get; set; } 
+    
+    public int? CourseId { get; set; }
+    public Course? Course { get; set; }
+
+    public int? ModuleId { get; set; }
+    public Module? Module { get; set; }
+
+    public int? DepartmentId { get; set; }
+    public Department? Department { get; set; }
+
+    public int? UserId { get; set; }
+    public User? User { get; set; }
+
+    public bool? IsActive { get; set; }
 }

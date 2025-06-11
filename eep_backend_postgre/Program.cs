@@ -1,5 +1,6 @@
 using System.Reflection;
 using eep_backend;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace Employee_education_platform;
@@ -11,6 +12,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         var configuration = builder.Configuration;
         
+        builder.Services.AddDbContext<SiteDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("SiteDbContext")).UseSnakeCaseNamingConvention());
 
         // Add services to the container.
         builder.Services.AddAuthorization();
@@ -37,18 +39,25 @@ public class Program
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
         
-        var options = SurrealDbOptions
-            .Create()
-            .WithEndpoint("http://127.0.0.1:8765")
-            .WithNamespace("eep_database_v1")
-            .WithDatabase("eep_database")
-            .WithUsername("Gregulas")
-            .WithPassword("234432")
-            .Build();
-        
-        builder.Services.AddSurreal(options);
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: "AdminPanel",
+                policy  =>
+                {
+                    policy.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    policy.WithOrigins("http://localhost:3001")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    
+                    // "http://www.contoso.com");
+                });
+        });
 
         var app = builder.Build();
+        
+        app.UseCors("AdminPanel");
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

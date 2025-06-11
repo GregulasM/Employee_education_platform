@@ -1,22 +1,37 @@
-using SurrealDb.Net.Models;
+
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using eep_backend.Models.GameModuleModels;
+using eep_backend.Models.UserModuleModels;
 
 namespace eep_backend.Models.CourseModuleModels;
 
 public class Article
 {
-    public RecordIdOfString id { get; set; }
-    public string? title { get; set; }
-    public RecordIdOfString? module { get; set; }
-    public string? image { get; set; }
-    public List<object>? content { get; set; }
-    public string? excerpt { get; set; }
-    public List<string>? images { get; set; }
-    public RecordIdOfString? author { get; set; }
-    public List<string>? tags { get; set; }
-    public double? rating { get; set; }
-    public DateTime? created_at { get; set; }
-    public DateTime? updated_at { get; set; }
-    public RecordIdOfString? hidden_achievement { get; set; }
-    public List<object>? attachments { get; set; }
-    public bool? is_active { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    public string? Title { get; set; }
+
+    public int? ModuleId { get; set; }
+    public Module? Module { get; set; }
+
+    public string? Image { get; set; }
+
+    [Column(TypeName = "jsonb")]
+    public string? Content { get; set; }
+
+    [Column(TypeName = "jsonb")]
+    public string? Tags { get; set; }
+    
+    public double? Rating { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    
+    public bool? IsActive { get; set; }
 }
