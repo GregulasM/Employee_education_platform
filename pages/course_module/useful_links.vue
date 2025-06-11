@@ -267,7 +267,6 @@ const filteredLinks = computed(() => {
       return tags.some((t: string) => t.toLowerCase().includes(filter.tags.toLowerCase()))
     })
   }
-  // Только активные!
   arr = arr.filter(l => l.isActive !== false)
   arr.sort((a, b) => b.id - a.id)
   return arr

@@ -184,7 +184,6 @@ async function confirmDelete(id: number) {
   }
 }
 
-// Фильтры и сортировка
 const showFilters = ref(false)
 const filter = reactive({
   name: '',

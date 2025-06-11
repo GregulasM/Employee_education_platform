@@ -10,6 +10,12 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  components: [
+    {
+      path: '~/components/editor',
+      pathPrefix: false,
+    },
+  ],
 
   modules: [
     '@nuxt/content',
@@ -19,5 +25,6 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/ui',
     '@pinia/nuxt',
+    'nuxt-tiptap-editor'
   ]
 })

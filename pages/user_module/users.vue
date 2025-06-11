@@ -387,15 +387,12 @@ const sortDir = ref<'asc' | 'desc'>('asc')
 
 const filteredUsers = computed(() => {
   let arr = [...usersStore.users]
-  // Фильтрация
   if (filter.login) arr = arr.filter(u => (u.login || '').toLowerCase().includes(filter.login.toLowerCase()))
   if (filter.firstName) arr = arr.filter(u => (u.firstName || '').toLowerCase().includes(filter.firstName.toLowerCase()))
   if (filter.role) arr = arr.filter(u => (u.role?.name || '').toLowerCase().includes(filter.role.toLowerCase()))
-  // Сортировка
   arr.sort((a, b) => {
     let aVal = a[sortKey.value]
     let bVal = b[sortKey.value]
-    // null guard
     if (aVal == null) return 1
     if (bVal == null) return -1
     if (aVal < bVal) return sortDir.value === 'asc' ? -1 : 1

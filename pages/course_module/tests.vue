@@ -185,7 +185,6 @@ const filter = reactive({
 const sortKey = ref<'id'|'title'|'courseTitle'|'moduleTitle'>('id')
 const sortDir = ref<'asc'|'desc'>('asc')
 
-// Helper для связи модулей с выбранным курсом
 const filteredModules = computed(() => {
   if (!testsStore.modules.length || !newTest.value.courseId && !filter.courseId && !editTest.value.courseId)
     return testsStore.modules
@@ -263,7 +262,6 @@ const filteredTests = computed(() => {
   return arr
 })
 
-// CRUD (редактирование/удаление)
 function startEdit(id: number) {
   editingId.value = id
   const t = testsStore.tests.find(t => t.id === id)

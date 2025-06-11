@@ -105,6 +105,7 @@
                 <td class="whitespace-nowrap px-2 py-2">{{ a.createdAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2">{{ a.updatedAt }}</td>
                 <td class="whitespace-nowrap px-2 py-2 flex gap-2 justify-center align-centre items-center place-content-center place-self-center">
+                  <button class="btn btn-xs btn-info" @click="viewContent(a)">👁️ Подробнее</button>
                   <button class="btn btn-xs btn-warning font-bold" @click="startEdit(a.id)">✏️ Изменить</button>
                   <button class="btn btn-xs btn-error" @click="startDelete(a.id)">Удалить 🗑️</button>
                 </td>
@@ -140,6 +141,19 @@
         </div>
       </div>
     </div>
+
+    <!-- Модальное окно для отображения content -->
+    <div v-if="showContentModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @click="closeContentModal">
+      <div class="bg-gray-800 p-6 rounded-lg max-w-4xl w-full mx-4" @click.stop>
+        <h3 class="text-lg font-bold text-white mb-4">Контент статьи</h3>
+        <div v-if="selectedArticle" class="text-white">
+          <pre class="whitespace-pre-line break-words bg-gray-700 p-2 rounded">{{ selectedArticle.content }}</pre>
+        </div>
+        <div class="flex justify-end mt-4">
+          <button class="btn btn-primary" @click="closeContentModal">Закрыть</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -148,12 +162,13 @@ import { useArticlesStore } from '~/stores/articles_store'
 const router = useRouter()
 const articlesStore = useArticlesStore()
 
-
-const editingId = ref<number|null>(null)
+const editingId = ref<number | null>(null)
 const editArticle = ref<any>({})
-const confirmingDeleteId = ref<number|null>(null)
+const confirmingDeleteId = ref<number | null>(null)
+const showContentModal = ref(false)
+const selectedArticle = ref(null)
 
-function go_back () {
+function go_back() {
   router.back()
 }
 
@@ -214,7 +229,7 @@ function moduleNameById(moduleId: number | null) {
   return m ? m.title : '—'
 }
 
-// CRUD (редактирование/удаление)
+
 function startEdit(id: number) {
   editingId.value = id
   const art = articlesStore.articles.find(a => a.id === id)
@@ -242,6 +257,16 @@ async function confirmDelete() {
   await articlesStore.deleteArticle(editArticle.value.id)
   confirmingDeleteId.value = null
   editArticle.value = {}
+}
+
+function viewContent(article) {
+  selectedArticle.value = article
+  showContentModal.value = true
+}
+
+function closeContentModal() {
+  showContentModal.value = false
+  selectedArticle.value = null
 }
 
 function refreshArticles() {

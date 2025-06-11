@@ -27,7 +27,6 @@ export const useArticlesStore = defineStore('articles', () => {
     const error: Ref<string | null> = ref(null)
     const modules: Ref<ModuleShort[]> = ref([])
 
-    // Получить все модули для dropdown'а (используем /api/modules)
     async function fetchModules() {
         loading.value = true
         error.value = null
@@ -40,7 +39,6 @@ export const useArticlesStore = defineStore('articles', () => {
         loading.value = false
     }
 
-    // Получить все статьи по выбранному модулю (или все, если moduleId не передан)
     async function fetchArticles(moduleId?: number) {
         loading.value = true
         error.value = null
@@ -49,7 +47,6 @@ export const useArticlesStore = defineStore('articles', () => {
             if (moduleId) {
                 res = await $fetch<Article[]>(`http://localhost:5148/api/modules/${moduleId}/articles`)
             } else {
-                // Получить все статьи по всем модулям
                 const mods = modules.value.length ? modules.value : await fetchModules()
                 let all: Article[] = []
                 const promises = mods.map(m =>
@@ -65,7 +62,6 @@ export const useArticlesStore = defineStore('articles', () => {
         loading.value = false
     }
 
-    // Создать статью (title, moduleId — обязательны)
     async function createArticle(moduleId: number, article: Partial<Article>) {
         await $fetch(`http://localhost:5148/api/admin_panel/modules/${moduleId}/articles`, {
             method: 'POST',
@@ -74,7 +70,6 @@ export const useArticlesStore = defineStore('articles', () => {
         await fetchArticles(moduleId)
     }
 
-    // Обновить (PATCH)
     async function updateArticle(id: number, patch: Partial<Article>) {
         const article = articles.value.find(a => a.id === id)
         if (!article) throw new Error('Статья не найдена')
@@ -85,7 +80,6 @@ export const useArticlesStore = defineStore('articles', () => {
         await fetchArticles()
     }
 
-    // Soft delete (DELETE)
     async function deleteArticle(id: number) {
         const article = articles.value.find(a => a.id === id)
         if (!article) throw new Error('Статья не найдена')

@@ -10,7 +10,7 @@ export interface Test {
     course?: { id: number; title: string }
     moduleId: number | null
     module?: { id: number; title: string }
-    questions: string // JSON строка
+    questions: string
     isActive: boolean | null
 }
 

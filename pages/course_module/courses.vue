@@ -196,7 +196,7 @@ function cancelEdit() {
 }
 
 async function saveEdit(id: number) {
-  // Convert tagsString back to array or JSON string if necessary
+
   let patch = { ...editCourse.value }
   if (typeof patch.tagsString === 'string') {
     patch.tags = patch.tagsString.split(',').map(x => x.trim()).filter(x => x)
@@ -237,7 +237,7 @@ const sortDir = ref<'asc' | 'desc'>('asc')
 const filteredCourses = computed(() => {
   let arr = [...coursesStore.courses]
   if (filter.title) arr = arr.filter(c => (c.title || '').toLowerCase().includes(filter.title.toLowerCase()))
-  if (filter.department) arr = arr.filter(c => (c.department?.name || '').toLowerCase().includes(filter.department.toLowerCase()))
+  if (filter.department) arr = arr.filter(c => (c.departmentName || '').toLowerCase().includes(filter.department.toLowerCase()))
   if (filter.tag) arr = arr.filter(c => (c.tags || []).join(', ').toLowerCase().includes(filter.tag.toLowerCase()))
   arr.sort((a, b) => {
     let aVal = a[sortKey.value]
@@ -274,7 +274,6 @@ function closeCreateForm() {
 async function submitCreateCourse() {
   try {
     createError.value = null
-    // Преобразуем теги
     let payload = {
       ...newCourse.value,
       tags: newCourse.value.tags

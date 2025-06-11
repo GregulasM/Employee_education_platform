@@ -20,7 +20,7 @@ export interface Achievement {
 
 export const useAchievementsStore = defineStore('achievements', () => {
     const achievementLists: Ref<AchievementList[]> = ref([])
-    const achievements: Ref<Achievement[]> = ref([]) // текущий лист
+    const achievements: Ref<Achievement[]> = ref([])
     const allAchievements: Ref<Achievement[]> = ref([])
     const loading: Ref<boolean> = ref(false)
     const error: Ref<string | null> = ref(null)
@@ -38,17 +38,15 @@ export const useAchievementsStore = defineStore('achievements', () => {
         loading.value = false
     }
 
-    // ВАЖНО! Функция выгрузки всех достижений по всем листам
-    async function fetchAllAchievements() {
+    async function fetchAllAchievements(forceReload = false) {
+        if (allAchievements.value.length > 0 && !forceReload) return
         loading.value = true
         error.value = null
         try {
             let all: Achievement[] = []
-            // Сначала получить все листы
             if (achievementLists.value.length === 0) {
                 await fetchAchievementLists()
             }
-            // Для каждого листа — выгрузить достижения
             const promises = achievementLists.value.map(list =>
                 $fetch<Achievement[]>(`http://localhost:5148/api/achievementlists/${list.id}/achievements`)
                     .then(achList => achList ?? [])
@@ -63,7 +61,6 @@ export const useAchievementsStore = defineStore('achievements', () => {
         loading.value = false
     }
 
-    // Остальные методы оставь без изменений — для одной выбранной группы
     async function fetchAchievements(listId: number) {
         if (!listId) return
         loading.value = true

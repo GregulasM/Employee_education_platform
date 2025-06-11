@@ -19,6 +19,10 @@
         >
           Персонажи
         </NuxtLink>
+        <NuxtLink draggable="false" to="/game_module/user_achievements"
+                  class=" btn btn-ghost max-w-lg h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
+                  v-on:click="">
+          Пользовательские достижения</NuxtLink>
         <NuxtLink draggable="false" v-on:click="go_back()"
                   class="col-start-3 max-w-lg h-12 btn btn-ghost text-white bg-red-500/90 hover:bg-red-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
         >

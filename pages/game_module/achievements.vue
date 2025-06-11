@@ -192,7 +192,6 @@ async function submitCreateAchievement() {
     }
     await achievementsStore.createAchievement(selectedListId.value, { ...newAchievement.value })
     closeCreateForm()
-    // selectedListId не трогаем, после создания сразу обновляется список этого листа через store
   } catch (e: any) {
     createError.value = e?.message || 'Ошибка создания достижения'
   }
@@ -201,11 +200,9 @@ async function submitCreateAchievement() {
 const filteredAchievements = computed(() => {
   let arr = [...achievementsStore.allAchievements]
 
-  // Если форма создания активна — фильтруем по выбранному списку в форме создания!
   if (createMode.value && selectedListId.value) {
     arr = arr.filter(a => a.listId === +selectedListId.value)
   }
-  // Если форма создания не активна — фильтруем по фильтру
   else if (!createMode.value && filter.listId) {
     arr = arr.filter(a => a.listId === +filter.listId)
   }
@@ -228,7 +225,6 @@ function listNameById(listId: number) {
   return list ? list.name : '—'
 }
 
-// CRUD (редактирование/удаление)
 function startEdit(id: number) {
   editingId.value = id
   const ach = achievementsStore.achievements.find(a => a.id === id)
@@ -258,7 +254,6 @@ async function confirmDelete(id: number) {
   confirmingDeleteId.value = null
 }
 
-// Загрузка листов и автоустановка selectedListId
 onMounted(async () => {
   await achievementsStore.fetchAchievementLists()
   await achievementsStore.fetchAllAchievements()

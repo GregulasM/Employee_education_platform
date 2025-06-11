@@ -7,7 +7,7 @@ export interface News {
     title: string | null
     slug: string | null
     excerpt: string | null
-    content: string | null
+    content: JSON | null
     authorId: number | null
     author?: { id: number; firstName: string; lastName: string } | null
     type: string | null

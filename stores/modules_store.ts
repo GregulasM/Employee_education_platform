@@ -40,14 +40,11 @@ export const useModulesStore = defineStore('modules', () => {
         error.value = null
         try {
             const res = await $fetch<any[]>('http://localhost:5148/api/modules')
-            // Преобразуем данные из API в нужный фронту формат!
             modules.value = res.map(m => {
-                // Преобразуем tags если нужно
                 let tags = m.tags
                 if (typeof tags === 'string') {
                     try { tags = JSON.parse(tags) } catch { tags = [] }
                 }
-                // Преобразуем courseTitle и courseId в course-объект
                 const moduleObj: Module = {
                     ...m,
                     tags,
@@ -70,7 +67,6 @@ export const useModulesStore = defineStore('modules', () => {
     }
 
     async function updateModule(id: number, patch: Partial<Module>) {
-        // PATCH по названию. Нужно знать title курса и модуля (по id ищем)
         const module = modules.value.find(m => m.id === id)
         if (!module || !module.title || !module.course?.title) throw new Error('Модуль или курс не найден')
         const body = { ...patch, tags: JSON.stringify(patch.tags || module.tags || []) }

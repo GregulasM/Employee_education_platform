@@ -66,7 +66,7 @@ export const useUsersStore = defineStore('users', () => {
     }
 
     async function deleteUser(id: number) {
-        await $fetch(`http://localhost:5148/api/users/${id}`, {
+        await $fetch(`http://localhost:5148/api/admin_panel/users/${id}`, {
             method: 'DELETE',
         })
     }

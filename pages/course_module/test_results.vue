@@ -189,9 +189,7 @@ const filter = reactive({
 const sortKey = ref<'id'|'user'|'score'|'test'>('id')
 const sortDir = ref<'asc'|'desc'>('asc')
 
-// -------------------
-// CRUD/Управление
-// -------------------
+
 function go_back() {
   router.back()
 }
@@ -253,9 +251,6 @@ async function refreshTestResults() {
   await store.fetchTestResults()
 }
 
-// -------------------
-// Фильтрация и сортировка
-// -------------------
 const filteredResults = computed(() => {
   let arr = [...store.testResults]
   if (filter.user)
@@ -286,16 +281,12 @@ const filteredResults = computed(() => {
   return arr
 })
 
-// -------------------
-// Просмотр answers
-// -------------------
+
 function viewAnswers(answers: string) {
   alert(answers)
 }
 
-// -------------------
-// Первичная загрузка данных
-// -------------------
+
 onMounted(async () => {
   await usersStore.fetchUsers()
   await testsStore.fetchTests()

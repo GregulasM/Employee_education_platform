@@ -49,7 +49,6 @@ export const useCoursesStore = defineStore('courses', () => {
         error.value = null
         try {
             const res = await $fetch<Course[]>('http://localhost:5148/api/courses')
-            // Преобразуем tags, если надо (если с бэка приходит строкой)
             for (const c of res) {
                 if (typeof c.tags === 'string') {
                     try {
@@ -65,7 +64,6 @@ export const useCoursesStore = defineStore('courses', () => {
     }
 
     async function createCourse(course: Partial<Course>) {
-        // Теги в JSON-строку (если требуется)
         const body = { ...course, tags: JSON.stringify(course.tags || []) }
         await $fetch('http://localhost:5148/api/admin_panel/courses', {
             method: 'POST',
@@ -74,7 +72,6 @@ export const useCoursesStore = defineStore('courses', () => {
     }
 
     async function updateCourse(id: number, patch: Partial<Course>) {
-        // PATCH по title, но мы ищем курс по id, поэтому найдем title по id
         const course = courses.value.find(c => c.id === id)
         if (!course || !course.title) throw new Error('Курс не найден')
         const body = { ...patch, tags: JSON.stringify(patch.tags || course.tags || []) }
@@ -85,7 +82,6 @@ export const useCoursesStore = defineStore('courses', () => {
     }
 
     async function deleteCourse(id: number) {
-        // Soft-delete через PATCH, либо через DELETE
         const course = courses.value.find(c => c.id === id)
         if (!course || !course.title) throw new Error('Курс не найден')
         await $fetch(`http://localhost:5148/api/admin_panel/courses/${encodeURIComponent(course.title)}`, {

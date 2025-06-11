@@ -27,12 +27,13 @@
     </div>
     <!-- Форма создания новости -->
     <div v-if="createMode" class="bg-gray-800/90 p-6 rounded-lg mb-6 w-full max-w-4xl mx-auto">
+      <TiptapEditor v-model="tiptapContent" class="bg-gray-800/90" />
       <h3 class="text-lg font-bold text-white mb-4">Создать новость</h3>
       <form @submit.prevent="submitCreateNews" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-white">
         <input v-model="newNews.title" class="input input-bordered" placeholder="Заголовок (title)" />
         <input v-model="newNews.slug" class="input input-bordered" placeholder="Slug (на англ.)" />
         <input v-model="newNews.excerpt" class="input input-bordered" placeholder="Краткое описание (excerpt)" />
-        <textarea v-model="newNews.content" class="textarea textarea-bordered md:col-span-2" placeholder="Контент (content, JSON либо обычный текст)" rows="4"/>
+
         <input v-model.number="newNews.authorId" class="input input-bordered" placeholder="ID автора (authorId)" type="number"/>
         <input v-model="newNews.type" class="input input-bordered" placeholder="Тип (type, опционально)" />
         <input v-model="newNews.date" class="input input-bordered" placeholder="Дата (YYYY-MM-DD, опционально)" />
@@ -105,6 +106,7 @@
                   <span v-if="n.tags">{{ n.tags }}</span>
                 </td>
                 <td class="whitespace-nowrap px-2 py-2 flex gap-2 justify-center align-center items-center">
+                  <button class="btn btn-xs btn-info" @click="viewContent(n)">👁️ Подробнее</button>
                   <button class="btn btn-xs btn-warning font-bold" @click="startEdit(n.slug)">✏️ Изм.</button>
                   <button class="btn btn-xs btn-error" @click="startDelete(n.slug)">Удалить 🗑️</button>
                 </td>
@@ -138,19 +140,38 @@
         </div>
       </div>
     </div>
+
+    <!-- Модальное окно для отображения content -->
+    <div v-if="showContentModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @click="closeContentModal">
+      <div class="bg-gray-800 p-6 rounded-lg max-w-4xl w-full mx-4" @click.stop>
+        <h3 class="text-lg font-bold text-white mb-4">Контент новости</h3>
+        <div v-if="selectedNews" class="text-white">
+          <pre class="whitespace-pre-line break-words bg-gray-700 p-2 rounded">{{ selectedNews.content }}</pre>
+        </div>
+        <div class="flex justify-end mt-4">
+          <button class="btn btn-primary" @click="closeContentModal">Закрыть</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useNewsStore } from '~/stores/news_store'
+import type { NewsDto } from '~/stores/news_store'
+
+const tiptapContent = ref(null)
+
 const router = useRouter()
 const newsStore = useNewsStore()
 
 const editingSlug = ref<string | null>(null)
 const editNews = ref<any>({})
 const confirmingDeleteSlug = ref<string | null>(null)
+const showContentModal = ref(false)
+const selectedNews = ref<NewsDto | null>(null)
 
-function go_back () {
+function go_back() {
   router.back()
 }
 
@@ -175,13 +196,25 @@ async function saveEdit(slug: string) {
 function startDelete(slug: string) {
   confirmingDeleteSlug.value = slug
 }
+
 function cancelDelete() {
   confirmingDeleteSlug.value = null
 }
+
 async function confirmDelete(slug: string) {
   await newsStore.deleteNews(slug)
   confirmingDeleteSlug.value = null
   await newsStore.fetchNews()
+}
+
+function viewContent(news: NewsDto) {
+  selectedNews.value = news
+  showContentModal.value = true
+}
+
+function closeContentModal() {
+  showContentModal.value = false
+  selectedNews.value = null
 }
 
 const showFilters = ref(false)
@@ -227,6 +260,7 @@ async function submitCreateNews() {
     createError.value = null
 
     const payload = { ...newNews.value }
+    payload.content = JSON.stringify(tiptapContent.value)
 
     if (payload.date) {
       payload.date = new Date(payload.date).toISOString()
@@ -242,5 +276,20 @@ async function submitCreateNews() {
   }
 }
 
-onMounted(() => newsStore.fetchNews())
+watch(
+    tiptapContent,
+    (newVal) => {
+      if (newVal) {
+        localStorage.setItem('news-draft', JSON.stringify(newVal))
+      }
+    },
+    { deep: true }
+)
+
+onMounted(() => {
+  newsStore.fetchNews()
+  const draft = localStorage.getItem('news-draft')
+  if (draft) tiptapContent.value = JSON.parse(draft)
+})
+
 </script>

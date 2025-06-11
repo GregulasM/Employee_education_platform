@@ -88,6 +88,7 @@
                   <span v-else>-</span>
                 </td>
                 <td class="whitespace-nowrap px-2 py-2 flex gap-2 justify-center items-center">
+                  <button class="btn btn-xs btn-info" @click="viewValue(setting)">👁️ Подробнее</button>
                   <button class="btn btn-xs btn-warning font-bold" @click="startEdit(setting.id)">✏️ Изм.</button>
                   <button class="btn btn-xs btn-error" @click="startDelete(setting.id)">Удалить 🗑️</button>
                 </td>
@@ -97,7 +98,7 @@
                 <td class="whitespace-nowrap px-2 py-2">{{ setting.id }}</td>
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editSetting.type" class="input input-xs w-28" /></td>
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editSetting.name" class="input input-xs w-28" /></td>
-                <td class="whitespace-nowrap px-2   py-2"><input v-model="editSetting.value" class="input input-xs w-40" /></td>
+                <td class="whitespace-nowrap px-2 py-2"><input v-model="editSetting.value" class="input input-xs w-40" /></td>
                 <td class="whitespace-nowrap px-2 py-2"><input v-model="editSetting.icon" class="input input-xs w-16" /></td>
                 <td class="whitespace-nowrap px-2 py-2 flex gap-2">
                   <button class="btn btn-xs btn-success" @click="saveEdit(setting.id)">Сохранить</button>
@@ -118,6 +119,19 @@
         </div>
       </div>
     </div>
+
+    <!-- Модальное окно для отображения value -->
+    <div v-if="showValueModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" @click="closeValueModal">
+      <div class="bg-gray-800 p-6 rounded-lg max-w-4xl w-full mx-4" @click.stop>
+        <h3 class="text-lg font-bold text-white mb-4">Значение настройки</h3>
+        <div v-if="selectedSetting" class="text-white">
+          <pre class="whitespace-pre-line break-words bg-gray-700 p-2 rounded">{{ selectedSetting.value }}</pre>
+        </div>
+        <div class="flex justify-end mt-4">
+          <button class="btn btn-primary" @click="closeValueModal">Закрыть</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -127,11 +141,13 @@ import { useSettingsStore } from '~/stores/settings_store'
 const router = useRouter()
 const settingsStore = useSettingsStore()
 
-const editingId = ref<number|null>(null)
+const editingId = ref<number | null>(null)
 const editSetting = ref<any>({})
-const confirmingDeleteId = ref<number|null>(null)
+const confirmingDeleteId = ref<number | null>(null)
+const showValueModal = ref(false)
+const selectedSetting = ref(null)
 
-function go_back () {
+function go_back() {
   router.back()
 }
 
@@ -163,6 +179,16 @@ async function confirmDelete(id: number) {
   await settingsStore.deleteSetting(id)
   confirmingDeleteId.value = null
   await settingsStore.fetchSettings()
+}
+
+function viewValue(setting) {
+  selectedSetting.value = setting
+  showValueModal.value = true
+}
+
+function closeValueModal() {
+  showValueModal.value = false
+  selectedSetting.value = null
 }
 
 const showFilters = ref(false)

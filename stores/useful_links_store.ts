@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import type { Ref } from 'vue'
-// Импортируй стор курсов, если используешь его напрямую:
 import { useCoursesStore } from '~/stores/courses_store'
 
 export interface UsefulLink {
@@ -24,7 +23,6 @@ export const useUsefulLinksStore = defineStore('useful_links', () => {
         loading.value = true
         error.value = null
         try {
-            // Грузим все ссылки по всем курсам
             const res = await $fetch<UsefulLink[]>('http://localhost:5148/api/useful_links')
             for (const l of res) {
                 if (typeof l.tags === 'string') {
@@ -75,16 +73,13 @@ export const useUsefulLinksStore = defineStore('useful_links', () => {
         await fetchLinks()
     }
 
-    // Получить title курса по id (ищет сначала в coursesStore, иначе делает fetch)
     async function getCourseTitle(courseId: number | null): Promise<string> {
         if (!courseId) throw new Error('courseId required')
-        // Пытаемся получить из стора (если уже загружен)
         try {
             const coursesStore = useCoursesStore()
             const found = coursesStore.courses.find(c => c.id === courseId)
             if (found && found.title) return found.title
         } catch {}
-        // Если не найден — делаем запрос
         const res = await $fetch<any[]>('http://localhost:5148/api/courses')
         const course = res.find((c: any) => c.id === courseId)
         if (!course || !course.title) throw new Error('Курс не найден')
