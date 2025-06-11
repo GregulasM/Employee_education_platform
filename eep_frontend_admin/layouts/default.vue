@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-700 h-screen">
+  <div class="bg-gray-700 min-h-screen">
     <div v-if="active_main_page">
       <div class="w-full flex justify-center pt-2">
         <h2 class="text-2xl text-white font-bold text-shadow-lg">Главная страница</h2>

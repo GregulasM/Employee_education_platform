@@ -4,23 +4,27 @@
       <div class="w-full flex justify-center pt-2">
         <h2 class="text-2xl text-white font-bold text-shadow-lg">Модуль геймификации</h2>
       </div>
-      <div class="flex justify-center p-4 gap-4">
+      <div class="grid grid-cols-3 gap-4 w-full max-w-6xl mx-auto p-4 ">
         <NuxtLink draggable="false" to="/game_module/achievement_lists"
-                  class="flex-1 btn btn-ghost w-1/4 h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
+                  class=" btn btn-ghost max-w-lg h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
         >
           Листы достижений</NuxtLink>
         <NuxtLink draggable="false" to="/game_module/achievements"
-                  class="flex-1 btn btn-ghost w-1/4 h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
+                  class=" btn btn-ghost max-w-lg h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
         >
           Достижения
           </NuxtLink>
         <NuxtLink draggable="false" to="/game_module/characters"
-                  class="flex-1 btn btn-ghost w-1/4 h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
+                  class=" btn btn-ghost max-w-lg h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
         >
           Персонажи
         </NuxtLink>
+        <NuxtLink draggable="false" to="/game_module/user_achievements"
+                  class=" btn btn-ghost max-w-lg h-12 text-white bg-cyan-500/90 hover:bg-cyan-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
+                  v-on:click="">
+          Пользовательские достижения</NuxtLink>
         <NuxtLink draggable="false" v-on:click="go_back()"
-                  class="flex-1 h-12 btn btn-ghost text-white bg-red-500/90 hover:bg-red-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
+                  class="col-start-3 max-w-lg h-12 btn btn-ghost text-white bg-red-500/90 hover:bg-red-700/90 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-black/10 mb-4"
         >
           Назад</NuxtLink>
       </div>
