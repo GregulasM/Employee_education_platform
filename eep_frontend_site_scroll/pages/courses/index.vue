@@ -5,6 +5,9 @@
     </div>
 
     <ul class="p-4 space-y-4 font-semibold text-shadow-lg text-black">
+      <li v-if="loading" class="text-center text-lg text-red-400">Загрузка...</li>
+      <li v-if="error" class="text-center text-lg text-red-600">{{ error }}</li>
+
       <li v-for="c in paged" :key="c.slug"
           class="collapse collapse-arrow bg-white border border-red-500/50 rounded-lg">
 
@@ -42,7 +45,7 @@
                     class="flex items-center gap-2 inset-shadow-sm inset-shadow-red-500/50 p-2 rounded-lg">
                   <span class="text-xs opacity-60 w-12">{{ a.num }}</span>
                   <button class="text-left flex-1 hover:underline"
-                           v-on:click="openArticle(c.slug,m.id,a.slug)">
+                          v-on:click="openArticle(c.slug, m.id, a.slug)">
                     {{ a.title }}
                   </button>
                 </li>
@@ -68,63 +71,12 @@
 </template>
 
 <script setup lang="ts">
-const allCourses = ref([
-  {
-    slug:'aspnet-core',
-    icon:'/mascot/mascot.png',
-    title:'Основы ASP.NET Core',
-    modules:[
-      { id:'intro', num:1, title:'Введение', icon:'/mascot/mascot.png',
-        articles:[
-          { slug:'1-1', num:'1.1', title:'Установка и настройка' },
-          { slug:'1-2', num:'1.2', title:'Основы' }
-        ]},
-      { id:'mvc', num:2, title:'MVC', icon:'/mascot/mascot.png',
-        articles:[
-          { slug:'2-1', num:'2.1', title:'Контроллеры и маршруты' },
-          { slug:'2-2', num:'2.2', title:'Views и Razor' }
-        ]}]
-  },
-  {
-    slug:'js-pro',
-    icon:'/mascot/mascot.png',
-    title:'База Java Script',
-    modules:[
-      { id:'syntax', num:1, title:'Синтаксис', icon:'/mascot/mascot.png',
-        articles:[{ slug:'1-1', num:'1.1', title:'Переменные' }]},
-      { id:'func', num:2, title:'Функции', icon:'/mascot/mascot.png',
-        articles:[{ slug:'2-1', num:'2.1', title:'Стрелочные функции' }]}]
-  },
-  {
-    slug:'vue',
-    icon:'/mascot/mascot.png',
-    title:'Vue 3',
-    modules:[{ id:'v-basics', num:1, title:'Basics', icon:'/mascot/mascot.png',
-      articles:[{ slug:'1-1', num:'1.1', title:'Реактивность' }]}]
-  },
-  {
-    slug:'nuxt',
-    icon:'/mascot/mascot.png',
-    title:'Nuxt 3',
-    modules:[{ id:'routing', num:1, title:'Маршруты', icon:'/mascot/mascot.png',
-      articles:[{ slug:'1-1', num:'1.1', title:'Dynamicroutes' }]}]
-  },
-  {
-    slug:'css-master',
-    icon:'/mascot/mascot.png',
-    title:'Продвинутый CSS',
-    modules:[{ id:'grid', num:1, title:'CSSGrid', icon:'/mascot/mascot.png',
-      articles:[{ slug:'1-1', num:'1.1', title:'Grid‑контейнер' }]}]
-  },
-  {
-    slug:'git',
-    icon:'/mascot/mascot.png',
-    title:'Git и GitHub',
-    modules:[{ id:'basis', num:1, title:'Коммиты', icon:'/mascot/mascot.png',
-      articles:[{ slug:'1-1', num:'1.1', title:'gitinit /add /commit' }]}]
-  },
-])
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const allCourses = ref<any[]>([])
+const loading = ref(true)
+const error = ref<string|null>(null)
 
 const page     = ref(1)
 const perPage  = 5
@@ -133,15 +85,70 @@ const paged = computed(() => {
   const start = (page.value-1)*perPage
   return allCourses.value.slice(start, start+perPage)
 })
+
 function prev(){ if(page.value>1) page.value-- }
 function next(){ if(page.value<totalPages.value) page.value++ }
 
-
 const router = useRouter()
-function openArticle(course:string,module:string,art:string){
-  router.push(`/courses/${course}/${module}/${art}`)
+function openArticle(courseSlug: string, moduleId: number, articleSlug: string) {
+
+  const courseObj = allCourses.value.find(c => c.slug === courseSlug)
+  if (!courseObj) return
+
+  const mod = courseObj.modules.find(m => m.id === moduleId)
+  if (!mod) return
+
+  const art = mod.articles.find(a => a.slug === articleSlug)
+  if (!art) return
+
+  router.push(
+      `/courses/${courseSlug}/${moduleId}/${encodeURIComponent(art.title)}`
+  )
 }
 function openCoursePage(slug:string){
   router.push(`/courses/${slug}`)
 }
+
+onMounted(async () => {
+  loading.value = true
+  error.value = null
+  try {
+    const courses = await $fetch('http://localhost:5148/api/courses')
+    const modules = await $fetch('http://localhost:5148/api/modules')
+    const articlesByModuleId: Record<number, any[]> = {}
+    await Promise.all(modules.map(async (m:any) => {
+      try {
+        const articles = await $fetch(`http://localhost:5148/api/modules/${m.id}/articles`)
+        articlesByModuleId[m.id] = articles || []
+      } catch {
+        articlesByModuleId[m.id] = []
+      }
+    }))
+    allCourses.value = (courses || []).map((course:any) => {
+      const slug = course.publicId || course.id || course.title?.toLowerCase().replace(/\s+/g, '-')
+      const courseModules = modules.filter((m:any) => m.courseId === course.id)
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+          .map((mod:any, idx:number) => ({
+            id: mod.id,
+            num: idx+1,
+            title: mod.title,
+            icon: mod.image || '/mascot/mascot.png',
+            articles: (articlesByModuleId[mod.id] || []).map((art:any, idx2:number) => ({
+              slug: art.id || art.title?.toLowerCase().replace(/\s+/g, '-'),
+              num: `${idx+1}.${idx2+1}`,
+              title: art.title
+            }))
+          }))
+      return {
+        slug,
+        icon: course.image || '/mascot/mascot.png',
+        title: course.title,
+        modules: courseModules
+      }
+    })
+  } catch (e:any) {
+    error.value = e?.message || 'Ошибка загрузки курсов'
+  }
+  loading.value = false
+})
 </script>
