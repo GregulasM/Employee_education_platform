@@ -4,6 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  devServer: {
+    port: 12134
+  },
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [
@@ -19,11 +22,9 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/content',
-    '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/test-utils',
-    '@nuxt/ui',
     '@pinia/nuxt',
     'nuxt-tiptap-editor'
   ]
