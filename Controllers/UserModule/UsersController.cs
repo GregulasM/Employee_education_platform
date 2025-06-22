@@ -437,7 +437,15 @@ public class UsersController : ControllerBase
             user.Login = userPatchDto.Login;
 
         if (!string.IsNullOrWhiteSpace(userPatchDto.Password))
-            user.Password = userPatchDto.Password;
+        {
+            if (string.IsNullOrWhiteSpace(userPatchDto.OldPassword))
+                return BadRequest("Для смены пароля требуется ввести старый пароль.");
+            
+            if (!PasswordHasher.VerifyPassword(userPatchDto.OldPassword, user.Password))
+                return BadRequest("Старый пароль неверный.");
+            
+            user.Password = PasswordHasher.HashPassword(userPatchDto.Password);
+        }
 
         if (!string.IsNullOrWhiteSpace(userPatchDto.PhoneNumber))
             user.PhoneNumber = userPatchDto.PhoneNumber;
@@ -465,11 +473,11 @@ public class UsersController : ControllerBase
 
         if (userPatchDto.FontId.HasValue)
             user.FontId = userPatchDto.FontId;
-
-        if (userPatchDto.ActiveCourseId.HasValue)
+        
+        if (userPatchDto.IsActiveCourseIdSet)
             user.ActiveCourseId = userPatchDto.ActiveCourseId;
 
-        if (userPatchDto.SelectedCharacterId.HasValue)
+        if (userPatchDto.IsSelectedCharacterIdSet)
             user.SelectedCharacterId = userPatchDto.SelectedCharacterId;
 
         if (userPatchDto.DepartmentId.HasValue)
