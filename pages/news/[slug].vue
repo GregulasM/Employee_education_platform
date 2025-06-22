@@ -189,7 +189,7 @@ async function sendComment() {
   if (!newCommentText.value.trim() || !article.value?.id) return
   try {
     sendingComment.value = true
-    // тут нужно передать userId — сейчас пример с userId: 1, замените на текущего пользователя, если авторизация есть!
+
     await commentsStore.createComment({
       newsId: article.value.id,
       userId: 1,

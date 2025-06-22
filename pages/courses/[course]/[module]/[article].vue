@@ -26,7 +26,6 @@ const { module, article } = route.params
 const store = useArticlesStore()
 const { article: currentArticle, loading, error } = storeToRefs(store)
 
-// Делаем запрос при открытии страницы
 onMounted(async () => {
   await store.fetchArticle(module as string, article as string)
 })

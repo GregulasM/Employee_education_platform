@@ -81,8 +81,10 @@
                   <h2 class="card-title font-bold">Профиль Telegram Gregulas</h2>
                   <p>Мой профиль в Telegram! Кликай на кнопку <span class="whitespace-nowrap">(ﾉ◕ヮ◕)ﾉ</span></p>
                 </div>
-                <div class="p-4">
-                  <button class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500">Telegram</button>
+                <div class="p-4 ">
+                  <NuxtLink href="https://github.com/GregulasM" external target="_blank" rel="noopener">
+                      <button class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500">Telegram</button>
+                  </NuxtLink>
                 </div>
               </div>
               <div class="card-side bg-white rounded-box shadow-md shadow-red-300/60">
@@ -96,7 +98,9 @@
                   <p>Мой профиль в Discord! Кликай на кнопку <span class="whitespace-nowrap">(✧u✧)</span></p>
                 </div>
                 <div class="p-4">
-                  <button class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500">Discord</button>
+                  <NuxtLink href="https://github.com/GregulasM" external target="_blank" rel="noopener">
+                     <button class="btn btn-block text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500">Discord</button>
+                  </NuxtLink>
                 </div>
               </div>
               <div class="card-side bg-white rounded-box shadow-md shadow-red-300/60">

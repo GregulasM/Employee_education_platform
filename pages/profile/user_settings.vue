@@ -1,4 +1,3 @@
-<!--profile/user_settings-->
 <template>
   <div class="shadow-md shadow-orange-200 mt-8 mx-8 rounded-lg bg-orange-50 opacity-90">
     <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 p-2 rounded-t-lg flex justify-between items-center">
@@ -9,99 +8,243 @@
     </div>
 
     <form @submit.prevent="saveSettings" class="p-6 space-y-6 text-black">
-
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Логин</label>
-        <Input v-model="form.username" placeholder="Логин" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        <input v-model="form.login" placeholder="Логин" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
-
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">ФИО</label>
-        <Input v-model="form.fullname" placeholder="Валера Валера" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        <input v-model="form.secondName" placeholder="Фамилия" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        <input v-model="form.firstName" placeholder="Имя" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        <input v-model="form.lastName" placeholder="Отчество" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
-
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Почта</label>
-        <Input v-model="form.email" type="email" placeholder="name@mail.com" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        <input v-model="form.email" type="email" placeholder="name@mail.com" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
-
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Аватар</label>
-        <input v-on:change="form.avatar" type="file" class="file-input file-input-ghost w-full input input-bordered bg-white focus:bg-red-500/50 focus:shadow-md active:border-none focus:border-none text-black font-semibold" />
+        <input @change="onAvatarChange" type="file" accept="image/*" class="file-input file-input-ghost w-full input input-bordered bg-white focus:bg-red-500/50 focus:shadow-md active:border-none focus:border-none text-black font-semibold" />
+        <input v-model="form.avatarUrl" type="text" placeholder="Ссылка на картинку" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
-
+      <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
+        <label class="font-semibold shrink-0 w-32">Старый пароль</label>
+<!--        <input v-model="form.old_password" type="password" autocomplete="new-password" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />-->
+        <input
+            v-model="form.old_password"
+            type="password"
+            autocomplete="new-password"
+            @blur="checkOldPassword"
+            class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold "
+        />
+        <span v-if="checkingPassword" class="text-xs text-gray-400 ml-2">Проверка...</span>
+        <span v-else-if="form.old_password && !oldPasswordValid" class="text-xs text-red-600 ml-2">Пароль неверный</span>
+        <span v-else-if="oldPasswordValid" class="text-xs text-green-600 ml-2">OK</span>
+      </div>
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Пароль</label>
-        <Input v-model="form.password" type="password" autocomplete="new-password" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        <input v-model="form.password" type="password" autocomplete="new-password" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
-
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32 ">Повторный пароль</label>
         <div class="w-full space-y-1">
-          <Input v-model="form.confirm" type="password" autocomplete="new-password" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold" />
-<!--          <p v-if="form.password !== form.confirm || form.password === ''" class="text-xs text-red-600">Пароли не совпадают</p>-->
+          <input v-model="form.confirm" type="password" autocomplete="new-password" class="w-full input input-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold" />
+          <p v-if="form.password !== '' && form.password !== form.confirm" class="text-xs text-red-600">Пароли не совпадают</p>
         </div>
       </div>
-
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Тема</label>
-        <Select v-model="form.theme" class="w-full select select-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold ">
+        <select v-model="form.theme" class="w-full select select-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold ">
           <option value="default">По умолчанию</option>
           <option value="dark">Dark</option>
           <option value="light">Light</option>
           <option value="cupcake">Cupcake</option>
-        </Select>
+        </select>
       </div>
-
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Шрифт</label>
-        <Select v-model="form.font" class="w-full select select-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold ">
+        <select v-model="form.font" class="w-full select select-bordered bg-white inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold ">
           <option value="sans">Sans‑Serif</option>
           <option value="serif">Serif</option>
           <option value="mono">Monospace</option>
-        </Select>
+        </select>
       </div>
-
       <div class="text-right">
         <button
             type="submit"
-            class="btn text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500
-         disabled:bg-gray-400 disabled:cursor-not-allowed">
+            :disabled="!canSave"
+            class="btn text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
           {{ saving ? 'Сохраняю…' : 'Сохранить' }}
         </button>
       </div>
+      <div v-if="errorMsg" class="text-red-600 font-semibold mt-2">{{ errorMsg }}</div>
+      <div v-if="successMsg" class="text-green-700 font-semibold mt-2">{{ successMsg }}</div>
     </form>
-
     <div class="mt-8"></div>
   </div>
 </template>
+
 <script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue'
+import { useUsersStore } from '~/stores/users_store'
+
+const usersStore = useUsersStore()
+const currentUser = computed(() => usersStore.currentUser)
+
 const form = reactive({
-  username: '',
-  fullname: '',
+  login: '',
+  secondName: '',
+  firstName: '',
+  lastName: '',
   email: '',
+  old_password: '',
   password: '',
   confirm: '',
-  avatar: '',
+  avatar: null as File | null,
+  avatarUrl: '',
   theme: 'default',
   font: 'sans',
 })
-
-const password_conf = ref(false)
-
+const errorMsg = ref('')
+const successMsg = ref('')
 const saving = ref(false)
 
+
+const oldPasswordValid = ref(false)
+const checkingPassword = ref(false)
+
+async function checkOldPassword() {
+  errorMsg.value = ''
+  oldPasswordValid.value = false
+  if (!form.login || !form.old_password) return
+  checkingPassword.value = true
+  try {
+    await $fetch('http://localhost:5148/api/auth/login', {
+      method: 'POST',
+      body: { login: form.login, password: form.old_password }
+    })
+    oldPasswordValid.value = true
+  } catch (e: any) {
+    oldPasswordValid.value = false
+    errorMsg.value = 'Старый пароль неверный'
+  }
+  checkingPassword.value = false
+}
+
+
+function onAvatarChange(e: Event) {
+  const input = e.target as HTMLInputElement
+  form.avatar = input.files && input.files[0] ? input.files[0] : null
+}
+
+const canSave = computed(() => {
+  if (!form.old_password || !oldPasswordValid.value) return false
+  if (form.password || form.confirm) {
+    return form.password === form.confirm && form.password.length >= 4
+  }
+  return true
+})
+
 async function saveSettings() {
-  if (!password_conf.value) return
+  errorMsg.value = ''
+  successMsg.value = ''
+  if (!currentUser.value) {
+    errorMsg.value = 'Пользователь не найден'
+    return
+  }
+  if (!form.old_password) {
+    errorMsg.value = 'Введите старый пароль для подтверждения'
+    return
+  }
+  if ((form.password || form.confirm) && form.password !== form.confirm) {
+    errorMsg.value = 'Пароли не совпадают'
+    return
+  }
+  if ((form.password && form.password.length < 4) || (form.confirm && form.confirm.length < 4)) {
+    errorMsg.value = 'Новый пароль должен быть не короче 4 символов'
+    return
+  }
+
   saving.value = true
 
-  setTimeout(() => saving.value = false, 700)
+  const patch: any = {
+    login: form.login,
+    email: form.email,
+    secondName: form.secondName,
+    firstName: form.firstName,
+    lastName: form.lastName,
+    theme: form.theme,
+    font: form.font,
+    ActiveCourseId: currentUser.value?.activeCourseId ?? null,
+    SelectedCharacterId: currentUser.value?.selectedCharacterId ?? null,
+  }
+
+  if (form.avatarUrl) {
+    patch.avatar = form.avatarUrl
+  }
+
+  if (form.password) {
+    patch.oldPassword = form.old_password
+    patch.password = form.password
+  } else {
+    patch.oldPassword = form.old_password
+  }
+
+  if (form.avatar) {
+    try {
+      const fd = new FormData()
+      fd.append('avatar', form.avatar)
+      const uploadUrl = `http://localhost:5148/api/users/${currentUser.value.id}/avatar`
+      const result = await $fetch(uploadUrl, {
+        method: 'POST',
+        body: fd,
+      })
+      if (result.avatarUrl) {
+        patch.avatar = result.avatarUrl
+      }
+    } catch (e) {
+      errorMsg.value = 'Ошибка загрузки аватара'
+      saving.value = false
+      return
+    }
+  }
+
+  try {
+    await usersStore.updateUser(currentUser.value.id, patch)
+    const updated = await usersStore.getUserById(currentUser.value.id)
+    if (updated && usersStore.currentUser) {
+      Object.assign(usersStore.currentUser, updated)
+      usersStore.saveSession(usersStore.currentUser, usersStore.token)
+    }
+    successMsg.value = 'Данные успешно обновлены'
+    form.old_password = ''
+    form.password = ''
+    form.confirm = ''
+    form.avatar = null
+    if (currentUser.value) {
+      form.login = currentUser.value.login ?? ''
+      form.secondName = currentUser.value.secondName ?? ''
+      form.firstName = currentUser.value.firstName ?? ''
+      form.lastName = currentUser.value.lastName ?? ''
+      form.email = currentUser.value.email ?? ''
+      form.theme = currentUser.value.theme?.name ?? 'default'
+      form.font = currentUser.value.font?.name ?? 'sans'
+    }
+  } catch (e: any) {
+    errorMsg.value = usersStore.error || e?.message || 'Ошибка обновления'
+  }
+  saving.value = false
 }
+
+onMounted(() => {
+  if (currentUser.value) {
+    form.login = currentUser.value.login ?? ''
+    form.secondName = currentUser.value.secondName ?? ''
+    form.firstName = currentUser.value.firstName ?? ''
+    form.lastName = currentUser.value.lastName ?? ''
+    form.email = currentUser.value.email ?? ''
+    form.theme = currentUser.value.theme?.name ?? 'default'
+    form.font = currentUser.value.font?.name ?? 'sans'
+  }
+})
 </script>

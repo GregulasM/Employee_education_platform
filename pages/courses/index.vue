@@ -16,11 +16,17 @@
         <div class="collapse-title flex items-center gap-4">
           <img :src="c.icon" class="w-10 h-10 rounded-box object-cover shadow">
           <span class="flex-1">{{ c.title }}</span>
-          <button  v-on:click.stop="openCoursePage(c.slug)" class="btn btn-square btn-ghost hover:bg-red-500/50 border-none z-20">
+          <button
+              v-on:click.stop="delete_active_course"
+              class="btn btn-square btn-ghost hover:bg-red-500/50 border-none z-20"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" class="size-[1.5em]" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 2C7.229 2 5.343 2 4.172 3.129C3 4.257 3 6.074 3 9.708v8.273c0 2.306 0 3.459.773 3.871c1.496.8 4.304-1.867 5.637-2.67c.773-.465 1.16-.698 1.59-.698s.817.233 1.59.698c1.333.803 4.14 3.47 5.637 2.67c.773-.412.773-1.565.773-3.871V12.5M3.5 7H10m3-2h8" color="#888888"/></svg>
           </button>
 
-          <button  v-on:click.stop="openCoursePage(c.slug)" class="btn btn-square btn-ghost hover:bg-red-500/50 border-none z-20">
+          <button
+              v-on:click.stop="add_course_to_active(c.id)"
+              class="btn btn-square btn-ghost hover:bg-red-500/50 border-none z-20"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" class="size-[1.5em]" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 2C7.229 2 5.343 2 4.172 3.129C3 4.257 3 6.074 3 9.708v8.273c0 2.306 0 3.459.773 3.871c1.496.8 4.304-1.867 5.637-2.67c.773-.465 1.16-.698 1.59-.698s.817.233 1.59.698c1.333.803 4.14 3.47 5.637 2.67c.773-.412.773-1.565.773-3.871V12.5M3.5 7H10m7 3V2m-4 4h8" color="#888888"/></svg>
           </button>
 
@@ -75,9 +81,12 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useCoursesStore } from '@/stores/courses_store'
+import { useUsersStore } from '~/stores/users_store'
+
 
 const router = useRouter()
 const store = useCoursesStore()
+const userStore = useUsersStore()
 const { loading, error, paged, page, totalPages } = storeToRefs(store)
 
 // Пагинация
@@ -85,7 +94,38 @@ function prev() { store.prev() }
 function next() { store.next() }
 function goToPage(n:number) { store.goToPage(n) }
 
-// Открытие страниц
+async function add_course_to_active(courseId: number) {
+  if (!userStore.currentUser?.id) return
+  try {
+    await userStore.updateUser(userStore.currentUser.id, { activeCourseId: courseId, isActiveCourseIdSet: true })
+    const updated = await userStore.getUserById(userStore.currentUser.id)
+    if (updated && userStore.currentUser) {
+      Object.assign(userStore.currentUser, updated)
+      userStore.saveSession(userStore.currentUser, userStore.token)
+    }
+    console.log('Сохраняю сессию:', userStore.currentUser)
+  } catch (e) {
+    alert('Ошибка выбора курса')
+  }
+}
+
+async function delete_active_course() {
+  if (!userStore.currentUser?.id) return
+  try {
+    await userStore.updateUser(userStore.currentUser.id, { activeCourseId: null, isActiveCourseIdSet: true })
+    const updated = await userStore.getUserById(userStore.currentUser.id)
+    if (updated && userStore.currentUser) {
+      userStore.currentUser.activeCourseId = null
+      Object.assign(userStore.currentUser, updated)
+      userStore.saveSession(userStore.currentUser, userStore.token)
+    }
+    console.log('Сохраняю сессию:', userStore.currentUser)
+  } catch (e) {
+    alert('Ошибка удаления курса')
+  }
+}
+
+
 function openArticle(courseSlug: string, moduleId: number, articleSlug: string) {
   const article = store.findArticle(courseSlug, moduleId, articleSlug)
   if (!article) return
@@ -95,8 +135,9 @@ function openCoursePage(slug:string){
   router.push(`/courses/${slug}`)
 }
 
-// Автоматически загружаем данные
-onMounted(() => {
+
+onMounted(async () => {
   store.fetchAll()
+
 })
 </script>

@@ -45,7 +45,7 @@ const { loading, error, allCourses } = storeToRefs(store)
 
 const courseSlug = computed(() => route.params.course as string)
 
-// Получаем объект курса из стора (реактивно)
+
 const course = computed(() =>
     store.findCourseBySlug(courseSlug.value)
 )
@@ -58,7 +58,7 @@ function openArticle(moduleId: number, articleSlug: string) {
   router.push(`/courses/${courseSlug.value}/${moduleId}/${encodeURIComponent(art.title)}`)
 }
 
-// Загружаем курсы, если их ещё нет
+
 onMounted(async () => {
   if (!allCourses.value.length) {
     await store.fetchAll()
