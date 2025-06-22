@@ -1,26 +1,22 @@
 <template>
   <div v-if="article" class="mx-auto mt-8 mb-8">
     <div class="shadow-md shadow-orange-200 rounded-lg bg-orange-50 opacity-90 h-min mb-8">
-
       <div class="text-xl text-white font-bold text-shadow-lg/20 bg-red-500/50 gap-4 p-2 rounded-t-lg flex justify-between items-center">
         <h2>Новость: {{ article.title }}</h2>
         <span class="text-sm opacity-60">{{ dateString }}</span>
       </div>
 
-
       <div class="flex-col p-4 font-semibold text-shadow-lg rounded-box shadow-md text-black space-y-6">
-
         <div>
           <TiptapViewer class="tiptap-content" v-if="tiptapContent" :content="tiptapContent" />
         </div>
-
-        <div v-if="article.author" class="flex items-center space-x-4 pt-4 border-t">
-          <img :src="article.author.avatar" class="w-12 h-12 rounded-full" />
+        <div v-if="author" class="flex items-center space-x-4 pt-4 border-t">
+          <img :src="author.avatar || defaultAvatar" class="w-12 h-12 rounded-full" />
           <div>
-            <NuxtLink :to="article.author.profile" class="font-bold hover:text-red-500">
+            <NuxtLink :to="author.profile" class="font-bold hover:text-red-500">
               {{ authorName }}
             </NuxtLink>
-            <p v-if="article.author.comment" class="italic text-sm opacity-70">"{{ article.author.comment }}"</p>
+            <p v-if="author.comment" class="italic text-sm opacity-70">"{{ author.comment }}"</p>
           </div>
         </div>
       </div>
@@ -35,12 +31,12 @@
       </div>
       <div class="flex-col p-4 font-semibold text-shadow-lg rounded-box shadow-md text-black space-y-6">
         <div class="pt-4 border-t space-y-3">
-            <textarea
-                v-model="newCommentText"
-                rows="3"
-                placeholder="Напишите комментарий…"
-                class="textarea textarea-bordered w-full resize-y bg-white"
-            />
+          <textarea
+              v-model="newCommentText"
+              rows="3"
+              placeholder="Напишите комментарий…"
+              class="textarea textarea-bordered w-full resize-y bg-white"
+          />
           <div class="flex gap-2 justify-between">
             <button
                 class="btn btn-ghost text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500"
@@ -49,7 +45,6 @@
             >
               {{ sendingComment ? 'Отправка…' : 'Отправить' }}
             </button>
-
             <button
                 class="btn btn-ghost text-white bg-red-500/50 hover:bg-red-500/70 hover:border-none border-none font-semibold text-shadow-lg/20 shadow-sm shadow-neutral-500"
                 @click="newCommentText = ''"
@@ -59,20 +54,19 @@
             </button>
           </div>
         </div>
-        <template v-if="loadingComments">
+        <template v-if="commentsLoading">
           <div class="text-lg text-red-400">Загрузка комментариев...</div>
         </template>
-        <template v-else-if="comments.length === 0">
+        <template v-else-if="commentsList.length === 0">
           <div class="italic text-gray-400">Комментариев пока нет.</div>
         </template>
         <template v-else>
-
-          <div v-for="comment in comments" :key="comment.id" class="chat chat-start">
+          <div v-for="comment in commentsList" :key="comment.id" class="chat chat-start">
             <div class="chat-image avatar">
               <div class="w-10 rounded-full">
                 <img
                     :alt="comment.userName || 'User'"
-                    :src="comment.avatar"
+                    :src="comment.avatar || defaultAvatar"
                     class="object-cover"
                 />
               </div>
@@ -94,69 +88,37 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useNewsStore } from '@/stores/news_store'
+import { useUsersStore } from '@/stores/users_store'
+import { useCommentsStore } from '@/stores/comments_store'
 
 const route = useRoute()
-const slug = route.params.slug
+const slug = route.params.slug as string
+
+const newsStore = useNewsStore()
+const usersStore = useUsersStore()
+const commentsStore = useCommentsStore()
 
 const article = ref<any>(null)
 const tiptapContent = ref(null)
+const author = ref<any>(null)
 const newCommentText = ref('')
 const sendingComment = ref(false)
+const defaultAvatar = 'https://img.daisyui.com/images/avatar/large/paul.jpg'
 
+// Комментарии
+const commentsList = ref<any[]>([])
+const commentsLoading = ref(true)
 
-async function sendComment() {
-  if (!newCommentText.value.trim()) return
-  try {
-    sendingComment.value = true
-    await $fetch('http://localhost:5148/api/admin_panel/comments', {
-      method: 'POST',
-      body: {
-        newsId: article.value.id,
-        userId: 1,               // СДЕЛАТЬ ПОТОМ
-        text: newCommentText.value.trim()
-      }
-    })
-    newCommentText.value = ''
-    await loadComments()
-  } catch (e) {
-    alert('Не удалось отправить комментарий')
-  } finally {
-    sendingComment.value = false
-  }
-}
-
-async function loadComments() {
-  try {
-    loadingComments.value = true
-    const data = await $fetch('http://localhost:5148/api/admin_panel/comments')
-    comments.value = (data || [])
-        .filter(c => c.newsId === article.value.id)
-        .map(c => ({
-          id: c.id,
-          userName: c.userName,
-          text: c.text,
-          time: formatDateTime(c.createdAt),
-          avatar: c.userAvatar || 'https://img.daisyui.com/images/avatar/large/paul.jpg'
-        }))
-  } catch {
-    errorComments.value = 'Ошибка загрузки комментариев'
-  } finally {
-    loadingComments.value = false
-  }
-}
-
-const authorName = computed(() =>
-    article.value?.author
-        ? [article.value.author.firstName, article.value.author.lastName].filter(Boolean).join(' ')
+const authorName = computed(() => {
+  if (!author.value) return ''
+  return [author.value.firstName, author.value.lastName].filter(Boolean).join(' ')
+})
+const dateString = computed(() =>
+    article.value?.date
+        ? new Date(article.value.date).toLocaleDateString('ru-RU')
         : ''
 )
-const dateString = computed(() =>
-    article.value?.date ? new Date(article.value.date).toLocaleDateString('ru-RU') : ''
-)
-
-const comments = ref<any[]>([])
-const loadingComments = ref(true)
-const errorComments = ref<string|null>(null)
 
 function formatDateTime(str: string) {
   if (!str) return ''
@@ -164,9 +126,15 @@ function formatDateTime(str: string) {
   return date.toLocaleDateString('ru-RU') + ' ' + date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
 }
 
-onMounted(async () => {
-  const response = await $fetch(`http://localhost:5148/api/admin_panel/users/news/${useRoute().params.slug}`)
-  article.value = response
+async function loadArticle() {
+  // Загрузка новости
+  await newsStore.fetchNews()
+  article.value = newsStore.newsList.find(
+      n => n.slug === slug
+  )
+  if (!article.value) return
+
+  // Загрузка tiptap контента
   try {
     if (typeof article.value.content === 'string') {
       tiptapContent.value = JSON.parse(article.value.content)
@@ -177,6 +145,67 @@ onMounted(async () => {
     tiptapContent.value = null
   }
 
+  // Загрузка автора
+  if (article.value.authorId) {
+    await usersStore.fetchUsers()
+    const user = usersStore.users.find(u => u.id === article.value.authorId)
+    author.value = user
+        ? {
+          ...user,
+          profile: `/users/${user.publicId || user.id}`,
+        }
+        : null
+  } else if (article.value.author) {
+    // Если автор уже пришёл
+    author.value = {
+      ...article.value.author,
+      profile: `/users/${article.value.author.publicId || article.value.author.id || ''}`
+    }
+  } else {
+    author.value = null
+  }
+}
+
+async function loadComments() {
+  commentsLoading.value = true
+  await commentsStore.fetchComments()
+  const newsId = article.value?.id
+  let raw = commentsStore.comments.filter(c => c.newsId === newsId)
+  await usersStore.fetchUsers()
+  commentsList.value = raw.map(c => {
+    const user = usersStore.users.find(u => u.id === c.userId)
+    return {
+      id: c.id,
+      userName: user ? [user.firstName, user.lastName].filter(Boolean).join(' ') : 'Пользователь',
+      avatar: user?.avatar || defaultAvatar,
+      text: c.text,
+      time: formatDateTime(c.createdAt || '')
+    }
+  })
+  commentsLoading.value = false
+}
+
+async function sendComment() {
+  if (!newCommentText.value.trim() || !article.value?.id) return
+  try {
+    sendingComment.value = true
+    // тут нужно передать userId — сейчас пример с userId: 1, замените на текущего пользователя, если авторизация есть!
+    await commentsStore.createComment({
+      newsId: article.value.id,
+      userId: 1,
+      text: newCommentText.value.trim()
+    })
+    newCommentText.value = ''
+    await loadComments()
+  } catch (e) {
+    alert('Не удалось отправить комментарий')
+  } finally {
+    sendingComment.value = false
+  }
+}
+
+onMounted(async () => {
+  await loadArticle()
   await loadComments()
 })
 </script>

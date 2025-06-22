@@ -3,34 +3,40 @@
     <div class="flex justify-between items-center text-xl font-bold text-white bg-red-500/50 p-4 rounded-t-lg">
       <h2>{{ moduleTitle }} : {{ articleTitle }}</h2>
       <span class="text-xs opacity-80">
-      {{ publishedDate }}
-    </span>
+        {{ publishedDate }}
+      </span>
     </div>
     <div class="p-6 space-y-10">
       <TiptapViewer v-if="tiptapContent" :content="tiptapContent" />
+      <div v-else-if="loading" class="text-center text-lg text-red-400">Загрузка...</div>
+      <div v-else-if="error" class="text-center text-lg text-red-600">{{ error }}</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useArticlesStore } from '@/stores/articles_store'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const { module, article } = route.params
 
-/* данные статьи */
-const moduleTitle  = ref('')
-const articleTitle = ref('')
+const store = useArticlesStore()
+const { article: currentArticle, loading, error } = storeToRefs(store)
 
-/* контент tiptap */
-const tiptapContent = ref(null)
+// Делаем запрос при открытии страницы
+onMounted(async () => {
+  await store.fetchArticle(module as string, article as string)
+})
 
-/* дата публикации / обновления */
-const createdAt  = ref<string | null>(null)
-const updatedAt  = ref<string | null>(null)
+const moduleTitle  = computed(() => currentArticle.value?.moduleTitle || 'Без названия')
+const articleTitle = computed(() => currentArticle.value?.title || 'Статья')
+const tiptapContent = computed(() => currentArticle.value?.content ?? null)
+const createdAt  = computed(() => currentArticle.value?.createdAt ?? null)
+const updatedAt  = computed(() => currentArticle.value?.updatedAt ?? null)
 
-/* красиво форматируем дату */
 const publishedDate = computed(() => {
   const src = updatedAt.value || createdAt.value
   if (!src) return ''
@@ -42,30 +48,5 @@ const publishedDate = computed(() => {
     hour: '2-digit',
     minute: '2-digit'
   })
-})
-
-onMounted(async () => {
-  try {
-    const encoded = encodeURIComponent(article as string)
-    const res: any = await $fetch(
-        `http://localhost:5148/api/admin_panel/modules/${module}/articles/${encoded}`
-    )
-
-    moduleTitle.value  = res.moduleTitle || 'Без названия'
-    articleTitle.value = res.title       || 'Статья'
-
-    createdAt.value = res.createdAt   || null
-    updatedAt.value = res.updatedAt   || null
-
-    /* контент */
-    if (typeof res.content === 'string') {
-      tiptapContent.value = JSON.parse(res.content)
-    } else {
-      tiptapContent.value = res.content
-    }
-  } catch (e) {
-    articleTitle.value = 'Статья не найдена'
-    tiptapContent.value = null
-  }
 })
 </script>

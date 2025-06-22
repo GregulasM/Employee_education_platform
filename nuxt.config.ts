@@ -4,6 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  devServer: {
+    port: 13245
+  },
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [
@@ -52,6 +55,10 @@ export default defineNuxtConfig({
           page.meta = page.meta || {}
           page.meta.layout = 'profile'
         }
+        if (page.path === '/login' || page.path === '/register') {
+          page.meta = page.meta || {}
+          page.meta.layout = 'auth'
+      }
       }
     }
   }

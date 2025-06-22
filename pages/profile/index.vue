@@ -151,6 +151,15 @@ const percent_character = computed(() =>
     Math.round((character.xp / character.next) * 100))
 
 
-function logout () { alert('Вы вышли из аккаунта') }
+import { useUsersStore } from '~/stores/users_store'
+import { useRouter } from 'vue-router'
+
+const userStore = useUsersStore()
+const router = useRouter()
+
+function logout() {
+  userStore.logout()
+  router.push('/login')
+}
 
 </script>

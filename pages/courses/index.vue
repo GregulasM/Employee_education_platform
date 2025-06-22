@@ -71,84 +71,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
-const allCourses = ref<any[]>([])
-const loading = ref(true)
-const error = ref<string|null>(null)
-
-const page     = ref(1)
-const perPage  = 5
-const totalPages = computed(() => Math.ceil(allCourses.value.length / perPage))
-const paged = computed(() => {
-  const start = (page.value-1)*perPage
-  return allCourses.value.slice(start, start+perPage)
-})
-
-function prev(){ if(page.value>1) page.value-- }
-function next(){ if(page.value<totalPages.value) page.value++ }
+import { storeToRefs } from 'pinia'
+import { useCoursesStore } from '@/stores/courses_store'
 
 const router = useRouter()
+const store = useCoursesStore()
+const { loading, error, paged, page, totalPages } = storeToRefs(store)
+
+// Пагинация
+function prev() { store.prev() }
+function next() { store.next() }
+function goToPage(n:number) { store.goToPage(n) }
+
+// Открытие страниц
 function openArticle(courseSlug: string, moduleId: number, articleSlug: string) {
-
-  const courseObj = allCourses.value.find(c => c.slug === courseSlug)
-  if (!courseObj) return
-
-  const mod = courseObj.modules.find(m => m.id === moduleId)
-  if (!mod) return
-
-  const art = mod.articles.find(a => a.slug === articleSlug)
-  if (!art) return
-
-  router.push(
-      `/courses/${courseSlug}/${moduleId}/${encodeURIComponent(art.title)}`
-  )
+  const article = store.findArticle(courseSlug, moduleId, articleSlug)
+  if (!article) return
+  router.push(`/courses/${courseSlug}/${moduleId}/${encodeURIComponent(article.title)}`)
 }
 function openCoursePage(slug:string){
   router.push(`/courses/${slug}`)
 }
 
-onMounted(async () => {
-  loading.value = true
-  error.value = null
-  try {
-    const courses = await $fetch('http://localhost:5148/api/courses')
-    const modules = await $fetch('http://localhost:5148/api/modules')
-    const articlesByModuleId: Record<number, any[]> = {}
-    await Promise.all(modules.map(async (m:any) => {
-      try {
-        const articles = await $fetch(`http://localhost:5148/api/modules/${m.id}/articles`)
-        articlesByModuleId[m.id] = articles || []
-      } catch {
-        articlesByModuleId[m.id] = []
-      }
-    }))
-    allCourses.value = (courses || []).map((course:any) => {
-      const slug = course.publicId || course.id || course.title?.toLowerCase().replace(/\s+/g, '-')
-      const courseModules = modules.filter((m:any) => m.courseId === course.id)
-          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-          .map((mod:any, idx:number) => ({
-            id: mod.id,
-            num: idx+1,
-            title: mod.title,
-            icon: mod.image || '/mascot/mascot.png',
-            articles: (articlesByModuleId[mod.id] || []).map((art:any, idx2:number) => ({
-              slug: art.id || art.title?.toLowerCase().replace(/\s+/g, '-'),
-              num: `${idx+1}.${idx2+1}`,
-              title: art.title
-            }))
-          }))
-      return {
-        slug,
-        icon: course.image || '/mascot/mascot.png',
-        title: course.title,
-        modules: courseModules
-      }
-    })
-  } catch (e:any) {
-    error.value = e?.message || 'Ошибка загрузки курсов'
-  }
-  loading.value = false
+// Автоматически загружаем данные
+onMounted(() => {
+  store.fetchAll()
 })
 </script>

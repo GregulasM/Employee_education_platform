@@ -13,19 +13,19 @@
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Логин</label>
         <Input v-model="form.username" placeholder="Логин" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
 
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">ФИО</label>
         <Input v-model="form.fullname" placeholder="Валера Валера" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
 
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Почта</label>
         <Input v-model="form.email" type="email" placeholder="name@mail.com" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
 
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
@@ -36,7 +36,7 @@
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
         <label class="font-semibold shrink-0 w-32">Пароль</label>
         <Input v-model="form.password" type="password" autocomplete="new-password" class="w-full input input-bordered bg-white
-        inset-shadow-xs inset-shadow-red-500/50 focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
+        inset-shadow-xs inset-shadow-red-500/50 shadow-md shadow-orange-200 focus:shadow-none focus:border-none focus:inset-shadow-sm focus:inset-shadow-red-500/50 text-black font-semibold " />
       </div>
 
       <div class="form-control bg-white border border-red-500/50 rounded-box shadow-md p-4 flex flex-col sm:flex-row items-center gap-4">
