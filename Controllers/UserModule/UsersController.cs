@@ -2,6 +2,7 @@ using eep_backend;
 using eep_backend.Models.CourseModuleModels;
 using eep_backend.Models.GameModuleModels;
 using eep_backend.Models.UserModuleModels;
+using eep_backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
@@ -151,19 +152,22 @@ public class UsersAdminController : ControllerBase
         Description = "Создает пользователя."
     )]
     [HttpPost("users")]
-    public async Task<IActionResult> Create_user([FromBody] UserCreateDto userCreateDto,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> Create_user([FromBody] UserCreateDto userCreateDto, CancellationToken cancellationToken)
     {
         if (userCreateDto == null)
             return BadRequest("Пользователь не передан.");
 
         if (string.IsNullOrWhiteSpace(userCreateDto.Login))
             return BadRequest("Логин обязателен.");
+        if (string.IsNullOrWhiteSpace(userCreateDto.Password))
+            return BadRequest("Пароль обязателен.");
+
+        var hashedPassword = PasswordHasher.HashPassword(userCreateDto.Password);
 
         var user = new User
         {
             Login = userCreateDto.Login,
-            Password = userCreateDto.Password,
+            Password = hashedPassword,
             PhoneNumber = userCreateDto.PhoneNumber,
             FirstName = userCreateDto.FirstName,
             SecondName = userCreateDto.SecondName,

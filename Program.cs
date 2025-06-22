@@ -39,6 +39,8 @@ public class Program
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
         
+        builder.Services.AddSingleton<JwtTokenService>();
+        
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: "AdminPanel",
@@ -50,8 +52,13 @@ public class Program
                     policy.WithOrigins("http://localhost:3001")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
-                    
-                    // "http://www.contoso.com");
+                    policy.WithOrigins("http://localhost:12134")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    policy.WithOrigins("http://localhost:13245")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+
                 });
         });
 
