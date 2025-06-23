@@ -94,5 +94,6 @@ const weekDaysWithFlags = computed(() =>
 
 onMounted(() => {
   store.fetchSchedules()
+  console.log(store.schedules)
 })
 </script>

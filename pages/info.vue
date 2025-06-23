@@ -137,32 +137,17 @@ const team = [
   {
     name: 'Михаил Gregulas',
     role: 'Создатель всего',
-    avatar: 'https://img.daisyui.com/images/profile/demo/1@94.webp',
+    avatar: '/mascot/mascot.png',
   },
   {
-    name: 'Валера',
-    role: 'Тот, кто замещает профили',
-    avatar: 'https://img.daisyui.com/images/profile/demo/2@94.webp',
-  },
-  {
-    name: 'Вадим',
-    role: 'Дарова',
-    avatar: 'https://img.daisyui.com/images/profile/demo/3@94.webp',
-  },
-  {
-    name: 'Годжо Сатору',
-    role: 'Тот самый',
-    avatar: 'https://img.daisyui.com/images/profile/demo/4@94.webp',
-  },
-  {
-    name: 'Цветок из PVZ',
-    role: 'Завод солнца',
-    avatar: 'https://img.daisyui.com/images/profile/demo/5@94.webp',
+    name: 'Мои замечательные друзья и родные',
+    role: 'Поддержка и опора',
+    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNuMSKXo1FPU9obNY8GgolOytYRwwz6xOpbg&s',
   },
   {
     name: 'Морозострел',
     role: 'Пф-пук',
-    avatar: 'https://img.daisyui.com/images/profile/demo/5@94.webp',
+    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDxmwBKyLgMPjyl_7jdE-EXPo2iXt1ci9gIg&s',
   },
 ]
 

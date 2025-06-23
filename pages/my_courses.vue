@@ -101,7 +101,7 @@ const activeCourse = computed(() => {
 async function delete_active_course() {
   if (!userStore.currentUser?.id) return
   try {
-    await userStore.updateUser(userStore.currentUser.id, { activeCourseId: null })
+    await userStore.updateUser(userStore.currentUser.id, { activeCourseId: null, isActiveCourseIdSet: true })
     const updated = await userStore.getUserById(userStore.currentUser.id)
     if (updated && userStore.currentUser) {
       userStore.currentUser.activeCourseId = null

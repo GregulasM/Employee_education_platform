@@ -434,7 +434,7 @@
                                     alt="Персонаж"
                                 >
                                 <p class="mb-1 text-center text-lg">{{ selectedCharacter.name }}</p>
-                                <p v-if="selectedCharacter.description" class="mb-2 text-xs text-center opacity-80">{{ selectedCharacter.description }}</p>>
+                                <p v-if="selectedCharacter.description" class="mb-2 text-xs text-center opacity-80">{{ selectedCharacter.description }}</p>
                                 <p>Уровень: {{ selectedCharacter.level ?? '—' }}</p>
                                 <p>Опыт: {{ selectedCharacter.exp ?? '—' }}<span v-if="selectedCharacter.totalExp">/{{ selectedCharacter.totalExp }}</span></p>
                                 <p>Редкость: <span class="uppercase font-bold">{{ selectedCharacter.rarity || '—' }}</span></p>
